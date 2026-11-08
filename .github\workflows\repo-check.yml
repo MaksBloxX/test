@@ -1,1 +1,40 @@
+name: Repository Health & Scripts Check
 
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit-and-test:
+    name: Validate Markdown Links, Assets & CLI Tools
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Repository Doctor (Links, Anchors, Code Fences & Assets)
+        run: python3 scripts/repo_doctor.py --strict
+
+      - name: Smoke-test Subnet & VLSM Calculator
+        run: |
+          python3 scripts/subnet_calculator.py 192.168.1.65/26
+          python3 scripts/subnet_calculator.py --vlsm 192.168.10.0/24 --departments "CSE:55,EEE:25,WAN:2"
+          python3 scripts/subnet_calculator.py --drill 3 --seed 42
+
+      - name: Smoke-test Cisco IOS Config Generator
+        run: |
+          python3 scripts/ios_config_generator.py --list
+          python3 scripts/ios_config_generator.py roas --with-dhcp
+
+      - name: Smoke-test Lab Writer & CCNA Quiz Trainer
+        run: |
+          python3 scripts/lab_writer.py lesson --num 99 --slug sample --title "Sample Lesson" --stdout > /dev/null
+          python3 scripts/quiz_trainer.py --list
+          python3 scripts/quiz_trainer.py --demo
