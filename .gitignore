@@ -1,0 +1,22 @@
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Temporary / backup Packet Tracer or scratch files
+*.pka.tmp
+*.pkt~
+*.bak
+*.tmp
