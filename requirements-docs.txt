@@ -1,0 +1,6 @@
+# Optional docs/media tooling; v4 capstone generator and original six CLI helpers are stdlib-only.
+mkdocs==1.6.1
+mkdocs-material==9.8.1
+CairoSVG==2.9.1
+Pillow==12.3.0
+PyYAML==6.0.3

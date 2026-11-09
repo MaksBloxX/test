@@ -1,0 +1,170 @@
+site_name: Cisco Packet Tracer Lab · বাংলা + English
+site_description: Bilingual Cisco labs and v4.0 two-branch ISP-test capstone; 35 English companions, 26 illustrated GIFs. No new verified .pkt.
+site_url: https://maksbloxx.github.io/Cisco-Packet-Tracer-Lab/
+repo_url: https://github.com/MaksBloxX/Cisco-Packet-Tracer-Lab
+repo_name: MaksBloxX/Cisco-Packet-Tracer-Lab
+edit_uri: edit/main/
+docs_dir: build/docs
+site_dir: build/site
+use_directory_urls: true
+copyright: Educational diagrams and GIFs are conceptual illustrations, not Packet Tracer recordings.
+
+# We stage the repository instead of duplicating maintained Markdown under docs/.
+theme:
+  name: material
+  language: bn
+  font: false
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - scheme: slate
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+
+plugins:
+  - search:
+      lang: en  # English stemming; Bengali words remain searchable as Unicode terms.
+      separator: '[\s\-\u0964]+'
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_css:
+  - portal/assets/css/portal.css
+extra_javascript:
+  - portal/assets/js/language.js
+
+nav:
+  - "🏠 শুরু": README.md
+  - "🇧🇩 বাংলা":
+      - "শেখার পথ": ROADMAP.md
+      - "মূল লেসন":
+          - "কোর্স সূচি": lessons/README.md
+          - "০১ · Router CLI": lessons/01-router-cli-basics.md
+          - "০২ · Static Routing": lessons/02-static-routing.md
+          - "০৩ · DHCP": lessons/03-dhcp.md
+          - "০৪ · DNS + HTTP": lessons/04-dns-http-server.md
+          - "০৫ · VLAN": lessons/05-vlan.md
+          - "০৬ · Trunk + ROAS": lessons/06-trunk-inter-vlan.md
+          - "০৭ · Switching": lessons/07-switching.md
+          - "০৮ · Office project": lessons/08-final-project.md
+          - "০৯ · Real hardware": lessons/09-real-hardware.md
+          - "১০ · Practice labs": lessons/10-practice-lab.md
+          - "১১ · Practice list": lessons/11-practice-list.md
+          - "১২ · Problem bank": lessons/12-problem-solve.md
+          - "১৩ · OSPF / RIP": lessons/13-dynamic-routing-ospf.md
+          - "১৪ · Wireless / WLC": lessons/14-wireless-lan.md
+          - "১৫ · SSH / NTP / Syslog": lessons/15-ssh-syslog-ntp.md
+          - "১৬ · Multilayer SVI": lessons/16-multilayer-switch-svi.md
+          - "১৭ · HSRP": lessons/17-hsrp-gateway-redundancy.md
+          - "১৮ · IPv6 / SLAAC": lessons/18-ipv6-slaac-routing.md
+      - "CCNA":
+          - "CCNA সূচি": ccna-fundamentals/README.md
+          - "০১ · Network basics": ccna-fundamentals/01-network-basics.md
+          - "০২ · OSI/TCP-IP": ccna-fundamentals/02-osi-tcp-ip.md
+          - "০৩ · MAC/ARP": ccna-fundamentals/03-mac-ethernet-arp.md
+          - "০৪ · IPv4": ccna-fundamentals/04-ipv4-addressing.md
+          - "০৫ · Subnetting": ccna-fundamentals/05-subnetting-basics.md
+          - "০৬ · VLSM": ccna-fundamentals/06-subnetting-vlsm.md
+          - "০৭ · ACL/NAT": ccna-fundamentals/07-acl-nat.md
+          - "০৮ · Troubleshooting": ccna-fundamentals/08-troubleshooting.md
+          - "০৯ · University capstone": ccna-fundamentals/09-capstone-university-lab.md
+      - "Extra Labs":
+          - "Extra সূচি": Extras/README.md
+          - "০১ · FTP": Extras/ftp-server-lab.md
+          - "০২ · Email": Extras/email-server-lab.md
+          - "০৩ · Printer": Extras/office-shared-printer-lab.md
+          - "০৪ · Subnet Tester": Extras/ip-subnet-tester-lab.md
+          - "০৫ · Topologies": Extras/network-topologies-lab.md
+          - "০৬ · Broken Lab": Extras/broken-labs-challenge.md
+          - "০৭ · VoIP": Extras/voip-ip-telephony-lab.md
+          - "০৮ · Snooping/DAI": Extras/dhcp-snooping-dai-lab.md
+  - "🌐 English":
+      - "English home": en/README.md
+      - "18 Practical Lessons":
+          - "Course map": en/lessons/README.md
+          - "01 · Router CLI": en/lessons/01-router-cli-basics.md
+          - "02 · Static routing": en/lessons/02-static-routing.md
+          - "03 · DHCP": en/lessons/03-dhcp.md
+          - "04 · DNS + HTTP": en/lessons/04-dns-http-server.md
+          - "05 · VLAN": en/lessons/05-vlan.md
+          - "06 · Trunk + ROAS": en/lessons/06-trunk-inter-vlan.md
+          - "07 · Switching": en/lessons/07-switching.md
+          - "08 · Office project": en/lessons/08-final-project.md
+          - "09 · Real hardware": en/lessons/09-real-hardware.md
+          - "10 · Practice labs": en/lessons/10-practice-lab.md
+          - "11 · Practice list": en/lessons/11-practice-list.md
+          - "12 · Problem bank": en/lessons/12-problem-solve.md
+          - "13 · OSPF / RIP": en/lessons/13-dynamic-routing-ospf.md
+          - "14 · Wireless / WLC": en/lessons/14-wireless-lan.md
+          - "15 · SSH / NTP / Syslog": en/lessons/15-ssh-syslog-ntp.md
+          - "16 · Multilayer SVI": en/lessons/16-multilayer-switch-svi.md
+          - "17 · HSRP": en/lessons/17-hsrp-gateway-redundancy.md
+          - "18 · IPv6 / SLAAC": en/lessons/18-ipv6-slaac-routing.md
+      - "9 CCNA Chapters":
+          - "Course map": en/ccna-fundamentals/README.md
+          - "01 · Network basics": en/ccna-fundamentals/01-network-basics.md
+          - "02 · OSI/TCP-IP": en/ccna-fundamentals/02-osi-tcp-ip.md
+          - "03 · MAC/ARP": en/ccna-fundamentals/03-mac-ethernet-arp.md
+          - "04 · IPv4": en/ccna-fundamentals/04-ipv4-addressing.md
+          - "05 · Subnetting": en/ccna-fundamentals/05-subnetting-basics.md
+          - "06 · VLSM": en/ccna-fundamentals/06-subnetting-vlsm.md
+          - "07 · ACL/NAT": en/ccna-fundamentals/07-acl-nat.md
+          - "08 · Troubleshooting": en/ccna-fundamentals/08-troubleshooting.md
+          - "09 · University capstone": en/ccna-fundamentals/09-capstone-university-lab.md
+      - "8 Extra Labs":
+          - "Lab map": en/Extras/README.md
+          - "01 · FTP": en/Extras/ftp-server-lab.md
+          - "02 · Email": en/Extras/email-server-lab.md
+          - "03 · Printer": en/Extras/office-shared-printer-lab.md
+          - "04 · Subnet Tester": en/Extras/ip-subnet-tester-lab.md
+          - "05 · Topologies": en/Extras/network-topologies-lab.md
+          - "06 · Broken Lab": en/Extras/broken-labs-challenge.md
+          - "07 · VoIP": en/Extras/voip-ip-telephony-lab.md
+          - "08 · Snooping/DAI": en/Extras/dhcp-snooping-dai-lab.md
+  - "🏆 v4.0 Capstone":
+      - "বাংলা · Build-along": capstone/README.md
+      - "English · Build-along": en/capstone/README.md
+      - "PT evidence worksheet (blank)": capstone/VERIFICATION.md
+      - "Create your own .pkt": pkt-files/capstone/README.md
+  - "🎞️ GIFs": GIF-CATALOG.md
+  - "📚 Resources":
+      - "Portal & publishing": PORTAL.md
+      - "SVG diagram gallery": assets/diagrams/README.md
+      - "CLI cheat sheet": reference/cli-command-cheatsheet.md
+      - "Books & diagrams": reference/README.md
+      - "Practical networking book": reference/MaksDev-Practical-Networking.md
+      - "OSI illustrated book": reference/OSI-Illustrated.md
+      - "Packet Tracer files": pkt-files/README.md
+      - "6 topology projects": pkt-files/topologies/README.md
+      - "Broken lab scripts": pkt-files/troubleshooting/README.md
+      - "Scripts & generators": scripts/README.md
+      - "Repository release notes": RENAME-MAP.md
+      - "Contribute": CONTRIBUTING.md

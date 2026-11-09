@@ -1,10 +1,18 @@
 # 🗺️ পূর্ণাঙ্গ রোডম্যাপ (Master Learning & Repository Roadmap)
 
-> **নেভিগেশন:** [🏠 রেপো হোম](README.md) · [📚 মূল লেসন (০১–১২)](lessons/README.md) · [🎓 CCNA Fundamentals (০১–০৯)](ccna-fundamentals/README.md) · [📦 Extra Labs](Extras/README.md) · [📚 বই ও চিট-শিট](reference/README.md) · [🛠️ স্ক্রিপ্টসমূহ](scripts/README.md)
+> **নেভিগেশন:** [🏠 রেপো হোম](README.md) · [🌐 English track](en/README.md) · [🎞️ GIF Catalog](GIF-CATALOG.md) · [🖥️ Portal](PORTAL.md) · [📚 মূল লেসন (০১–১৮)](lessons/README.md) · [🎓 CCNA Fundamentals (০১–০৯)](ccna-fundamentals/README.md) · [📦 Extra Labs](Extras/README.md) · [📚 বই ও চিট-শিট](reference/README.md) · [🛠️ স্ক্রিপ্টসমূহ](scripts/README.md)
 
 এই রোডম্যাপটি **দুটি প্রধান অংশে** সাজানো হয়েছে:
 1. **[Part A — 👨‍🎓 শিক্ষার্থীদের শেখার রোডম্যাপ](#student-roadmap):** শূন্য থেকে শুরু করে ৩০ দিনে পুরো নেটওয়ার্কিং ও Packet Tracer আয়ত্ত করার দৈনিক পরিকল্পনা + ৭ দিনের ভার্সিটি ল্যাব ফাইনাল ক্র্যাশ প্ল্যান।
 2. **[Part B — 🚀 রেপোজিটরি উন্নয়নের রোডম্যাপ](#repo-roadmap):** এই প্রজেক্টটিকে বাংলাদেশের সেরা ওপেন-সোর্স নেটওয়ার্কিং ল্যাব প্ল্যাটফর্মে পরিণত করার **Phase 1 → Phase 5** মাস্টার প্ল্যান।
+
+---
+
+### 🖼️ চিত্রে বোঝো: ৩০ দিনের শেখার ছয় ধাপ
+
+![৩০ দিনের শেখার ছয় ধাপ — প্রথম Ping থেকে শুরু করে VLAN, OSPF, Wi-Fi এবং Capstone পর্যন্ত ধাপে ধাপে এগোও।](assets/diagrams/roadmap-30-day.svg)
+
+> **ছবির সারকথা:** প্রথম Ping থেকে শুরু করে VLAN, OSPF, Wi-Fi এবং Capstone পর্যন্ত ধাপে ধাপে এগোও।
 
 ---
 
@@ -97,10 +105,12 @@
 
 | দিন | কী পড়বে / করবে | সংযুক্ত ফাইল / টুল | লক্ষ্য |
 | :---: | :--- | :--- | :--- |
-| **দিন ২২–২৩** | ACL ট্রাফিক ফিল্টারিং ও NAT/PAT ইন্টারনেট সংযোগ | [CCNA ০৭ · ACL ও NAT](ccna-fundamentals/07-acl-nat.md) | নির্দিষ্ট ট্রাফিক ব্লক ও PAT কনফিগ |
-| **দিন ২৪** | পদ্ধতিগত নেটওয়ার্ক ট্রাবলশুটিং (Bottom-Up) | [CCNA ০৮ · Troubleshooting](ccna-fundamentals/08-troubleshooting.md) + [লেসন ১২ (সব ৬টি কেস)](lessons/12-problem-solve.md) | যেকোনো ভাঙা ল্যাব ৫ মিনিটে ধরা |
-| **দিন ২৫** | বাস্তব Windows/Linux নেটওয়ার্কিং কমান্ড | [📘 Practical Networking: 30 Commands](reference/MaksDev-Practical-Networking.md) | নিজের পিসির টার্মিনালে অনুশীলন |
-| **দিন ২৬–২৭** | ১০টি সমাধানসহ প্র্যাকটিস ল্যাব | [লেসন ১০ · Practice Lab](lessons/10-practice-lab.md) | না দেখে ৬ Simple + ৪ Hard সমাধান |
+| **দিন ২২** | ডায়নামিক রাউটিং — RIPv2 ও Single-Area OSPF | [লেসন ১৩ · OSPF & RIPv2](lessons/13-dynamic-routing-ospf.md) | কেবল কেটে অটো Failover প্রমাণ |
+| **দিন ২৩** | হোম Wi-Fi ও এন্টারপ্রাইজ WLC + Lightweight AP | [লেসন ১৪ · Wireless LAN](lessons/14-wireless-lan.md) | `WRT300N` + `WLC-2504` সেটআপ |
+| **দিন ২৪** | SSH রিমোট লগইন, Hardening, NTP ও Syslog | [লেসন ১৫ · SSH, NTP & Syslog](lessons/15-ssh-syslog-ntp.md) + [CCNA ০৭ · ACL/NAT](ccna-fundamentals/07-acl-nat.md) | নিরাপদ নেটওয়ার্ক ও লগিং |
+| **দিন ২৫** | পদ্ধতিগত নেটওয়ার্ক ট্রাবলশুটিং ও গোয়েন্দা চ্যালেঞ্জ | [CCNA ০৮](ccna-fundamentals/08-troubleshooting.md) + [লেসন ১২ (৯টি কেস)](lessons/12-problem-solve.md) + [🔧 Broken Labs](Extras/broken-labs-challenge.md) | ৬টি ভাঙা নেটওয়ার্ক মেরামত |
+| **দিন ২৬** | বাস্তব Windows/Linux নেটওয়ার্কিং কমান্ড | [📘 Practical Networking: 30 Commands](reference/MaksDev-Practical-Networking.md) | নিজের পিসির টার্মিনালে অনুশীলন |
+| **দিন ২৭** | ১০টি সমাধানসহ প্র্যাকটিস ল্যাব | [লেসন ১০ · Practice Lab](lessons/10-practice-lab.md) | না দেখে ৬ Simple + ৪ Hard সমাধান |
 | **দিন ২৮–২৯** | ২০টি সমাধান ছাড়া চ্যালেঞ্জ (আসল পরীক্ষা!) | [লেসন ১১ · Practice List](lessons/11-practice-list.md) | টাইমার ধরে ৪৫ মিনিটে ল্যাব সম্পন্ন |
 | **দিন ৩০** | **🏆 গ্র্যান্ড ফিনালে — University Mega Capstone!** | [CCNA ০৯ · University Capstone](ccna-fundamentals/09-capstone-university-lab.md) | সম্পূর্ণ ক্যাম্পাস নেটওয়ার্ক জয়! 🎉 |
 
@@ -114,22 +124,40 @@
 * **Day 2:** [CCNA ০৫ (Subnetting)](ccna-fundamentals/05-subnetting-basics.md) + `python3 scripts/subnet_calculator.py --drill 10`।
 * **Day 3:** [লেসন ০৩ (DHCP)](lessons/03-dhcp.md) + [লেসন ০৪ (DNS + Web)](lessons/04-dns-http-server.md) একসাথে অনুশীলন।
 * **Day 4:** [লেসন ০৫ (VLAN)](lessons/05-vlan.md) + [লেসন ০৬ (Trunk + ROAS)](lessons/06-trunk-inter-vlan.md) হাতে-কলমে।
-* **Day 5:** [লেসন ০৭ (STP + Port Security + EtherChannel)](lessons/07-switching.md) + [🌐 FTP](Extras/ftp-server-lab.md) / [📧 Email](Extras/email-server-lab.md) ভাইভা প্রশ্ন।
+* **Day 5:** [লেসন ০৭ (STP + Port Security + EtherChannel)](lessons/07-switching.md) + [লেসন ১৩ (OSPF)](lessons/13-dynamic-routing-ospf.md) + [লেসন ১৫ (SSH/Syslog)](lessons/15-ssh-syslog-ntp.md)।
 * **Day 6:** [লেসন ০৮ (Final Project)](lessons/08-final-project.md) না দেখে ৪৫ মিনিটে সম্পন্ন করা + [লেসন ০৯ (Real Hardware ছবি)](lessons/09-real-hardware.md) দেখা।
 * **Day 7:** [📖 CLI Cheat-Sheet](reference/cli-command-cheatsheet.md) + [লেসন ১২ (Problem Solve)](lessons/12-problem-solve.md) রিভিশন!
 
 ---
 
-## 🎯 ৪. Cisco CCNA (200-301) সিলেবাস কাভারেজ ম্যাপ
+### ⭐ ৩০ দিনের মূল কোর্সের পরে ঐচ্ছিক ৫ দিনের Phase 3 অ্যাডভান্সড ট্র্যাক
 
-| CCNA 200-301 অফিসিয়াল ডোমেইন | পরীক্ষার গুরুত্ব | এই রেপোতে বর্তমান কাভারেজ | কোথায় আছে / পরবর্তী ধাপ |
-| :--- | :---: | :---: | :--- |
-| **1.0 Network Fundamentals** | 20% | ✅ **৯০% প্রস্তুত** | CCNA ০১–০৬, লেসন ০১, ০৯, Topologies Lab *(বাকি: IPv6)* |
-| **2.0 Network Access (Switching/VLAN/WLAN)** | 20% | ✅ **৮০% প্রস্তুত** | লেসন ০৫–০৭ (VLAN, Trunk, STP, EtherChannel) *(বাকি: WLC Wireless)* |
-| **3.0 IP Connectivity (Routing)** | 25% | 🟡 **৫৫% প্রস্তুত** | লেসন ০২, ০৬ (Static, ROAS), Cheat-Sheet *(পরবর্তী: OSPF পূর্ণ ল্যাব, FHRP)* |
-| **4.0 IP Services (DHCP/DNS/NAT/NTP/Syslog)** | 10% | ✅ **৮০% প্রস্তুত** | লেসন ০৩–০৪, CCNA ০৭, FTP/Email Labs *(বাকি: NTP, Syslog, SNMP ল্যাব)* |
-| **5.0 Security Fundamentals** | 15% | ✅ **৭০% প্রস্তুত** | লেসন ০৭ (Port Security), CCNA ০৭ (ACL), Cheat-Sheet SSH *(বাকি: DHCP Snooping, DAI)* |
-| **6.0 Automation & Programmability** | 10% | 🟡 **৪০% প্রস্তুত** | `scripts/` Python নেটওয়ার্ক অটোমেশন টুলস *(বাকি: REST API, JSON/YAML তত্ত্ব)* |
+| অতিরিক্ত দিন | ছবি দেখে নিজে বানাবে | যা প্রমাণ/সীমা লিখবে |
+| :---: | :--- | :--- |
+| **৩১** | [লেসন ১৬ · 3560 SVI](lessons/16-multilayer-switch-svi.md) | `show ip route`-এ VLAN10/20 এবং cross-VLAN ping |
+| **৩২** | [লেসন ১৭ · HSRP](lessons/17-hsrp-gateway-redundancy.md) | R1 OFF → R2 Active; VIP না বদলে R3 loopback ping (real Internet নয়) |
+| **৩৩** | [লেসন ১৮ · IPv6 + SLAAC](lessons/18-ipv6-slaac-routing.md) | Static stage-এর `S` route, পরে OSPFv3-র `O` route ও FULL neighbor |
+| **৩৪** | [Extra ০৭ · VoIP](Extras/voip-ip-telephony-lab.md) | DHCP option 150, দুই extension এবং Phone-to-Phone call |
+| **৩৫** | [Extra ০৮ · Snooping + DAI](Extras/dhcp-snooping-dai-lab.md) | বৈধ binding/rogue Offer test; **PT-তে DAI filtering নিশ্চিত নয়** |
+
+> এই পাঁচটি Phase 3 গাইডে ১০টি আসল লজিক্যাল SVG এবং build-along CLI আছে; প্রস্তুত `.pkt` নেই।
+>
+> **দিন ৩৫-এর পরে ঐচ্ছিক v4 চ্যালেঞ্জ:** [Mega ISP + Multi-Campus guide](capstone/README.md) দিয়ে HQ/২ branch/ISP-test নিজে তৈরি করো। [N01–N20 ও F01–F08](capstone/VERIFICATION.md)-এ *নিজের* PT ফল লিখে [নিজের `.pkt` সংরক্ষণ করো](pkt-files/capstone/README.md)। v4-এর আগে থেকে বানানো native project নেই।
+
+---
+
+## 🎯 ৪. Cisco CCNA (200-301) বিষয়ভিত্তিক কাভারেজ ম্যাপ *(v3.0)*
+
+| CCNA 200-301 ডোমেইন | পরীক্ষার গুরুত্ব | এই রেপোতে প্র্যাকটিসের সূত্র | কী এখনো যাচাই/শিখতে হবে |
+| :--- | :---: | :--- | :--- |
+| **1.0 Network Fundamentals** | 20% | [CCNA ০১–০৬](ccna-fundamentals/README.md), [IPv6/SLAAC লেসন ১৮](lessons/18-ipv6-slaac-routing.md), হার্ডওয়্যার ০৯ | বর্তমান exam topics মিলিয়ে theory পুনরাবৃত্তি |
+| **2.0 Network Access** | 20% | VLAN/STP/Trunk ০৫–০৭, [WLC ১৪](lessons/14-wireless-lan.md), [3560 SVI ১৬](lessons/16-multilayer-switch-svi.md) | বিভিন্ন model-এর port/IOS support যাচাই |
+| **3.0 IP Connectivity** | 25% | [Static ০২](lessons/02-static-routing.md), [OSPFv2 ১৩](lessons/13-dynamic-routing-ospf.md), [HSRP ১৭](lessons/17-hsrp-gateway-redundancy.md), [IPv6 Route ১৮](lessons/18-ipv6-slaac-routing.md) | failover ও return route নিজে test |
+| **4.0 IP Services** | 10% | DHCP/DNS ০৩–০৪, NAT/ACL, [NTP/Syslog ১৫](lessons/15-ssh-syslog-ntp.md), [VoIP ০৭](Extras/voip-ip-telephony-lab.md) *অতিরিক্ত অনুশীলন* | সব সার্ভিস ও Cisco blueprint এক নয় |
+| **5.0 Security Fundamentals** | 15% | Port Security ০৭, SSH ১৫, [DHCP Snooping + DAI ০৮](Extras/dhcp-snooping-dai-lab.md) | **PT-তে DAI filtering অনিশ্চিত**; real IOS policy আলাদা verify |
+| **6.0 Automation & Programmability** | 10% | [`scripts/`-এ ১৯টি IOS preset](scripts/README.md) ও অন্যান্য Python helper | REST/JSON/controller theory আলাদাভাবে পড়তে হবে |
+
+> এই সূচি **পূর্ণ সিলেবাস কভারেজের শতকরা দাবি নয়**। পরীক্ষার আগে [Cisco-এর বর্তমান CCNA 200-301 exam topics](https://learningcontent.cisco.com/documents/marketing/exam-topics/200-301-CCNA-v1.1.pdf) দেখে নাও।
 
 ---
 
@@ -154,38 +182,55 @@
 
 ---
 
-## 🔜 Phase 2 — v2.5: Dynamic Routing, Wireless ও Broken `.pkt` প্যাক *(স্বল্পমেয়াদি লক্ষ্য)*
+## ✅ Phase 2 — v2.5: Dynamic Routing, Wireless ও Broken Troubleshooting প্যাক *(সম্পন্ন!)*
 
-| আইটেম | প্রস্তাবিত ফাইল | কী যোগ হবে |
-| :--- | :--- | :--- |
-| **লেসন ১৩ · Dynamic Routing (RIPv2 & OSPFv2)** | `lessons/13-dynamic-routing-ospf.md` + `.pkt` | ৩টি রাউটারে `router ospf 1`, Wildcard Mask, Router-ID, `show ip ospf neighbor` ও লিংক ফেলওভার পরীক্ষা |
-| **লেসন ১৪ · Wireless LAN ও Enterprise WLC** | `lessons/14-wireless-lan.md` + `.pkt` | Home Wireless Router (WPA2-PSK) বনাম Cisco WLC-2504 + Lightweight AP কনফিগারেশন |
-| **লেসন ১৫ · SSH, Device Hardening ও Syslog/NTP** | `lessons/15-ssh-syslog-ntp.md` + `.pkt` | Telnet বন্ধ করে RSA/SSH রিমোট লগইন, পাসওয়ার্ড এনক্রিপশন, NTP ঘড়ি সিঙ্ক ও Syslog সার্ভারে লগ সংগ্রহ |
-| **Broken `.pkt` Troubleshooting Pack** | `pkt-files/troubleshooting/broken-01..06.pkt` | ইচ্ছাকৃতভাবে ভুল করা ৬টি `.pkt` ফাইল — শিক্ষার্থী ডাউনলোড করে `lessons/12-problem-solve.md`-এর সমস্যাগুলো নিজে ঠিক করবে! |
-
----
-
-## 🏗️ Phase 3 — v3.0: Enterprise Layer-3, Redundancy ও IPv6 *(মধ্যমেয়াদি লক্ষ্য)*
-
-- [ ] **লেসন ১৬ · Multilayer Switch (L3 SVI Routing):** Cisco `3560/3650` সুইচে `ip routing` ও `interface vlan 10/20` দিয়ে রাউটার ছাড়াই দ্রুতগতির Inter-VLAN Routing
-- [ ] **লেসন ১৭ · Gateway Redundancy (HSRP):** দুটি রাউটারে `standby 1 ip` দিয়ে Virtual Gateway তৈরি — মূল রাউটার বন্ধ হলেও ইন্টারনেট কাটবে না!
-- [ ] **লেসন ১৮ · IPv6 Addressing & Routing Lab:** `2001:db8::/64`, Link-Local (`fe80::`), SLAAC অটো-কনফিগারেশন ও IPv6 Static/OSPFv3 পিং ল্যাব
-- [ ] **Extra Lab ০৬ · VoIP IP Telephony:** Cisco `2811` রাউটারে `telephony-service` + সুইচে `switchport voice vlan` + দুটি `7960 IP Phone`-এ রিং বাজানো!
-- [ ] **Extra Lab ০৭ · Layer-2 Security:** `DHCP Snooping` + `Dynamic ARP Inspection (DAI)` দিয়ে Man-in-the-Middle আক্রমণ প্রতিরোধ
+- [x] **[লেসন ১৩ · Dynamic Routing (RIPv2 & OSPFv2)](lessons/13-dynamic-routing-ospf.md):** ৩টি রাউটারের ত্রিভুজ টপোলজিতে `router ospf 1`, Wildcard Mask, `router-id`, `passive-interface` ও কেবল কেটে স্বয়ংক্রিয় লিংক Failover পরীক্ষা
+- [x] **[লেসন ১৪ · Wireless LAN ও Enterprise WLC](lessons/14-wireless-lan.md):** Home Wireless Router (`WRT300N`, WPA2-PSK) এবং কর্পোরেট `Cisco WLC-2504` + `LAP-PT` (`CAPWAP`) কনফিগারেশন
+- [x] **[লেসন ১৫ · SSH, Device Hardening ও Syslog/NTP](lessons/15-ssh-syslog-ntp.md):** Telnet বন্ধ করে RSA 2048 / SSHv2 রিমোট লগইন, পাসওয়ার্ড এনক্রিপশন, NTP ঘড়ি সিঙ্ক ও Syslog সার্ভারে লগ সংগ্রহ
+- [x] **[🔧 Broken Network Detective Challenge](Extras/broken-labs-challenge.md) + [`.ios` Fault Scripts](pkt-files/troubleshooting/README.md):** ইচ্ছাকৃতভাবে ভুল করা ৬টি কনফিগারেশন ও গোয়েন্দা ট্রাবলশুটিং চ্যালেঞ্জ
+- [x] **[লেসন ১২ · Problem Bank আপগ্রেড](lessons/12-problem-solve.md):** OSPF Neighbor মিসিং, SSH RSA এরর এবং Laptop Wi-Fi মডিউল পাওয়ার এররসহ মোট **৯টি বাস্তব কেস**
+- [x] **`scripts/` v2.5 আপগ্রেড:** `ios_config_generator.py`-এ `ospf`, `ripv2`, `ssh-hardening`, `broken-lab` সহ মোট ১২টি প্রিসেট এবং `quiz_trainer.py`-এ ৭৭টি কুইজ + ১৫টি ফ্ল্যাশকার্ড!
 
 ---
 
-## 🌐 Phase 4 — v3.5: সার্চেবল ওয়েব পোর্টাল, অ্যানিমেশন ও দ্বিভাষিক সংস্করণ *(দীর্ঘমেয়াদি লক্ষ্য)*
+## ✅ Visual Release — v2.6: প্রতিটি গাইডে শিক্ষামূলক ছবি *(সম্পন্ন!)*
 
-- [ ] **GitHub Pages ওয়েবসাইট (MkDocs Material):** পুরো রেপোটিকে একটি সুন্দর ও দ্রুত ওয়েবসাইটে প্রকাশ করা — যেখানে থাকবে Dark/Light Mode, বাংলা+ইংরেজি ইনস্ট্যান্ট সার্চ বার এবং প্রতিটি কমান্ড বক্সে ১-ক্লিক `Copy` বাটন!
-- [ ] **৩০-সেকেন্ডের GIF / Video Walkthrough:** প্রতিটি ল্যাবের টপোলজি ও ভেরিফিকেশনের সংক্ষিপ্ত স্ক্রিন-রেকর্ডিং বা অ্যানিমেটেড GIF
-- [ ] **English Parallel Track (`en/`):** আন্তর্জাতিক শিক্ষার্থীদের জন্য প্রতিটি লেসনের ইংরেজি অনুবাদ
+- [x] রিপোর **৪৪/৪৪ Markdown** ফাইলে প্রাসঙ্গিক লোকাল SVG/ছবি ও বাংলা alt text/সারাংশ যোগ করা; আগের GIF/হার্ডওয়্যার ছবি ও OSI বইয়ের ৬টি SVG রেখে দেওয়া।
+- [x] [৪৬টি নতুন, নিজস্ব SVG ডায়াগ্রাম](assets/diagrams/README.md) — আসল লেসনের IP/পোর্ট অনুযায়ী DHCP DORA, VLAN/Trunk/ROAS, Subnetting, OSPF Failover, Home Wi-Fi/WLC, FTP/Email, STP এবং ৬টি টপোলজি আঁকা। কোনো বাহ্যিক image CDN লাগে না।
+- [x] [`diagram_generator.py`](scripts/diagram_generator.py) দিয়ে ছবি পুনর্নির্মাণ ও `--check`; [`repo_doctor.py --strict`](scripts/README.md) দিয়ে প্রতিটি `.md`-র সত্যিকারের লোকাল ছবির ফরম্যাট ও লিংক যাচাই; GitHub Actions-এ দুটোই যোগ করা।
+- [x] প্রতিটি ডায়াগ্রামে English টেকনিক্যাল লেবেল ও Markdown-এ বাংলা ব্যাখ্যা; এগুলো শিক্ষামূলক লজিক্যাল চিত্র, Packet Tracer-এর screenshot নয়।
 
 ---
 
-## 🏆 Phase 5 — v4.0: Mega ISP & Multi-Campus Enterprise Capstone
+## ✅ Phase 3 — v3.0: Enterprise Layer-3, Redundancy ও IPv6 *(ছবিসহ গাইড সম্পন্ন)*
 
-- [ ] **মাস্টার প্রজেক্ট:** ২টি শাখা অফিস + ১টি হেড অফিস + ১টি ISP ক্লাউড + DMZ সার্ভার ফার্ম (`Web + DNS + Email + FTP`) + `OSPF` + `HSRP` + `VoIP` + `Wi-Fi` + `PAT` + `Extended ACL` — একটি সম্পূর্ণ বাস্তব কোম্পানির সমতুল্য নেটওয়ার্ক সিমুলেশন!
+- [x] **[লেসন ১৬ · Multilayer Switch SVI](lessons/16-multilayer-switch-svi.md):** 3560-এ VLAN 10/20, `interface vlan`, `ip routing`, দুদিকের ping, সমস্যা সমাধান ও **২টি নিজস্ব SVG**।
+- [x] **[লেসন ১৭ · Gateway Redundancy HSRP](lessons/17-hsrp-gateway-redundancy.md):** R1/R2-তে `standby 1 ip` virtual gateway, R3-তে দুইটি upstream return path, R1 সম্পূর্ণ OFF করে test target-এ failover পিং; **২টি SVG**। এটি প্রকৃত Internet সংযোগ নয়।
+- [x] **[লেসন ১৮ · IPv6, SLAAC, Static ও OSPFv3](lessons/18-ipv6-slaac-routing.md):** `2001:db8:10::/64`, `12::/64`, `20::/64`, `fe80::` link-local, RA/SLAAC, দুদিকের static route এবং static সরিয়ে আলাদা OSPFv3 stage; **২টি SVG**।
+- [x] **[Extra ০৭ · VoIP IP Telephony](Extras/voip-ip-telephony-lab.md):** 2811 CME, `switchport voice vlan 20`, DHCP option 150, দুই 7960-তে `1001↔1002` dial-এর *build-along* পদ্ধতি; **২টি SVG**।
+- [x] **[Extra ০৮ · DHCP Snooping + DAI](Extras/dhcp-snooping-dai-lab.md):** trusted server port, rogue DHCP Offer, binding ও DAI-এর IOS policy; **২টি SVG**। **Packet Tracer-এ DAI traffic filtering কাজ নাও করতে পারে—সুরক্ষা বাস্তবে প্রমাণিত দাবি নয়।**
+- [x] **টুল ও মান যাচাই:** IOS generator-এ ৭টি নতুন device-scoped preset (মোট ১৯), practical quiz-এ ৯টি MCQ (মোট ৮৬), ৭টি flashcard (মোট ২২), নতুন ডায়াগ্রামের `--check` ও `repo_doctor.py --strict`।
+
+> **ভিত্তি বনাম ফল:** এই ফেজের ৫টি নতুন গাইডে *মোট ১০টি মূল টপোলজি/ধারণা SVG* ও উদাহরণ CLI আছে; এগুলো শিক্ষামূলক চিত্র, **Packet Tracer screenshot নয়**। নতুন লেসন ১৬–১৮ / Extra ০৭–০৮-এর **কোনো native `.pkt`** এই রেপোতে যোগ হয়নি। বিশেষত VoIP মডেল ও DAI enforcement ব্যবহারকারীর PT সংস্করণে যাচাই করতে হবে।
+
+---
+
+## 🌐 Phase 4 — v3.5: সার্চেবল ওয়েব পোর্টাল, GIF ও দ্বিভাষিক ট্র্যাক *(লোকাল রিলিজ; Pages প্রকাশ বাকি)*
+
+- [x] **[MkDocs Material সাইট](PORTAL.md) লোকালি প্রস্তুত:** ৯২টি Markdown page; light/dark toggle, বাংলা+English corpus-এ client-side search, code block-এ ১-ক্লিক Copy, mobile navigation; `mkdocs build --strict` এবং Pages-ready workflow। বাংলা শব্দ exact Unicode term হিসেবে index হয়, English stemming সমর্থিত।
+- [ ] **GitHub Pages-এ live প্রকাশ ও URL যাচাই:** এই workspace থেকে GitHub-এ push/Pages Settings পরিবর্তন করা হয়নি; maintainer-কে main push করে Settings → Pages → GitHub Actions চালু করতে হবে। Site ready মানেই live নয়।
+- [x] **[২৬টি ৩০-সেকেন্ডের GIF](GIF-CATALOG.md):** ১৮টি practical + ৮টি Extra-তে প্রতিটিতে নিজস্ব মূল SVG-ভিত্তিক ছয়-ধাপের অ্যানিমেটেড ইনফোগ্রাফিক; topic **GIF search name** ও P1/P2 গুরুত্ব দেওয়া। এগুলো **Packet Tracer screen recording বা verified traffic result নয়**। চাইলে ব্যবহারকারী পরে নিজস্ব/অনুমতিপ্রাপ্ত GIF upload করতে পারবেন।
+- [x] **[English parallel track (`en/`)](en/README.md):** ১৮ practical + ৯ CCNA + ৮ Extra = **৩৫টি English adaptation**, চারটি English index, মূল গাইডের সাথে দুদিকের link এবং ছবিসহ steps/verification।
+- [ ] **শব্দে-শব্দে পূর্ণ অনুবাদ/সম্পূর্ণ quiz bank:** বাংলা দীর্ঘ লেখার প্রত্যেক অনুচ্ছেদ, ৮৬টি quiz বা প্রতিটি টেবিল এখনো আক্ষরিকভাবে English-এ রূপান্তরিত নয়; English pages বিষয়ভিত্তিক স্বতন্ত্র companion।
+
+---
+
+## 🏆 Phase 5 — v4.0: Mega ISP & Multi-Campus Enterprise Capstone *(build-along প্রস্তুত; PT রান বাকি)*
+
+- [x] **[দুই branch + HQ + ISP-test master build-along](capstone/README.md):** চারটি স্বাধীন private /30 serial WAN, HQ-তে দুই HSRP gateway ও আলাদা VLAN 10/20/40/99, BR1 data/optional voice, BR2 data/bridged Wi-Fi; ISP-তে দুটি *পৃথক* documentation-range link। এটি বাস্তব ISP/Internet বা সত্যিকারের enterprise deployment নয়।
+- [x] **[DMZ Web/DNS/Email/FTP](capstone/README.md) + OSPF/HSRP/VoIP/Wi-Fi/PAT/Extended ACL-এর অনুশীলন:** চারটি আলাদা Server-PT, 2811 CME + HQ phones, WRT300N LAN bridge, branch ACLs, প্রত্যেক HQ-র নিজের outside IP-তে TCP/80 WEB mapping। `ip nat` ও ACL rule বাস্তবে কাজ করেছে—এমন দাবি নয়।
+- [x] **পুনর্গঠনযোগ্য ও দ্বিভাষিক নির্মাণসামগ্রী:** [`plan.json`](capstone/plan.json), [৯টি device-wise config text](capstone/README.md), [২টি ধারণামূলক SVG](assets/diagrams/README.md), [English build guide](en/capstone/README.md), [N01–N20/F01–F08 খালি evidence log](capstone/VERIFICATION.md) ও [নিজের `.pkt` বানানোর নিয়ম](pkt-files/capstone/README.md)। [`capstone_config_generator.py --check`](scripts/capstone_config_generator.py) ও offline tests-এর কাজ কেবল plan/config/media consistency যাচাই।
+- [ ] **Native Packet Tracer `.pkt` এবং প্রকৃত verification:** এই workspace-এ PT নেই; **নতুন `.pkt` তৈরি বা OSPF/HSRP/CME/ACL/PAT/ফেলওভার চালিয়ে দেখা হয়নি**। পাঠক নিজের PT-তে build করে actual results লিখে চাইলে সত্যিকার `.pkt` অবদান রাখতে পারবেন। সরবরাহ করা expected tests-কে observed result ধরে নেবে না।
 
 ---
 
@@ -194,13 +239,15 @@
 নতুন কোনো ফেজের কাজ শুরু করতে আর শূন্য থেকে ফাইল সাজাতে হবে না! টার্মিনালে চালাও:
 
 ```bash
-# ১. নতুন লেসনের রেডিমেড বাংলা মার্কডাউন ফাইল তৈরি করো
-python3 scripts/lab_writer.py lesson --num 13 --slug dynamic-routing-ospf \
-    --title "Dynamic Routing — RIPv2 ও Single-Area OSPF" --level "🟠 Intermediate"
+# ১. পরবর্তী নতুন লেসনের বাংলা খসড়া তৈরি করো (উদাহরণ: নম্বর ১৯)
+python3 scripts/lab_writer.py lesson --num 19 --slug campus-backup \
+    --title "Campus Backup Routing" --level "🔴 Advanced"
 
-# ২. ফাইলটি সম্পাদনা করো এবং pkt-files/labs/lesson-13-dynamic-routing-ospf.pkt যোগ করো
+# ২. Markdown-এ উপযুক্ত লোকাল ছবি ও বাস্তব IP/CLI যাচাই যোগ করো।
+# Packet Tracer-এ প্রকৃত .pkt বানালে তবেই pkt-files/labs/-এ যোগ করে লিংক দাও।
 
-# ৩. পুশ করার আগে সব লিংক ও ফরম্যাট অটোমেটিক পরীক্ষা করে নাও!
+# ৩. পুশের আগে সব ডায়াগ্রাম ও লিংক অটোমেটিক পরীক্ষা করো!
+python3 scripts/diagram_generator.py --check
 python3 scripts/repo_doctor.py --strict
 ```
 

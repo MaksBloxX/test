@@ -17,6 +17,14 @@
 
 ---
 
+### 🖼️ চিত্রে বোঝো: পুরনো নাম থেকে নতুন ফোল্ডারে
+
+![পুরনো নাম থেকে নতুন ফোল্ডারে — আগের এলোমেলো `.md`/`.pkt` ফাইলগুলো এখন `lessons/` ও `pkt-files/`-এ গুছানো।](assets/diagrams/rename-map.svg)
+
+> **ছবির সারকথা:** আগের এলোমেলো `.md`/`.pkt` ফাইলগুলো এখন `lessons/` ও `pkt-files/`-এ গুছানো।
+
+---
+
 ## 📝 Markdown ফাইল (লেসন)
 
 | পুরনো নাম (root-এ) | নতুন নাম | নোট |
@@ -121,4 +129,67 @@
 
 ---
 
-> **নেভিগেশন:** [🏠 হোম](README.md) · [🗺️ রোডম্যাপ](ROADMAP.md) · [🛠️ স্ক্রিপ্ট গাইড](scripts/README.md)
+## 🔥 v2.5 কোর CCNA এক্সপানশন লগ (নতুন সংযোজনসমূহ)
+
+| নতুন ফাইল / আপডেট | কাজ ও বিবরণ |
+| :--- | :--- |
+| [`lessons/13-dynamic-routing-ospf.md`](lessons/13-dynamic-routing-ospf.md) | RIPv2 এবং ৩-রাউটার Single-Area OSPFv2 (`Area 0`, Wildcard Mask ও অটো Failover ল্যাব + কুইজ) |
+| [`lessons/14-wireless-lan.md`](lessons/14-wireless-lan.md) | Home Wi-Fi (`WRT300N`) এবং Enterprise `Cisco WLC-2504` + `LAP-PT` (`CAPWAP`) ল্যাব + কুইজ |
+| [`lessons/15-ssh-syslog-ntp.md`](lessons/15-ssh-syslog-ntp.md) | SSHv2 (`RSA 2048`), Device Hardening, NTP ঘড়ি সিঙ্ক ও কেন্দ্রীয় Syslog সার্ভার ল্যাব + কুইজ |
+| [`Extras/broken-labs-challenge.md`](Extras/broken-labs-challenge.md) | ৬টি ভাঙা নেটওয়ার্ক মেরামতের গোয়েন্দা চ্যালেঞ্জ (*Broken Network Detective Challenge*) |
+| [`pkt-files/troubleshooting/`](pkt-files/troubleshooting/README.md) | ৬টি কপি-পেস্ট ফল্ট ইনজেকশন স্ক্রিপ্ট (`broken-01` থেকে `broken-06.ios`) |
+| [`lessons/12-problem-solve.md`](lessons/12-problem-solve.md) | Problem ০৭ (OSPF Neighbor), ০৮ (SSH RSA), ও ০৯ (Laptop Wi-Fi পাওয়ার ট্রিক) সংযোজন |
+| [`scripts/ios_config_generator.py`](scripts/ios_config_generator.py) | `ospf`, `ripv2`, `ssh-hardening`, `broken-lab` সহ মোট ১২টি IOS প্রিসেটে উন্নীত |
+| [`scripts/quiz_trainer.py`](scripts/quiz_trainer.py) | CCNA + Practical মিলিয়ে মোট **৭৭টি কুইজ** ও **১৫টি CLI ফ্ল্যাশকার্ডে** উন্নীত |
+
+---
+
+## 🖼️ v2.6 ভিজ্যুয়াল আপডেট লগ
+
+| নতুন ফাইল / পরিবর্তন | কী সহজ হলো |
+| :--- | :--- |
+| [`assets/diagrams/`](assets/diagrams/README.md) | প্রতিটি গাইডের জন্য মোট **৪৬টি নিজস্ব SVG** টপোলজি, প্যাকেট ফ্লো, সাবনেটিং ও শেখার পথের ছবি; সব ৪৪টি `.md`-তে প্রাসঙ্গিক লোকাল ছবি আছে |
+| [`scripts/diagram_generator.py`](scripts/diagram_generator.py) | থার্ড-পার্টি প্যাকেজ ছাড়া ডায়াগ্রাম তৈরি; `--check` দিয়ে source ও SVG মিলিয়ে দেখো |
+| [`scripts/repo_doctor.py`](scripts/repo_doctor.py) | ভাঙা ছবির লিংক, ফাইল ফরম্যাট ও **44/44 Markdown** ভিজ্যুয়াল কভারেজ যাচাই |
+| [`.github/workflows/repo-check.yml`](https://github.com/MaksBloxX/Cisco-Packet-Tracer-Lab/blob/main/.github/workflows/repo-check.yml) | Pull Request-এ ডায়াগ্রাম ও Markdown ছবির অটোমেটিক স্বাস্থ্য পরীক্ষা |
+
+---
+
+## 🌐 v3.0 Phase 3 আপডেট লগ
+
+| নতুন ফাইল / পরিবর্তন | কী যোগ হলো |
+| :--- | :--- |
+| [লেসন ১৬ · L3 SVI](lessons/16-multilayer-switch-svi.md) · [লেসন ১৭ · HSRP](lessons/17-hsrp-gateway-redundancy.md) · [লেসন ১৮ · IPv6](lessons/18-ipv6-slaac-routing.md) | তিনটি ছবিসহ build-along; SVI routing, HSRP remote-target failover, SLAAC, static→OSPFv3 |
+| [Extra ০৭ · VoIP](Extras/voip-ip-telephony-lab.md) · [Extra ০৮ · DHCP Snooping/DAI](Extras/dhcp-snooping-dai-lab.md) | 2811/7960 ফোন এবং DHCP trust/binding/DAI policy; Packet Tracer-এর DAI limitation স্পষ্ট |
+| [`assets/diagrams/`](assets/diagrams/README.md) | Phase 3-তে ১০টি মূল নতুন SVG; সর্বমোট **৫৬টি**, **৪৯/৪৯ Markdown**-এ ছবি |
+| [`scripts/ios_config_generator.py`](scripts/ios_config_generator.py) · [`scripts/quiz_trainer.py`](scripts/quiz_trainer.py) | **১৯টি** IOS preset (নতুন ৭টি device-scoped), **৮৬টি** প্রশ্ন ও **২২টি** CLI flashcard |
+| [`pkt-files/README.md`](pkt-files/README.md) | বিদ্যমান ১৮টি `.pkt` অপরিবর্তিত—Phase 3-এর `.pkt` বা সত্যিকারের PT screenshot তৈরি/দাবি করা হয়নি |
+
+---
+
+## 🎞️ v3.5 Phase 4 · English/GIF/Portal আপডেট লগ
+
+| পরিবর্তন | অবস্থা ও সীমা |
+| :--- | :--- |
+| [English track](en/README.md) | ১৮ practical + ৯ CCNA + ৮ Extra = **৩৫টি বিষয়ভিত্তিক English adaptation** ও চারটি English index; মূল দীর্ঘ বাংলা লেখা/৮৬টি quiz-এর শব্দে-শব্দে অনুবাদ নয় |
+| [GIF Catalog](GIF-CATALOG.md) · [`assets/gifs/`](assets/gifs/manifest.json) | **২৬টি নিজস্ব ৩০-সেকেন্ড GIF**, source hash/frame/duration manifest, topic GIF search name এবং P1/P2 গুরুত্ব; **আসল PT screen recording নয়** |
+| [MkDocs Material Portal](PORTAL.md) · [`mkdocs.yml`](mkdocs.yml) | **৯২টি Markdown page**, dark/light, bilingual search index, code-copy ও GitHub Pages-ready workflow; **live প্রকাশ/push বাকি** |
+| [`assets/diagrams/README.md`](assets/diagrams/README.md) · [`pkt-files/topologies/README.md`](pkt-files/topologies/README.md) | Browseable ৫৬টি SVG ও আগের ছয়টি `.pkt`-র index; নতুন `.pkt` তৈরি হয়নি |
+| [`scripts/english_track_generator.py`](scripts/english_track_generator.py) · [`scripts/gif_walkthrough_generator.py`](scripts/gif_walkthrough_generator.py) · [`scripts/portal_docs.py`](scripts/portal_docs.py) | মোট **৯টি Python script**; আগের ছয়টি standard-library-only, নতুন website/media tooling-এর ঐচ্ছিক docs dependency আছে |
+| [`tests/test_phase4.py`](tests/test_phase4.py) | English ৩৫টির parity, ২৬টি GIF-এর ৩০-সেকেন্ড timing/source, local navigation, portal-index ও coverage regression যাচাই; বাস্তব IOS/PT execution নয় |
+
+---
+
+## 🏆 v4.0 Phase 5 · Mega ISP & Multi-Campus build-along লগ
+
+| নতুন ফাইল / আপডেট | অবস্থা ও সীমা |
+| :--- | :--- |
+| [বাংলা build guide](capstone/README.md) · [English companion](en/capstone/README.md) | HQ + ২ branch + simulated ISP + চার সার্ভারের DMZ; চারটি private /30; OSPF, HSRP, CME/VoIP, Wi-Fi, PAT, extended ACL-সহ ধাপে ধাপে নিজে বানানোর নির্দেশ |
+| [`capstone/plan.json`](capstone/plan.json) · [`capstone/configs/`](capstone/README.md) | নয়টি role-specific IOS study snippet; static plan/command text **PT-তে execution-verified নয়** |
+| [`scripts/capstone_config_generator.py`](scripts/capstone_config_generator.py) · [SVG gallery](assets/diagrams/README.md) | `--write`/`--check`-এ plan validate, নয়টি config ও দুটি conceptual SVG; সর্বমোট ৫৮টি SVG |
+| [PT evidence worksheet](capstone/VERIFICATION.md) · [নিজের `.pkt` যোগ করার নিয়ম](pkt-files/capstone/README.md) | N01–N20 + F01–F08 Actual কলাম **খালি**, নতুন native `.pkt` নেই; আগের ১৮টি অপরিবর্তিত |
+| [Web portal](PORTAL.md) · [`tests/test_phase5.py`](tests/test_phase5.py) | ৯৬টি Markdown page, পৃথক capstone nav, CI offline regression; GitHub Pages live নয়, PT simulator এখানে চালানো হয়নি |
+
+---
+
+> **নেভিগেশন:** [🏠 হোম](README.md) · [🏆 v4 build-along](capstone/README.md) · [🌐 English track](en/README.md) · [🎞️ GIF catalog](GIF-CATALOG.md) · [🗺️ রোডম্যাপ](ROADMAP.md) · [🛠️ স্ক্রিপ্ট গাইড](scripts/README.md)
