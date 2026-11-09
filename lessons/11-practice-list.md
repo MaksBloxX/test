@@ -1,5 +1,7 @@
 # লেসন ১১ · Practice List — নিজে চেষ্টা করো (কোনো সমাধান নেই)
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/11-practice-list.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ১০](10-practice-lab.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [📖 Cheat-Sheet](../reference/cli-command-cheatsheet.md) · [পরের লেসন ১২ ➡](12-problem-solve.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 pkt ফাইল |
@@ -7,6 +9,19 @@
 | ২০টি Self-Practice টাস্ক — সমাধান ছাড়া, সম্পূর্ণ নিজে করবে | নিজের গতিতে | 🟢→🔴 | নিজে তৈরি করবে (`practice-list.pkt`) |
 
 **Tags:** `#practice` `#self-study` `#no-solution` `#exam-prep` `#homework`
+
+---
+
+### 🖼️ চিত্রে বোঝো: ২০টি অনুশীলন টাস্কের স্তর
+
+![২০টি অনুশীলন টাস্কের স্তর — Basic থেকে Timed Exam Simulation—প্রথমে ল্যাব নিজে বানিয়ে ফলাফল নোট করো।](../assets/diagrams/lesson-11-practice-levels.svg)
+
+> **ছবির সারকথা:** Basic থেকে Timed Exam Simulation—প্রথমে ল্যাব নিজে বানিয়ে ফলাফল নোট করো।
+
+![Practice ladder and checklist টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/11-practice-list.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

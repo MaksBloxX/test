@@ -1,5 +1,7 @@
 # 🧮 Extra Lab ০৪ · IP Subnet Tester Lab (হাতে-কলমে Subnetting প্রমাণ)
 
+> 🌐 **English:** [Read this guide in English](../en/Extras/ip-subnet-tester-lab.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ Shared Printer Lab](office-shared-printer-lab.md) · [📦 Extra Labs সূচি](README.md) · [🏠 হোম](../README.md) · [পরের ল্যাব: 6 Topologies ➡](network-topologies-lab.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | কাগজে করা Subnetting হিসাব (`/24`, `/26`, `/30`) Packet Tracer-এ সরাসরি Ping দিয়ে সত্যতা যাচাই করা | ~৩৫ মিনিট | 🟡 Intermediate | [`ip-subnet-tester.pkt`](../pkt-files/practice/ip-subnet-tester.pkt) |
 
 **Tags:** `#subnetting` `#subnet-tester` `#cidr` `#block-size` `#vlsm` `#hands-on-proof`
+
+---
+
+### 🖼️ চিত্রে বোঝো: এক সুইচে দুটো `/26` সাবনেট
+
+![এক সুইচে দুটো `/26` সাবনেট — একই সাবনেটের PC Ping পায়; ভিন্ন `/26` সাবনেটে Router ছাড়া Ping যাবে না।](../assets/diagrams/extra-subnet-tester.svg)
+
+> **ছবির সারকথা:** একই সাবনেটের PC Ping পায়; ভিন্ন `/26` সাবনেটে Router ছাড়া Ping যাবে না।
+
+![Subnet boundary tester টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/extra-04-ip-subnet-tester-lab.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

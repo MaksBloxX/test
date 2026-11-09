@@ -1,5 +1,7 @@
 # লেসন ০১ · Router CLI Basics ও প্রথম নেটওয়ার্ক ল্যাব
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/01-router-cli-basics.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · **লেসন ০১** · [পরের লেসন ০২ ➡](02-static-routing.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | Router CLI প্রম্পট, Mode, Basic Commands + প্রথম Ping Lab | ~৪৫ মিনিট | 🟢 Beginner | [lesson-01-router-cli-basics.pkt](../pkt-files/labs/lesson-01-router-cli-basics.pkt) |
 
 **Tags:** `#cli` `#router` `#basic-config` `#ip-addressing` `#ping` `#first-lab`
+
+---
+
+### 🖼️ চিত্রে বোঝো: প্রথম LAN-এর ডিভাইস ও IP
+
+![প্রথম LAN-এর ডিভাইস ও IP — PC0 থেকে PC1-এ একই সাবনেটের Ping সুইচ দিয়েই যায়; অন্য নেটওয়ার্কে যাওয়ার গেটওয়ে R1।](../assets/diagrams/lesson-01-first-ping.svg)
+
+> **ছবির সারকথা:** PC0 থেকে PC1-এ একই সাবনেটের Ping সুইচ দিয়েই যায়; অন্য নেটওয়ার্কে যাওয়ার গেটওয়ে R1।
+
+![Router CLI and your first ping টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/01-router-cli-basics.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

@@ -1,5 +1,7 @@
 # লেসন ০৯ · বাস্তব নেটওয়ার্ক হার্ডওয়্যার পরিচিতি (Real Hardware Guide)
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/09-real-hardware.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০৮](08-final-project.md) · [🏠 হোম](../README.md) · [পরের লেসন ১০ ➡](10-practice-lab.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 pkt ফাইল |
@@ -7,6 +9,19 @@
 | Packet Tracer-এর প্রতিটি ডিভাইস/কেবল বাস্তবে কেমন দেখায় — আসল ছবি দিয়ে পরিচয় | ~২৫ মিনিট | 🟢 সবার জন্য | নেই (শুধু দেখার লেসন) |
 
 **Tags:** `#hardware` `#real-device` `#cable` `#rj45` `#pairs` `#hub` `#sfp` `#rack` `#console-cable`
+
+---
+
+### 🖼️ চিত্রে বোঝো: Packet Tracer থেকে বাস্তব হার্ডওয়্যার
+
+![Packet Tracer থেকে বাস্তব হার্ডওয়্যার — Router, Switch ও Cable/Optics-এর কাজ বুঝে নিচের আসল ছবিগুলো মিলিয়ে দেখো।](../assets/diagrams/lesson-09-hardware-chain.svg)
+
+> **ছবির সারকথা:** Router, Switch ও Cable/Optics-এর কাজ বুঝে নিচের আসল ছবিগুলো মিলিয়ে দেখো।
+
+![Physical network hardware টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/09-real-hardware.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

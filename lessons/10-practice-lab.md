@@ -1,5 +1,7 @@
 # লেসন ১০ · Practice Lab — ৬০% Simple + ৪০% Hard (সমাধানসহ)
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/10-practice-lab.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০৯](09-real-hardware.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [পরের লেসন ১১ ➡](11-practice-list.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 pkt ফাইল |
@@ -7,6 +9,19 @@
 | ১০টি ল্যাব টাস্ক — ৬টি Simple + ৪টি Small Hard — **পুরো সমাধানসহ** | ~২–৩ ঘণ্টা | 🟢→🟠 | নিজে তৈরি করবে (`practice-lab.pkt`) |
 
 **Tags:** `#practice` `#lab` `#solution` `#self-study` `#challenge`
+
+---
+
+### 🖼️ চিত্রে বোঝো: ১০টি ল্যাব অনুশীলনের নিয়ম
+
+![১০টি ল্যাব অনুশীলনের নিয়ম — নিজে Topology বানাও → কনফিগার করো → Ping/Show দিয়ে যাচাই করো → শেষে লুকানো সমাধান খোলো।](../assets/diagrams/lesson-10-practice-cycle.svg)
+
+> **ছবির সারকথা:** নিজে Topology বানাও → কনফিগার করো → Ping/Show দিয়ে যাচাই করো → শেষে লুকানো সমাধান খোলো।
+
+![Ten independent practice tasks টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/10-practice-lab.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

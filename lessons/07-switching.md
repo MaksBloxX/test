@@ -1,5 +1,7 @@
 # লেসন ০৭ · Switching Technologies: STP, Port Security ও EtherChannel
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/07-switching.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০৬](06-trunk-inter-vlan.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [পরের লেসন ০৮ ➡](08-final-project.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | সুইচের ৩টি গুরুত্বপূর্ণ প্রযুক্তি: STP · Port Security · EtherChannel | ~৬০ মিনিট | 🟠 Intermediate–Advanced | [lesson-07-switching.pkt](../pkt-files/labs/lesson-07-switching.pkt) |
 
 **Tags:** `#stp` `#port-security` `#etherchannel` `#lacp` `#root-bridge` `#loop-prevention`
+
+---
+
+### 🖼️ চিত্রে বোঝো: STP কীভাবে লুপ ভাঙে
+
+![STP কীভাবে লুপ ভাঙে — ত্রিভুজ সুইচ নেটওয়ার্কে STP একটি পথ ব্লক রাখে; নিচে Port Security ও LACP-এর কাজও দেখানো।](../assets/diagrams/lesson-07-stp-loop.svg)
+
+> **ছবির সারকথা:** ত্রিভুজ সুইচ নেটওয়ার্কে STP একটি পথ ব্লক রাখে; নিচে Port Security ও LACP-এর কাজও দেখানো।
+
+![STP, port security and EtherChannel টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/07-switching.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

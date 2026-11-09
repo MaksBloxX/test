@@ -1,5 +1,7 @@
 # 📧 Extra Lab ০২ · Email Server Configuration (SMTP ও POP3)
 
+> 🌐 **English:** [Read this guide in English](../en/Extras/email-server-lab.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ FTP Server Lab](ftp-server-lab.md) · [📦 Extra Labs সূচি](README.md) · [🏠 হোম](../README.md) · [পরের ল্যাব: Shared Printer ➡](office-shared-printer-lab.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | দুটি আলাদা LAN সাবনেটের মাঝে SMTP ও POP3 দিয়ে ইমেইল পাঠানো ও গ্রহণ করা | ~৪০ মিনিট | 🟡 Intermediate | [`Email-Server.pkt`](../pkt-files/practice/Email-Server.pkt) |
 
 **Tags:** `#email-server` `#smtp` `#pop3` `#inter-subnet` `#port-25` `#port-110` `#ccna-lab`
+
+---
+
+### 🖼️ চিত্রে বোঝো: দুই LAN-এ ইমেইল পাঠানো ও পাওয়া
+
+![দুই LAN-এ ইমেইল পাঠানো ও পাওয়া — PC0 SMTP দিয়ে সার্ভারে মেইল পাঠায়; PC1 POP3 দিয়ে একই সার্ভার থেকে মেইল নেয়।](../assets/diagrams/extra-email-smtp-pop3.svg)
+
+> **ছবির সারকথা:** PC0 SMTP দিয়ে সার্ভারে মেইল পাঠায়; PC1 POP3 দিয়ে একই সার্ভার থেকে মেইল নেয়।
+
+![SMTP send and POP3 receive টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/extra-02-email-server-lab.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

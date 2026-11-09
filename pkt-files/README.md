@@ -4,6 +4,16 @@
 
 এই ফোল্ডারে মোট **১৮টি প্রস্তুত Cisco Packet Tracer (`.pkt`) ফাইল** তিনটি সাবফোল্ডারে গুছিয়ে রাখা হয়েছে। প্রতিটি ফাইল ডাউনলোড করে সরাসরি **Cisco Packet Tracer (v8.0 বা তদূর্ধ্ব প্রস্তাবিত)** সফটওয়্যারে ওপেন করে অনুশীলন করতে পারবে।
 
+> **v4.0-এর ফাইল-সীমা:** [লেসন ১৬–১৮](../lessons/README.md), [Extra ০৭–০৮](../Extras/README.md) এবং [Mega ISP/২ branch capstone](../capstone/README.md)-এ ছবি, IP table, CLI ও যাচাই-ধাপ আছে, কিন্তু **এগুলোর নতুন native `.pkt` binary তৈরি/চালিয়ে পরীক্ষা করা হয়নি**। এগুলো নিজে বানানোর *build-along* lab। `.ios` fault scripts বা v4-এর `.txt` config `.pkt` নয়। [নিজের v4 `.pkt` সংরক্ষণের ধাপ](capstone/README.md) এখানে।
+
+---
+
+### 🖼️ চিত্রে বোঝো: কোন ফোল্ডারে কোন `.pkt` ল্যাব
+
+![কোন ফোল্ডারে কোন `.pkt` ল্যাব — ৮টি Lesson, ৪টি Practice, ৬টি Topology ফাইল; ৬টি `.ios` স্ক্রিপ্ট আলাদা Fault Injection।](../assets/diagrams/pkt-lab-catalog.svg)
+
+> **ছবির সারকথা:** ৮টি Lesson, ৪টি Practice, ৬টি Topology ফাইল; ৬টি `.ios` স্ক্রিপ্ট আলাদা Fault Injection।
+
 ---
 
 ## ১. 📁 `labs/` — সিরিয়াল লেসনের ল্যাব ফাইল (৮টি)
@@ -34,7 +44,7 @@
 
 ## ৩. 📁 `topologies/` — ৬টি নেটওয়ার্ক টপোলজি ফাইল (৬টি)
 
-সমন্বিত গাইড: **[🕸️ 6 Network Topologies Visual & Simulation Guide](../Extras/network-topologies-lab.md)**
+সমন্বিত গাইড: **[🕸️ 6 Network Topologies Visual & Simulation Guide](../Extras/network-topologies-lab.md)** · [৬টি `.pkt`-র ফোল্ডার ইনডেক্স](topologies/README.md) · [English companion](../en/Extras/network-topologies-lab.md)
 
 | `.pkt` ফাইল | টপোলজির ধরন | বৈশিষ্ট্য |
 | :--- | :--- | :--- |
@@ -47,10 +57,25 @@
 
 ---
 
+## ৪. 📁 `troubleshooting/` — ৬টি ভাঙা নেটওয়ার্ক ফল্ট স্ক্রিপ্ট (`.ios` · v2.5)
+
+বিস্তারিত চ্যালেঞ্জ গাইড: **[🔧 Broken Network Detective Challenge](../Extras/broken-labs-challenge.md)** · ফোল্ডার ইনডেক্স: **[`troubleshooting/README.md`](troubleshooting/README.md)**
+
+* `broken-01-static-routing.ios` · `broken-02-dhcp-starvation.ios` · `broken-03-roas-vlan.ios` · `broken-04-etherchannel-stp.ios` · `broken-05-ospf-adjacency.ios` · `broken-06-ssh-lockout.ios`
+
+---
+
+## ৫. 🏆 v4 Mega ISP + Multi-Campus capstone — নিজের `.pkt` তৈরি করুন
+
+[বাংলা step-by-step guide](../capstone/README.md) · [English guide](../en/capstone/README.md) · [সার্বিক plan/IP/port map](../capstone/plan.json) · [খালি N01–F08 PT worksheet](../capstone/VERIFICATION.md) · [কোথায় নিজের `.pkt` Save As করবেন](capstone/README.md)। **এখানে কোনো Phase 5 `.pkt` নেই**; আগের ১৮টি আলাদাভাবে গণনা করা হয়েছে। Diagram ও device `.txt`-কে simulator project ভেবে ওপেন করবেন না।
+
+---
+
 ## 📌 নতুন `.pkt` যোগ করার নামকরণ নিয়ম
 
 * সিরিয়াল লেসনের জন্য: `pkt-files/labs/lesson-NN-<slug>.pkt` (যেমন: `lesson-12-problem-solve.pkt`)
 * বাড়তি প্র্যাকটিস ল্যাবের জন্য: `pkt-files/practice/<lab-name>.pkt` + `Extras/<lab-name>-lab.md`
+* Phase 5 capstone-এর জন্য: [`pkt-files/capstone/`](capstone/README.md)-এ নিজের সত্যিকারের `.pkt` Save As করুন, link/PT version/actual test log যোগ করুন; সফল না হলে ব্যর্থতা নথিবদ্ধ করুন।
 
 ---
 

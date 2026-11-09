@@ -1,5 +1,7 @@
 # 🖨️ Extra Lab ০৩ · Office Shared Printer Network
 
+> 🌐 **English:** [Read this guide in English](../en/Extras/office-shared-printer-lab.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ Email Server Lab](email-server-lab.md) · [📦 Extra Labs সূচি](README.md) · [🏠 হোম](../README.md) · [পরের ল্যাব: IP Subnet Tester ➡](ip-subnet-tester-lab.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | একটি অফিস LAN-এ DHCP ইউজারদের সাথে Static IP যুক্ত Shared Network Printer কনফিগার করা | ~৩০ মিনিট | 🟢 Beginner | [`office-shared-printer-network.pkt`](../pkt-files/practice/office-shared-printer-network.pkt) |
 
 **Tags:** `#shared-printer` `#office-lan` `#dhcp-exclusion` `#static-ip` `#printer-pt` `#beginner-lab`
+
+---
+
+### 🖼️ চিত্রে বোঝো: DHCP ক্লায়েন্ট ও Static IP প্রিন্টার
+
+![DHCP ক্লায়েন্ট ও Static IP প্রিন্টার — রাউটার DHCP-তে Printer-এর `.10` ঠিকানা বাদ দেয়; তিনটি PC স্বয়ংক্রিয় IP নিয়ে প্রিন্টারে যায়।](../assets/diagrams/extra-office-printer.svg)
+
+> **ছবির সারকথা:** রাউটার DHCP-তে Printer-এর `.10` ঠিকানা বাদ দেয়; তিনটি PC স্বয়ংক্রিয় IP নিয়ে প্রিন্টারে যায়।
+
+![Office shared printer টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/extra-03-office-shared-printer-lab.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

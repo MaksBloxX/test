@@ -1,5 +1,7 @@
 # লেসন ০৪ · DNS Server ও HTTP Web Server
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/04-dns-http-server.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০৩](03-dhcp.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [পরের লেসন ০৫ ➡](05-vlan.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | Packet Tracer-এ DNS + HTTP Server সেটআপ, DHCP সহ সম্পূর্ণ নেটওয়ার্ক | ~৫০ মিনিট | 🟡 Beginner–Intermediate | [lesson-04-dns-http-server.pkt](../pkt-files/labs/lesson-04-dns-http-server.pkt) |
 
 **Tags:** `#dns` `#http` `#web-server` `#dhcp` `#domain` `#server-config`
+
+---
+
+### 🖼️ চিত্রে বোঝো: নাম থেকে ওয়েবপেজ: DNS ও HTTP
+
+![নাম থেকে ওয়েবপেজ: DNS ও HTTP — DNS প্রথমে `www.office.local`-এর IP জানায়, তারপর HTTP সেই সার্ভার থেকে পেজ আনে।](../assets/diagrams/lesson-04-dns-http.svg)
+
+> **ছবির সারকথা:** DNS প্রথমে `www.office.local`-এর IP জানায়, তারপর HTTP সেই সার্ভার থেকে পেজ আনে।
+
+![DNS name to HTTP page টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/04-dns-http-server.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

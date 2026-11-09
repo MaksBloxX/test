@@ -1,12 +1,27 @@
 # লেসন ১২ · Problem Solve — সমস্যা ও সমাধান ব্যাংক (Troubleshooting Bank)
 
-> **নেভিগেশন:** [⬅ লেসন ১১](11-practice-list.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [📖 Cheat-Sheet](../reference/cli-command-cheatsheet.md)
+> 🌐 **English:** [Read this guide in English](../en/lessons/12-problem-solve.md) · [English track index](../en/README.md)
+
+> **নেভিগেশন:** [⬅ লেসন ১১](11-practice-list.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [📖 Cheat-Sheet](../reference/cli-command-cheatsheet.md) · [পরের লেসন ১৩ ➡](13-dynamic-routing-ospf.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 pkt ফাইল |
 | :--- | :--- | :--- | :--- |
-| ল্যাব করতে গিয়ে সবচেয়ে বেশি যে বাস্তব ভুলগুলো হয় — তার ধাপে ধাপে সমাধান | ~১০–১৫ মিনিট (প্রতি সমস্যা) | 🟢→🔴 (সমস্যা ধরে) | `lesson-12-problem-solve.pkt` ✍️ নিজে ভেঙে অনুশীলন করো |
+| ল্যাব করতে গিয়ে সবচেয়ে বেশি যে বাস্তব ভুলগুলো হয় — তার ধাপে ধাপে সমাধান | ~১০–১৫ মিনিট (প্রতি সমস্যা) | 🟢→🔴 (সমস্যা ধরে) | [🕵️ Broken Labs Challenge](../Extras/broken-labs-challenge.md) দিয়ে হাতে-কলমে টেস্ট করো |
 
 **Tags:** `#problem-solve` `#troubleshooting` `#vlan` `#static-route` `#roas` `#dhcp-apipa` `#err-disabled` `#trunk`
+
+---
+
+### 🖼️ চিত্রে বোঝো: Ping ফেল করলে কোথায় দেখবে
+
+![Ping ফেল করলে কোথায় দেখবে — Physical link → IP/Gateway → VLAN/Route → Service—যে ধাপে প্রথম ব্যর্থ, সেখানেই বাগ।](../assets/diagrams/lesson-12-debug-path.svg)
+
+> **ছবির সারকথা:** Physical link → IP/Gateway → VLAN/Route → Service—যে ধাপে প্রথম ব্যর্থ, সেখানেই বাগ।
+
+![Network detective: nine cases টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/12-problem-solve.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 
@@ -34,6 +49,9 @@
 | **[Problem ০৪](#problem-04)** | PC-তে DHCP দিলে `169.254.x.x` (APIPA) আসছে — আসল IP পাচ্ছে না | DHCP | 🟡 |
 | **[Problem ০৫](#problem-05)** | Port Security Violation-এ সুইচ পোর্ট `err-disabled` (লাল বাতি) — পুনরায় চালু করা | Switch Security | 🟠 |
 | **[Problem ০৬](#problem-06)** | দুই সুইচের মাঝে Trunk থাকা সত্ত্বেও নতুন VLAN 30-এর ট্রাফিক পার হচ্ছে না | Trunk / VLAN DB | 🟠 |
+| **[Problem ০৭](#problem-07)** | OSPF চালু করার পরও `show ip ospf neighbor` খালি — Neighbor হচ্ছে না | OSPF Routing | 🟠 |
+| **[Problem ০৮](#problem-08)** | `crypto key generate rsa` এরর অথবা PC থেকে `ssh -l admin` ঢোকা যাচ্ছে না | SSH / Security | 🟡 |
+| **[Problem ০৯](#problem-09)** | Packet Tracer ল্যাপটপে Wi-Fi মডিউল বসানো যাচ্ছে না (`power is on` এরর) | Wireless LAN | 🟢 |
 
 > ⚠️ **নিয়ম:** সমাধান অংশে যাওয়ার আগে সমস্যাটি পড়ে ৩০ সেকেন্ড নিজে ভাবো — *"আমি হলে কোন `show` কমান্ডটা আগে চালাতাম?"*
 
@@ -378,18 +396,152 @@ SW2# show interfaces trunk
 
 ---
 
+<a id="problem-07"></a>
+
+# 🛠️ Problem ০৭ — OSPF চালু করার পরও `show ip ospf neighbor` খালি!
+
+## ❌ সমস্যা
+
+[লেসন ১৩](13-dynamic-routing-ospf.md) অনুযায়ী `R1` এবং `R2`-এর মাঝে `10.0.12.0/30` লিংকে পিং কাজ করছে, কিন্তু দুই রাউটারে OSPF কনফিগার করার পরও `show ip ospf neighbor` সম্পূর্ণ ফাঁকা এবং কোনো `O` রুট টেবিলে আসছে না!
+
+## 🎯 চাইছি (Expected Output)
+
+`show ip ospf neighbor` কমান্ডে প্রতিবেশী রাউটার `FULL` স্ট্যাটাসে দেখাবে এবং দূরবর্তী LAN-এর `O` রুট যুক্ত হবে।
+
+## ✅ সমাধান (৩টি প্রধান জায়গা মেলাও)
+
+দুই রাউটারেই `show ip protocols` চালিয়ে নিচের ৩টি ভুল চেক ও সংশোধন করো:
+
+```cisco
+enable
+show ip protocols
+
+configure terminal
+router ospf 1
+ ! ভুল ১: WAN পোর্টে passive-interface পড়ে থাকলে তা সরিয়ে দাও!
+ no passive-interface gigabitEthernet 0/1
+
+ ! ভুল ২: দুই রাউটারের Area নম্বর ভিন্ন থাকলে একই Area (area 0) করে দাও!
+ no network 10.0.12.0 0.0.0.3 area 1
+ network 10.0.12.0 0.0.0.3 area 0
+ exit
+end
+```
+*(ভুল ৩: দুই প্রান্তের ইন্টারফেসে Subnet Mask সমান `/30` কি না এবং দুই রাউটারের `router-id` যেন হুবহু এক না হয় তা নিশ্চিত করো!)*
+
+## 🔍 যাচাই
+
+```cisco
+R1# show ip ospf neighbor
+! Neighbor ID   Pri   State      Dead Time   Address      Interface
+! 2.2.2.2         1   FULL/BDR   00:00:37    10.0.12.2    GigabitEthernet0/1 ✅
+```
+
+## 🧠 লজিক — কেন এটা কাজ করল?
+
+দুটি OSPF রাউটার প্রতি ১০ সেকেন্ড পরপর `224.0.0.5` মাল্টিকাস্ট ঠিকানায় **Hello Packet** পাঠিয়ে বন্ধুত্ব (Adjacency) গড়ে। যদি WAN পোর্ট `passive` থাকে তবে হ্যালো যায়ই না; আর হ্যালো প্যাকেটের ভেতরের **Area ID, Subnet Mask ও Hello/Dead Timer** ১০০% না মিললে তারা একে অপরকে প্রত্যাখ্যান করে!
+
+---
+
+<a id="problem-08"></a>
+
+# 🛠️ Problem ০৮ — `crypto key generate rsa` এরর অথবা SSH লগইন ব্যর্থ
+
+## ❌ সমস্যা
+
+[লেসন ১৫](15-ssh-syslog-ntp.md) করার সময় রাউটারে RSA চাবি বানাতে গেলে দেখাচ্ছে:
+`% Please define a domain-name first.`
+অথবা চাবি বানানোর পরও PC থেকে `ssh -l admin 192.168.1.1` দিলে `Connection refused` দেখাচ্ছে!
+
+## 🎯 চাইছি (Expected Output)
+
+সফলভাবে `2048`-বিট RSA কী তৈরি হবে এবং PC-র Command Prompt থেকে `ssh -l admin 192.168.1.1` দিয়ে পাসওয়ার্ড দিয়ে রাউটারে প্রবেশ করা যাবে।
+
+## ✅ সমাধান (Router CLI)
+
+```cisco
+enable
+configure terminal
+
+! ১. ডিফল্ট 'Router' নাম বদলে কাস্টম hostname এবং domain-name দাও
+hostname R1
+ip domain-name office.local
+
+! ২. ইউজারনেম ও গোপন পাসওয়ার্ড তৈরি করো
+username admin secret AdminPass123!
+
+! ৩. এবার 2048-bit RSA চাবি জেনারেট করো
+crypto key generate rsa
+! প্রম্পটে 2048 লিখে Enter চাপো
+ip ssh version 2
+
+! ৪. VTY রিমোট লাইনে SSH ও লোকাল ইউজার যাচাই চালু করো
+line vty 0 4
+ transport input ssh
+ login local
+ exit
+
+end
+copy running-config startup-config
+```
+
+## 🔍 যাচাই
+
+```cisco
+R1# show ip ssh
+! SSH Enabled - version 2.0 ✅
+```
+এবং PC0 থেকে `ssh -l admin 192.168.1.1` দিলে সাথে সাথে `Password:` প্রম্পট আসবে!
+
+## 🧠 লজিক — কেন এটা কাজ করল?
+
+SSH সার্ভারের এনক্রিপশন চাবির নাম তৈরি হয় `<hostname>.<domain-name>` ফর্মুলায় — তাই কাস্টম হোস্টনেম ও ডোমেইন ছাড়া RSA কী তৈরি অসম্ভব। আর `line vty 0 4`-এ `login local` না দিলে রাউটার জানে না কোন ইউজার ডেটাবেস দিয়ে পাসওয়ার্ড মেলাতে হবে।
+
+---
+
+<a id="problem-09"></a>
+
+# 🛠️ Problem ০৯ — ল্যাপটপে Wi-Fi কার্ড বসছে না (`Cannot add a module when the power is on`)
+
+## ❌ সমস্যা
+
+[লেসন ১৪](14-wireless-lan.md)-এ `Laptop0`-কে Wi-Fi-তে যুক্ত করার জন্য Physical ট্যাবে গিয়ে `WPC300N` ওয়্যারলেস মডিউল বসাতে গেলেই পপ-আপ এরর আসছে:
+`Cannot add a module when the power is on.` বা `Cannot remove a module when the power is on.`
+
+## 🎯 চাইছি (Expected Output)
+
+ল্যাপটপের তারের ইথারনেট কার্ড সরিয়ে `WPC300N` ওয়্যারলেস কার্ড বসানো এবং `PC Wireless` অ্যাপ দিয়ে Wi-Fi-তে কানেক্ট হওয়া।
+
+## ✅ সমাধান (Packet Tracer GUI ধাপ)
+
+1. `Laptop0` খুলে **`Physical`** ট্যাবে যাও এবং `Zoom In` করো।
+2. ল্যাপটপের বাম/ডান কোণায় থাকা **গোল পাওয়ার বাটনে মাউস ক্লিক করো** — দেখবে পাশের ছোট **সবুজ/হলুদ LED বাতিটি নিভে গেছে** (মানে ল্যাপটপ এখন বন্ধ)।
+3. নিচের স্লটে থাকা পুরনো ইথারনেট মডিউলটি ড্র্যাগ করে বাম পাশের `MODULES` তালিকায় ছেড়ে দাও।
+4. বাম তালিকা থেকে **`WPC300N`** ড্র্যাগ করে খালি স্লটে বসাও।
+5. **সবচেয়ে জরুরি:** আবার **পাওয়ার বাটনে ক্লিক করে ল্যাপটপ চালু করো** (সবুজ বাতি জ্বলে উঠবে)!
+
+## 🔍 যাচাই
+
+`Laptop0 → Desktop → PC Wireless` খুললে এখন আর এরর না দেখিয়ে সিগন্যাল ও `Connect` ট্যাব কাজ করবে ✅।
+
+## 🧠 লজিক — কেন এটা কাজ করল?
+
+বাস্তব হার্ডওয়্যারেও মাদারবোর্ডে বিদ্যুৎ চালু থাকা অবস্থায় নেটওয়ার্ক কার্ড খুললে শর্ট-সার্কিট হয়। Packet Tracer সেই বাস্তব অভ্যাসটি শেখানোর জন্যই ডিভাইস বন্ধ (`Power OFF`) না করা পর্যন্ত কোনো কার্ড বদলাতে দেয় না!
+
+---
+
 # 🔮 নতুন সমস্যা যোগ করতে চাও?
 
 এই রেপোতে থাকা অটোমেশন স্ক্রিপ্ট চালিয়ে মাত্র ১ লাইনে নতুন সমস্যার টেমপ্লেট যোগ করতে পারো:
 
 ```bash
-python3 scripts/lab_writer.py problem --num 7 --title "তোমার সমস্যার নাম" --append
+python3 scripts/lab_writer.py problem --num 10 --title "তোমার সমস্যার নাম" --append
 ```
 
-হাত গরম রাখতে ফিরে যাও → [Practice Lab (সমাধানসহ)](10-practice-lab.md) · [Practice List (সমাধান ছাড়া)](11-practice-list.md)
+হাত গরম রাখতে অনুশীলন করো → [🕵️ Broken Network Detective Challenge](../Extras/broken-labs-challenge.md) · [Practice Lab](10-practice-lab.md) · [পরের লেসন ১৩ · OSPF ➡](13-dynamic-routing-ospf.md)
 
 ---
 
-> **নেভিগেশন:** [⬅ লেসন ১১](11-practice-list.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [📖 Cheat-Sheet](../reference/cli-command-cheatsheet.md)
+> **নেভিগেশন:** [⬅ লেসন ১১](11-practice-list.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [📖 Cheat-Sheet](../reference/cli-command-cheatsheet.md) · [পরের লেসন ১৩ ➡](13-dynamic-routing-ospf.md)
 
 **এই লেসনের Tags:** `#problem-solve` `#troubleshooting` `#switchport` `#vlan` `#static-route` `#roas` `#apipa` `#err-disabled` `#trunk`

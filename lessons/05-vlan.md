@@ -1,5 +1,7 @@
 # লেসন ০৫ · VLAN Configuration ও VLAN Isolation
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/05-vlan.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০৪](04-dns-http-server.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [পরের লেসন ০৬ ➡](06-trunk-inter-vlan.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | একটি Switch-এ VLAN তৈরি, Port Assign ও VLAN Isolation প্রমাণ | ~৪৫ মিনিট | 🟡 Intermediate | [lesson-05-vlan.pkt](../pkt-files/labs/lesson-05-vlan.pkt) |
 
 **Tags:** `#vlan` `#switch` `#broadcast-domain` `#isolation` `#access-port` `#interface-range` `#vlan-10-20`
+
+---
+
+### 🖼️ চিত্রে বোঝো: একটি সুইচে দুটি বিচ্ছিন্ন VLAN
+
+![একটি সুইচে দুটি বিচ্ছিন্ন VLAN — VLAN 10-এর PC-গুলো নিজেদের মধ্যে কথা বলে; VLAN 20-তে যেতে হলে রাউটার লাগবে।](../assets/diagrams/lesson-05-vlan-isolation.svg)
+
+> **ছবির সারকথা:** VLAN 10-এর PC-গুলো নিজেদের মধ্যে কথা বলে; VLAN 20-তে যেতে হলে রাউটার লাগবে।
+
+![VLAN isolation টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/05-vlan.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

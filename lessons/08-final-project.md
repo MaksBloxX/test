@@ -1,5 +1,7 @@
 # লেসন ০৮ · Final Project — সম্পূর্ণ অফিস নেটওয়ার্ক
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/08-final-project.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০৭](07-switching.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [পরের লেসন ০৯ ➡](09-real-hardware.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | VLAN + Inter-VLAN Routing + DHCP + DNS + HTTP — সব একসাথে | ~৯০ মিনিট | 🔴 Advanced (Capstone) | [lesson-08-final-project.pkt](../pkt-files/labs/lesson-08-final-project.pkt) |
 
 **Tags:** `#final-project` `#capstone` `#vlan` `#inter-vlan` `#dhcp` `#dns` `#http` `#router-on-a-stick`
+
+---
+
+### 🖼️ চিত্রে বোঝো: সম্পূর্ণ অফিস ল্যাবের টপোলজি
+
+![সম্পূর্ণ অফিস ল্যাবের টপোলজি — দুটি VLAN, R1-এ ROAS ও DHCP, আর VLAN 10-এ Static IP-র DNS/HTTP সার্ভার।](../assets/diagrams/lesson-08-office-capstone.svg)
+
+> **ছবির সারকথা:** দুটি VLAN, R1-এ ROAS ও DHCP, আর VLAN 10-এ Static IP-র DNS/HTTP সার্ভার।
+
+![Office network capstone টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/08-final-project.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

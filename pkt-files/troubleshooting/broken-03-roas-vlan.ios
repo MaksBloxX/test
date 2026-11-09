@@ -1,0 +1,8 @@
+enable
+configure terminal
+interface gigabitEthernet 0/0.10
+ no ip address
+ encapsulation dot1Q 100
+ ip address 192.168.10.1 255.255.255.0
+ exit
+end

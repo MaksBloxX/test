@@ -1,5 +1,7 @@
 # লেসন ০২ · Two Routers + Static Routing
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/02-static-routing.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০১](01-router-cli-basics.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [পরের লেসন ০৩ ➡](03-dhcp.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | দুটি Router ও দুটি আলাদা LAN-এর মধ্যে Static Routing | ~৫০ মিনিট | 🟢 Beginner | [lesson-02-static-routing.pkt](../pkt-files/labs/lesson-02-static-routing.pkt) |
 
 **Tags:** `#static-routing` `#ip-route` `#two-routers` `#wan-link` `#next-hop` `#end-to-end-ping`
+
+---
+
+### 🖼️ চিত্রে বোঝো: দুই LAN-এর মাঝখানে দুই রাউটার
+
+![দুই LAN-এর মাঝখানে দুই রাউটার — দুই পাশের Static Route ও মাঝের `/30` WAN লিংক ছাড়া Ping-এর উত্তর ফিরে আসবে না।](../assets/diagrams/lesson-02-static-routing.svg)
+
+> **ছবির সারকথা:** দুই পাশের Static Route ও মাঝের `/30` WAN লিংক ছাড়া Ping-এর উত্তর ফিরে আসবে না।
+
+![Two routers and static routes টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/02-static-routing.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

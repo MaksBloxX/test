@@ -1,5 +1,7 @@
 # লেসন ০৩ · Router DHCP Configuration
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/03-dhcp.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০২](02-static-routing.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [পরের লেসন ০৪ ➡](04-dns-http-server.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | Router-এ DHCP Pool কনফিগার করে PC-গুলোতে স্বয়ংক্রিয় IP বিতরণ | ~৪০ মিনিট | 🟢 Beginner | [lesson-03-dhcp.pkt](../pkt-files/labs/lesson-03-dhcp.pkt) |
 
 **Tags:** `#dhcp` `#dhcp-pool` `#excluded-address` `#auto-ip` `#default-router`
+
+---
+
+### 🖼️ চিত্রে বোঝো: DHCP-র চার ধাপ: DORA
+
+![DHCP-র চার ধাপ: DORA — Discover → Offer → Request → ACK; রাউটার কীভাবে ক্লায়েন্টকে IP বরাদ্দ দেয় বোঝো।](../assets/diagrams/lesson-03-dhcp-dora.svg)
+
+> **ছবির সারকথা:** Discover → Offer → Request → ACK; রাউটার কীভাবে ক্লায়েন্টকে IP বরাদ্দ দেয় বোঝো।
+
+![Router DHCP and DORA টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/03-dhcp.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

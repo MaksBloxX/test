@@ -1,5 +1,7 @@
 # 🌐 Extra Lab ০১ · FTP Server Configuration (File Upload ও Download)
 
+> 🌐 **English:** [Read this guide in English](../en/Extras/ftp-server-lab.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [📦 Extra Labs সূচি](README.md) · [🏠 হোম](../README.md) · [📖 Cheat-Sheet](../reference/cli-command-cheatsheet.md) · [পরের ল্যাব: Email Server ➡](email-server-lab.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | আলাদা সাবনেটে FTP Server তৈরি করে PC থেকে ফাইল Upload (`put`) ও Download (`get`) করা | ~৪৫ মিনিট | 🟢→🟡 Beginner–Intermediate | [`FTP-Server.pkt`](../pkt-files/practice/FTP-Server.pkt) |
 
 **Tags:** `#ftp` `#file-transfer` `#port-21` `#port-20` `#put-get` `#router` `#ccna-lab`
+
+---
+
+### 🖼️ চিত্রে বোঝো: FTP Server-এ Upload ও Download
+
+![FTP Server-এ Upload ও Download — অফিস LAN-এর PC0 রাউটার পেরিয়ে আলাদা সার্ভার LAN-এ FTP সার্ভারে পৌঁছায়।](../assets/diagrams/extra-ftp-transfer.svg)
+
+> **ছবির সারকথা:** অফিস LAN-এর PC0 রাউটার পেরিয়ে আলাদা সার্ভার LAN-এ FTP সার্ভারে পৌঁছায়।
+
+![FTP upload and download টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/extra-01-ftp-server-lab.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 

@@ -1,12 +1,27 @@
 # 🕸️ Extra Lab ০৫ · 6 Network Topologies Visual & Simulation Guide
 
-> **নেভিগেশন:** [⬅ IP Subnet Tester](ip-subnet-tester-lab.md) · [📦 Extra Labs সূচি](README.md) · [🏠 হোম](../README.md) · [🎓 CCNA ০১ · Network Basics](../ccna-fundamentals/01-network-basics.md)
+> 🌐 **English:** [Read this guide in English](../en/Extras/network-topologies-lab.md) · [English track index](../en/README.md)
+
+> **নেভিগেশন:** [⬅ IP Subnet Tester](ip-subnet-tester-lab.md) · [📦 Extra Labs সূচি](README.md) · [🏠 হোম](../README.md) · [পরের ল্যাব: Broken Network Detective ➡](broken-labs-challenge.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইলসমূহ (৬টি) |
 | :--- | :--- | :--- | :--- |
-| ৬ ধরনের ক্লাসিক নেটওয়ার্ক টপোলজি Packet Tracer Simulation Mode-এ চালিয়ে সুবিধা, অসুবিধা ও কেবলের সূত্র বোঝা | ~৩০ মিনিট | 🟢 সবার জন্য | [`pkt-files/topologies/`](../pkt-files/topologies/) (নিচে প্রতিটি ফাইলের লিংক আছে) |
+| ৬ ধরনের ক্লাসিক নেটওয়ার্ক টপোলজি Packet Tracer Simulation Mode-এ চালিয়ে সুবিধা, অসুবিধা ও কেবলের সূত্র বোঝা | ~৩০ মিনিট | 🟢 সবার জন্য | [`pkt-files/topologies/`](../pkt-files/topologies/README.md) (নিচে প্রতিটি ফাইলের লিংক আছে) |
 
 **Tags:** `#topology` `#bus` `#star` `#ring` `#mesh` `#tree` `#hybrid` `#simulation-mode`
+
+---
+
+### 🖼️ চিত্রে বোঝো: ৬ রকম নেটওয়ার্ক টপোলজির ছবি
+
+![৬ রকম নেটওয়ার্ক টপোলজির ছবি — Bus, Star, Ring, Mesh, Tree ও Hybrid-এর কেবল সংযোগ এক নজরে তুলনা করো।](../assets/diagrams/extra-six-topologies.svg)
+
+> **ছবির সারকথা:** Bus, Star, Ring, Mesh, Tree ও Hybrid-এর কেবল সংযোগ এক নজরে তুলনা করো।
+
+![Six network topologies টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/extra-05-network-topologies-lab.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 
@@ -129,6 +144,6 @@
 
 ---
 
-> **নেভিগেশন:** [⬅ IP Subnet Tester](ip-subnet-tester-lab.md) · [📦 Extra Labs সূচি](README.md) · [🏠 হোম](../README.md) · [🎓 CCNA ০১ · Network Basics](../ccna-fundamentals/01-network-basics.md)
+> **নেভিগেশন:** [⬅ IP Subnet Tester](ip-subnet-tester-lab.md) · [📦 Extra Labs সূচি](README.md) · [🏠 হোম](../README.md) · [পরের ল্যাব: Broken Network Detective ➡](broken-labs-challenge.md)
 
 **Tags:** `#network-topologies` `#star` `#mesh` `#bus` `#ring` `#tree` `#hybrid` `#viva-prep`

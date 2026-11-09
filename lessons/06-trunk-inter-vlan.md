@@ -1,5 +1,7 @@
 # লেসন ০৬ · Trunk Link ও Inter-VLAN Routing
 
+> 🌐 **English:** [Read this guide in English](../en/lessons/06-trunk-inter-vlan.md) · [English track index](../en/README.md)
+
 > **নেভিগেশন:** [⬅ লেসন ০৫](05-vlan.md) · [📚 লেসন সূচি](README.md) · [🏠 হোম](../README.md) · [পরের লেসন ০৭ ➡](07-switching.md)
 
 | 🎯 লক্ষ্য | ⏱️ সময় | 📊 লেভেল | 🧰 ল্যাব ফাইল |
@@ -7,6 +9,19 @@
 | Trunk Link দিয়ে দুই সুইচে VLAN বহন + Router-on-a-Stick Inter-VLAN Routing | ~৬০ মিনিট | 🟡 Intermediate | [lesson-06-trunk-inter-vlan.pkt](../pkt-files/labs/lesson-06-trunk-inter-vlan.pkt) |
 
 **Tags:** `#trunk` `#802.1q` `#inter-vlan` `#router-on-a-stick` `#subinterface` `#encapsulation-dot1q`
+
+---
+
+### 🖼️ চিত্রে বোঝো: দুই সুইচের 802.1Q ট্রাঙ্ক (Part 2)
+
+![SW1 ও SW2-র মাঝে 802.1Q ট্রাঙ্ক; একই VLAN-এর PC0–PC2 এবং PC1–PC3 Ping পায়, ভিন্ন VLAN পায় না।](../assets/diagrams/lesson-06-switch-trunk.svg)
+
+> **ছবির সারকথা:** SW1 `G0/1` ↔ SW2 `G0/1` ট্রাঙ্কে VLAN 10 ও 20 একসঙ্গে যায়। **এই অংশে কোনো Router নেই**—একই VLAN-এর PC-গুলো অন্য সুইচে থাকলেও Ping পাবে; ভিন্ন VLAN-এর Ping পাবে না। নিচে **Part 3-তে আলাদা ছবিতে** Router-on-a-Stick দেখানো হয়েছে।
+
+![802.1Q trunk and ROAS টপোলজি, কনফিগারেশন ও যাচাইয়ের ছয় ধাপ দেখানো ৩০ সেকেন্ডের শিক্ষামূলক GIF; Packet Tracer রেকর্ডিং নয়।](../assets/gifs/06-trunk-inter-vlan.gif)
+
+> 🎞️ **৩০ সেকেন্ডে মনে রাখো:** এটি উপরের ডায়াগ্রামের ওপর ভিত্তি করে বানানো ছয় ধাপের ভিজ্যুয়াল সারাংশ; বাস্তব Packet Tracer run, packet capture বা ফলের প্রমাণ নয়। [সব GIF-এর topic search name ও গুরুত্ব](../GIF-CATALOG.md) দেখো।
+
 
 ---
 
@@ -208,6 +223,11 @@ PC0 → ping 192.168.20.1 (VLAN20)                            ❌ ভিন্�
 একটি **মাত্র ফিজিক্যাল Interface**-এর ভেতরে একাধিক **Subinterface** (`G0/0.10`, `G0/0.20`) তৈরি করে প্রতিটি VLAN-এর জন্য আলাদা Gateway হিসেবে কাজ করানো। পুরো নেটওয়ার্কের সাথে রাউটারের সংযোগ "একটি লাঠিতে ঝুলে থাকা বাঁশ" দেখতে মিলে যায় বলে নাম **Router-on-a-Stick**।
 
 ### 📌 Inter-VLAN Routing Topology
+
+![Router-on-a-Stick-এর আলাদা ল্যাব: R1 G0/0–SW1 G0/1 ট্রাঙ্ক; VLAN 10 গেটওয়ে 192.168.10.254, VLAN 20 গেটওয়ে 192.168.20.254।](../assets/diagrams/lesson-06-router-on-a-stick.svg)
+
+> **ছবির সারকথা:** এখানে **শুধু Part 3-এর আলাদা ল্যাব**—R1-এর একটি `G0/0` পোর্ট ও SW1-এর `G0/1` ট্রাঙ্ক। `G0/0.10` = `192.168.10.254` এবং `G0/0.20` = `192.168.20.254`; দুই VLAN-এর PC এবার রাউটার হয়ে একে অন্যকে Ping করতে পারে।
+
 ```text
                      Router R1
                      G0/0 (Trunk)
