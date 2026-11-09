@@ -1,8 +1,16 @@
 # 📚 Reference Library — বাংলা নেটওয়ার্কিং বই ও CLI Cheat-Sheet
 
-> **নেভিগেশন:** [🏠 রেপো হোম](../README.md) · [📚 মূল লেসন (০১–১২)](../lessons/README.md) · [🎓 CCNA Fundamentals](../ccna-fundamentals/README.md) · [📦 Extra Labs](../Extras/README.md)
+> **নেভিগেশন:** [🏠 রেপো হোম](../README.md) · [📚 মূল লেসন (০১–১৮)](../lessons/README.md) · [🎓 CCNA Fundamentals](../ccna-fundamentals/README.md) · [📦 Extra Labs](../Extras/README.md)
 
 এই ফোল্ডারে রয়েছে নেটওয়ার্কিং শেখা, ল্যাব পরীক্ষা ও বাস্তব সার্ভার/পিসি ট্রাবলশুটিংয়ের জন্য **১টি মাস্টার চিট-শিট** এবং **MaksDev Studio (Md. Makshedul Islam)** রচিত **২টি পূর্ণাঙ্গ বাংলা ব্যবহারিক ই-বুক** (অনলাইন Markdown + অফলাইন PDF সংস্করণসহ!)।
+
+---
+
+### 🖼️ চিত্রে বোঝো: কোন প্রশ্নে কোন রেফারেন্স পড়বে
+
+![কোন প্রশ্নে কোন রেফারেন্স পড়বে — Cisco IOS কমান্ডের জন্য Cheat-Sheet; কম্পিউটার ডিবাগে ৩০ কমান্ড; প্যাকেট যাত্রায় OSI বই।](../assets/diagrams/reference-library-map.svg)
+
+> **ছবির সারকথা:** Cisco IOS কমান্ডের জন্য Cheat-Sheet; কম্পিউটার ডিবাগে ৩০ কমান্ড; প্যাকেট যাত্রায় OSI বই।
 
 ---
 
@@ -10,7 +18,7 @@
 
 | # | রিসোর্স / বইয়ের নাম | কী আছে ভেতরে | অনলাইনে পড়ো | অফলাইন PDF |
 | :---: | :--- | :--- | :---: | :---: |
-| **০১** | **⚡ Cisco CLI Command Cheat-Sheet** | Router, Switch, Subnetting, DHCP, Static/RIP/OSPF, VLAN/Trunk, Security, STP, EtherChannel, ACL/NAT ও IOS Error গাইড | [📄 **পড়ো (.md)**](cli-command-cheatsheet.md) | — |
+| **০১** | **⚡ Cisco CLI Command Cheat-Sheet** | Router, VLAN/Trunk, OSPF/SSH, **SVI, HSRP, IPv6/OSPFv3, VoIP, DHCP Snooping/DAI**, IOS Error গাইড | [📄 **পড়ো (.md)**](cli-command-cheatsheet.md) | — |
 | **০২** | **📘 Practical Networking: 30 Essential Commands** | Linux, Windows ও macOS-এর ৩০টি অপরিহার্য নেটওয়ার্কিং কমান্ড (`ping`, `mtr`, `nmap`, `dig`, `ssh`, `tcpdump`, `wireshark`, `iptables`, `netsh`...) — প্রতিটির ৫টি উদাহরণ ও ব্যাখ্যাসহ! | [📄 **পড়ো (.md)**](MaksDev-Practical-Networking.md) | [📥 **PDF ডাউনলোড**](MaksDev-Practical-Networking.pdf) |
 | **০৩** | **📕 OSI: From Search to Screen (7 Layers Illustrated)** | ব্রাউজারে Google সার্চ লেখা থেকে স্ক্রিনে পেজ ভেসে ওঠা পর্যন্ত ৭টি লেয়ারে ডেটার পূর্ণ যাত্রা — ২৪টি অধ্যায় ও ৬টি কাস্টম SVG ডায়াগ্রামসহ! | [📄 **পড়ো (.md)**](OSI-Illustrated.md) | [📥 **PDF ডাউনলোড**](OSI-Illustrated.pdf) |
 
@@ -18,7 +26,7 @@
 
 ## 🎨 ইলাস্ট্রেটেড ডায়াগ্রাম গ্যালারি (`reference/images/`)
 
-[📕 OSI: From Search to Screen](OSI-Illustrated.md) বইটিতে ব্যবহৃত ৬টি কাস্টম ভেক্টর (SVG) ডায়াগ্রাম:
+v3.0-এ সব ৪৯টি Markdown গাইডে [৫৬টি নিজস্ব SVG ডায়াগ্রাম](../assets/diagrams/README.md) থেকে প্রাসঙ্গিক ছবি বসেছে (Phase 3-তে নতুন ১০টি)। তার পাশাপাশি [📕 OSI: From Search to Screen](OSI-Illustrated.md) বইয়ের **আগের ৬টি** কাস্টম ভেক্টর (SVG) ডায়াগ্রামও রাখা হয়েছে:
 
 | ডায়াগ্রাম | বিষয়বস্তু | ফাইল |
 | :--- | :--- | :--- |
@@ -31,4 +39,4 @@
 
 ---
 
-> **নেভিগেশন:** [🏠 রেপো হোম](../README.md) · [📚 মূল লেসন (০১–১২)](../lessons/README.md) · [🎓 CCNA Fundamentals](../ccna-fundamentals/README.md)
+> **নেভিগেশন:** [🏠 রেপো হোম](../README.md) · [📚 মূল লেসন (০১–১৮)](../lessons/README.md) · [🎓 CCNA Fundamentals](../ccna-fundamentals/README.md)

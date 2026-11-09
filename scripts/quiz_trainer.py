@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-quiz_trainer.py — Interactive CCNA MCQ & Cisco CLI Flashcard Trainer
-Automatically loads all 68 real quizzes (MCQs + VLSM Q&As) from `ccna-fundamentals/*.md`!
+quiz_trainer.py — Interactive CCNA & Practical Lab MCQ + CLI Flashcard Trainer (v3.0)
+Loads 86 real questions from `ccna-fundamentals/*.md` & `lessons/*.md`!
 
 Usage examples:
   python3 scripts/quiz_trainer.py --list
   python3 scripts/quiz_trainer.py --demo
   python3 scripts/quiz_trainer.py --count 5
-  python3 scripts/quiz_trainer.py --lesson 5 --count 5
-  python3 scripts/quiz_trainer.py --mode cli --count 5
+  python3 scripts/quiz_trainer.py --track practical --count 5
+  python3 scripts/quiz_trainer.py --mode cli --count 8
 """
 
 import argparse
@@ -19,6 +19,7 @@ import sys
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 CCNA_DIR = os.path.join(REPO_ROOT, "ccna-fundamentals")
+LESSONS_DIR = os.path.join(REPO_ROOT, "lessons")
 
 CLI_FLASHCARDS = [
     ("রাউটারের সব ইন্টারফেসের IP ও Status এক টেবিলে দেখার শর্টকাট কমান্ড কী?", "show ip interface brief (বা sh ip int br)"),
@@ -29,19 +30,35 @@ CLI_FLASHCARDS = [
     ("Port Security লঙ্ঘনের ফলে err-disabled হওয়া পোর্ট পুনরায় সচল করার ২টি কমান্ড কী?", "shutdown তারপর no shutdown"),
     ("LACP EtherChannel ঠিকমতো বান্ডেল ('SU') হয়েছে কি না দেখার কমান্ড কী?", "show etherchannel summary"),
     ("ভিন্ন সাবনেটে থাকা DHCP সার্ভারে ব্রডকাস্ট পাঠানোর রাউটার ইন্টারফেস কমান্ড কী?", "ip helper-address <DHCP_SERVER_IP>"),
+    ("OSPF প্রতিবেশী রাউটারগুলোর FULL স্ট্যাটাস দেখার কমান্ড কী?", "show ip ospf neighbor"),
+    ("/30 সাবনেট মাস্কের (255.255.255.252) Wildcard Mask কত?", "0.0.0.3"),
+    ("RIPv2-এ অটো-সামারাইজেশন বন্ধ করার কমান্ড কী?", "no auto-summary"),
+    ("VTY লাইনে Telnet বন্ধ করে শুধু SSH অনুমোদন করার কমান্ড কী?", "transport input ssh"),
+    ("PC-র Command Prompt থেকে admin ইউজারে 192.168.1.1 রাউটারে SSH লগইনের কমান্ড কী?", "ssh -l admin 192.168.1.1"),
+    ("রাউটারের ঘড়ি NTP সার্ভারের সাথে সিঙ্ক হয়েছে কি না দেখার কমান্ড কী?", "show ntp status"),
+    ("রাউটারের সব ইভেন্ট লগ কেন্দ্রীয় Syslog সার্ভারে পাঠানোর কমান্ড কী?", "logging host <SERVER_IP>"),
+    ("3560-এর VLAN10 ও VLAN20 SVI-র মধ্যে routing চালুর global command কী?", "ip routing"),
+    ("HSRP-তে কোন router Active/Standby এবং VIP কী, দেখার কমান্ড কী?", "show standby brief"),
+    ("R1 WAN tracking-এ priority 120 থেকে 30 কমলে কত হয়, এবং কখন R2 preempt করবে?", "90; R2 priority 100, তাই preempt থাকলে Active হবে"),
+    ("IPv6 router-এ RA/packet forwarding সক্রিয় করার global command কী?", "ipv6 unicast-routing"),
+    ("OSPFv3 neighbor ও remote IPv6 route কোন দুটি কমান্ডে দেখবে?", "show ipv6 ospf neighbor; show ipv6 route"),
+    ("7960 ফোনে CME/TFTP-এর IP জানাতে DHCP pool-এ কোন option ব্যবহার করো?", "option 150 ip 192.168.20.1"),
+    ("DAI-এর prerequisite DHCP IP–MAC binding দেখার switch command কী?", "show ip dhcp snooping binding (Packet Tracer-এ ফাঁকা/ভুলও হতে পারে)"),
 ]
 
 
-def load_ccna_quizzes(lesson_filter: int | None = None, mcq_only: bool = False) -> list[dict]:
+def parse_quizzes_from_dir(
+    folder: str, track_label: str, lesson_filter: int | None = None, mcq_only: bool = False
+) -> list[dict]:
     quizzes = []
-    if not os.path.isdir(CCNA_DIR):
+    if not os.path.isdir(folder):
         return quizzes
 
     opt_pattern = re.compile(r"^-\s*\*\*([A-D])\.\*\*\s*(.+)$", re.MULTILINE)
     ans_mcq_re = re.compile(r"\*\*✅\s*উত্তর:\s*([A-D])\b[^*]*\*\*")
     details_re = re.compile(r"<details>\s*<summary>.*?</summary>(.*?)</details>", re.DOTALL)
 
-    for fn in sorted(os.listdir(CCNA_DIR)):
+    for fn in sorted(os.listdir(folder)):
         if not fn.endswith(".md") or fn == "README.md":
             continue
         m_num = re.match(r"^(\d+)-", fn)
@@ -49,7 +66,8 @@ def load_ccna_quizzes(lesson_filter: int | None = None, mcq_only: bool = False) 
         if lesson_filter is not None and lnum != lesson_filter:
             continue
 
-        txt = open(os.path.join(CCNA_DIR, fn), encoding="utf-8").read()
+        with open(os.path.join(folder, fn), encoding="utf-8") as fh:
+            txt = fh.read()
         chunks = re.split(r"(?=\*\*প্রশ্ন\s*[^\n*]+\.\*\*)", txt)
 
         for chunk in chunks[1:]:
@@ -78,8 +96,9 @@ def load_ccna_quizzes(lesson_filter: int | None = None, mcq_only: bool = False) 
                 )
                 quizzes.append({
                     "type": "mcq",
+                    "track": track_label,
                     "lesson": lnum,
-                    "file": fn,
+                    "file": f"{os.path.basename(folder)}/{fn}",
                     "num": q_no,
                     "question": q_text,
                     "options": options,
@@ -90,8 +109,9 @@ def load_ccna_quizzes(lesson_filter: int | None = None, mcq_only: bool = False) 
                 exp_short = " ".join(l.strip() for l in det_body.splitlines() if l.strip())
                 quizzes.append({
                     "type": "open",
+                    "track": track_label,
                     "lesson": lnum,
-                    "file": fn,
+                    "file": f"{os.path.basename(folder)}/{fn}",
                     "num": q_no,
                     "question": q_text,
                     "options": {},
@@ -101,23 +121,32 @@ def load_ccna_quizzes(lesson_filter: int | None = None, mcq_only: bool = False) 
     return quizzes
 
 
+def load_all_quizzes(track: str = "all", lesson_filter: int | None = None, mcq_only: bool = False) -> list[dict]:
+    items: list[dict] = []
+    if track in ("all", "ccna"):
+        items.extend(parse_quizzes_from_dir(CCNA_DIR, "CCNA", lesson_filter, mcq_only))
+    if track in ("all", "practical"):
+        items.extend(parse_quizzes_from_dir(LESSONS_DIR, "Practical", lesson_filter, mcq_only))
+    return items
+
+
 def print_summary() -> None:
-    all_q = load_ccna_quizzes()
+    all_q = load_all_quizzes("all")
     by_file: dict[str, int] = {}
     for q in all_q:
         by_file[q["file"]] = by_file.get(q["file"], 0) + 1
-    print("📚 CCNA Fundamentals কুইজ ব্যাংক সারাংশ:\n")
+    print("📚 কুইজ ব্যাংক সারাংশ (v3.0 — CCNA + Practical Lessons):\n")
     for fn, cnt in sorted(by_file.items()):
-        print(f"  • {fn:35s} : {cnt:2d} টি প্রশ্ন")
+        print(f"  • {fn:48s} : {cnt:2d} টি প্রশ্ন")
     print(f"\n  মোট অনুশীলন প্রশ্ন     : {len(all_q)} টি")
     print(f"  CLI শর্টকাট ফ্ল্যাশকার্ড : {len(CLI_FLASHCARDS)} টি")
 
 
-def run_demo(lesson_filter: int | None, seed: int = 42) -> None:
-    quizzes = load_ccna_quizzes(lesson_filter, mcq_only=True)
+def run_demo(track: str, lesson_filter: int | None, seed: int = 42) -> None:
+    quizzes = load_all_quizzes(track, lesson_filter, mcq_only=True)
     rng = random.Random(seed)
     sample = rng.sample(quizzes, min(3, len(quizzes)))
-    print(f"🎓 CCNA Quiz Trainer — নমুনা প্রশ্ন প্রিভিউ (মোট {len(quizzes)}টি MCQ থেকে ৩টি):\n")
+    print(f"🎓 Quiz Trainer (v3.0) — নমুনা প্রশ্ন প্রিভিউ (মোট {len(quizzes)}টি MCQ থেকে ৩টি):\n")
     for idx, q in enumerate(sample, 1):
         print(f"[{idx}] ({q['file']} · প্রশ্ন {q['num']}) {q['question']}")
         for k in ("A", "B", "C", "D"):
@@ -134,7 +163,7 @@ def run_interactive_mcq(quizzes: list[dict], count: int) -> None:
     print(f"\n🚀 শুরু হচ্ছে {len(selected)}টি প্রশ্নের কুইজ! (বের হতে 'q' লেখো)\n")
     for idx, q in enumerate(selected, 1):
         print("-" * 64)
-        print(f"প্রশ্ন {idx}/{len(selected)} [লেসন ০{q['lesson']}]: {q['question']}\n")
+        print(f"প্রশ্ন {idx}/{len(selected)} [{q['track']} #{q['lesson']:02d}]: {q['question']}\n")
         if q["type"] == "mcq":
             mcq_total += 1
             for k in ("A", "B", "C", "D"):
@@ -184,11 +213,12 @@ def run_interactive_cli(count: int) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="CCNA MCQ & CLI Flashcard Trainer")
+    parser = argparse.ArgumentParser(description="CCNA & Practical Lab MCQ + CLI Flashcard Trainer (v3.0)")
     parser.add_argument("--list", action="store_true", help="Show total quiz counts per lesson")
     parser.add_argument("--demo", action="store_true", help="Non-interactive preview of 3 random questions")
     parser.add_argument("--mode", choices=["mcq", "cli"], default="mcq", help="Quiz mode: mcq or cli flashcards")
-    parser.add_argument("--lesson", type=int, default=None, help="Filter questions by CCNA lesson number (1-9)")
+    parser.add_argument("--track", choices=["all", "ccna", "practical"], default="all", help="Filter quiz track")
+    parser.add_argument("--lesson", type=int, default=None, help="Filter questions by lesson number")
     parser.add_argument("--count", type=int, default=5, help="Number of questions to ask (default: 5)")
     args = parser.parse_args()
 
@@ -196,13 +226,13 @@ def main() -> int:
         print_summary()
         return 0
     if args.demo:
-        run_demo(args.lesson)
+        run_demo(args.track, args.lesson)
         return 0
     if args.mode == "cli":
         run_interactive_cli(args.count)
         return 0
 
-    quizzes = load_ccna_quizzes(args.lesson)
+    quizzes = load_all_quizzes(args.track, args.lesson)
     if not quizzes:
         print("❌ কোনো কুইজ পাওয়া যায়নি!", file=sys.stderr)
         return 1

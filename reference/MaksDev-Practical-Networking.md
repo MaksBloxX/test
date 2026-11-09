@@ -14,6 +14,14 @@ Md. Makshedul Islam
 
 Student, EXIM Bank Agricultural University Bangladesh.
 
+### 🖼️ চিত্রে বোঝো: ৩০টি নেটওয়ার্ক কমান্ডের কাজভিত্তিক মানচিত্র
+
+![৩০টি নেটওয়ার্ক কমান্ডের কাজভিত্তিক মানচিত্র — Reachability, IP, Route, DNS, Port, Remote Access, Packet Capture, Firewall ও Performance।](../assets/diagrams/reference-30-command-toolbox.svg)
+
+> **ছবির সারকথা:** Reachability, IP, Route, DNS, Port, Remote Access, Packet Capture, Firewall ও Performance।
+
+---
+
 ## শুরু করার আগে
 
 এই বইটি শিক্ষার্থী ও নতুন Linux/Windows ব্যবহারকারীদের জন্য একটি ব্যবহারিক রেফারেন্স। প্রতিটি কমান্ডের কাজ, পাঁচটি উদাহরণ, ফলাফল বোঝার উপায় এবং প্রয়োজনীয় সতর্কতা এক জায়গায় দেওয়া হয়েছে। এটি কোনো বিশ্ববিদ্যালয়ের আনুষ্ঠানিক প্রকাশনা নয়।

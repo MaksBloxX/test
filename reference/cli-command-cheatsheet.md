@@ -7,6 +7,14 @@
 
 ---
 
+### 🖼️ চিত্রে বোঝো: কোন Cisco CLI prompt-এ কোন কমান্ড
+
+![কোন Cisco CLI prompt-এ কোন কমান্ড — `R1>` থেকে `R1#`, `R1(config)#`, `R1(config-if)#`—কোন স্তরে কী করবে।](../assets/diagrams/reference-cli-modes.svg)
+
+> **ছবির সারকথা:** `R1>` থেকে `R1#`, `R1(config)#`, `R1(config-if)#`—কোন স্তরে কী করবে।
+
+---
+
 ## 🟢 Part 1 · Cisco CLI Basic Commands
 
 | Command | কাজ | Mode |
@@ -329,7 +337,187 @@ ip nat inside source list 1 interface g0/1 overload
 
 ---
 
-## 🚨 Part 12 · কমন Cisco IOS Error বার্তা ও সমাধান
+## 🧭 Part 12 · Dynamic Routing — RIPv2 ও OSPFv2 ([লেসন ১৩](../lessons/13-dynamic-routing-ospf.md))
+
+### RIPv2 কনফিগারেশন
+```cisco
+router rip
+ version 2
+ no auto-summary
+ passive-interface gigabitEthernet 0/0
+ network 192.168.1.0
+ network 10.0.0.0
+```
+
+### Single-Area OSPFv2 কনফিগারেশন (Wildcard Mask সহ)
+```cisco
+router ospf 1
+ router-id 1.1.1.1
+ passive-interface gigabitEthernet 0/0
+ network 192.168.1.0 0.0.0.255 area 0
+ network 10.0.12.0 0.0.0.3 area 0
+```
+**যাচাই:** `show ip ospf neighbor` · `show ip route ospf` · `show ip protocols` · `show ip ospf interface`
+
+---
+
+## 🔐 Part 13 · SSHv2 Hardening, NTP ও Syslog ([লেসন ১৫](../lessons/15-ssh-syslog-ntp.md))
+
+```cisco
+hostname R1
+ip domain-name office.local
+enable secret EnablePass123!
+username admin secret AdminPass123!
+service password-encryption
+
+crypto key generate rsa
+! প্রম্পট এলে লেখো: 2048
+ip ssh version 2
+
+line vty 0 4
+ transport input ssh
+ login local
+ exec-timeout 5 0
+
+! সময় সিঙ্ক (NTP — UDP 123) ও কেন্দ্রীয় লগিং (Syslog — UDP 514)
+ntp server 192.168.1.100
+service timestamps log datetime msec
+logging host 192.168.1.100
+logging trap informational
+```
+**যাচাই:** `show ip ssh` · `show ntp status` · `show logging` · PC থেকে: `ssh -l admin 192.168.1.1`
+
+---
+
+## 🔀 Part 14 · Multilayer Switch SVI Routing ([লেসন ১৬](../lessons/16-multilayer-switch-svi.md))
+
+**3560 SW1-তে** VLAN 10/20 তৈরি করে host access port বসানোর পর:
+
+```cisco
+interface vlan 10
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+interface vlan 20
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+ip routing
+```
+
+PC0 VLAN10 gateway `.10.1`, PC2 VLAN20 gateway `.20.1`; **যাচাই:** `show vlan brief`, `show ip interface brief`, `show ip route`, PC0 থেকে `ping 192.168.20.10`। সাধারণ 2960-এর management SVI দিয়ে দুই VLAN route হয় না।
+
+---
+
+## 🔄 Part 15 · HSRP Virtual Gateway ([লেসন ১৭](../lessons/17-hsrp-gateway-redundancy.md))
+
+**R1-এর LAN interface-এ:**
+
+```cisco
+interface gigabitEthernet 0/0
+ ip address 192.168.50.2 255.255.255.0
+ standby 1 ip 192.168.50.1
+ standby 1 priority 120
+ standby 1 preempt
+```
+
+**R2-এর একই LAN-এর interface-এ আলাদাভাবে:**
+
+```cisco
+interface gigabitEthernet 0/0
+ ip address 192.168.50.3 255.255.255.0
+ standby 1 ip 192.168.50.1
+ standby 1 priority 100
+ standby 1 preempt
+```
+
+PC-এর gateway **VIP `.50.1`**, physical `.2`/`.3` নয়। **যাচাই:** `show standby brief`; রাউটার সম্পূর্ণ OFF করে আবার gateway ping। দূরের `198.51.100.10` test loopback ping চাইলে [পূর্ণ ল্যাবের](../lessons/17-hsrp-gateway-redundancy.md) R1/R2 default route ও R3-এর **দুটি return route** লাগবে; প্রকৃত Internet নয়।
+
+---
+
+## 🌐 Part 16 · IPv6, SLAAC, Static ও OSPFv3 ([লেসন ১৮](../lessons/18-ipv6-slaac-routing.md))
+
+**R1-এর উদাহরণ (LAN A + transit):**
+
+```cisco
+ipv6 unicast-routing
+interface gigabitEthernet 0/0
+ ipv6 address 2001:db8:10::1/64
+ ipv6 address fe80::1 link-local
+ no shutdown
+interface gigabitEthernet 0/1
+ ipv6 address 2001:db8:12::1/64
+ no shutdown
+ipv6 route 2001:db8:20::/64 2001:db8:12::2
+```
+
+PC0 **Auto Config** → R1-এর RA-তে `2001:db8:10::/64` SLAAC ও `fe80::1` gateway। অন্য দিকে R2-তে **return route** `ipv6 route 2001:db8:10::/64 2001:db8:12::1` প্রয়োজন। পরে **দুই দিকের static route সরিয়ে** OSPFv3 দেবে:
+
+```cisco
+! শুধু R1; তার LAN+transit IPv6 interface আগে থেকেই configured
+no ipv6 route 2001:db8:20::/64 2001:db8:12::2
+ipv6 router ospf 10
+ router-id 1.1.1.1
+interface gigabitEthernet 0/0
+ ipv6 ospf 10 area 0
+interface gigabitEthernet 0/1
+ ipv6 ospf 10 area 0
+```
+
+**যাচাই:** `show ipv6 interface brief` · `show ipv6 route` (`S` তারপর `O`) · `show ipv6 ospf neighbor` (`FULL`)। `2001:db8::/32` উদাহরণের prefix; real Internet-এ ব্যবহারের জন্য নয়।
+
+---
+
+## ☎️ Part 17 · Voice VLAN, DHCP Option 150 ও CME ([Extra ০৭](../Extras/voip-ip-telephony-lab.md))
+
+```cisco
+! SW1-এর 7960 phone-facing access port
+interface fastEthernet 0/1
+ switchport mode access
+ switchport access vlan 10
+ switchport voice vlan 20
+
+! R1-এর voice DHCP pool; router subinterface dot1Q 20 আগে configured
+ip dhcp pool VOICE
+ network 192.168.20.0 255.255.255.0
+ default-router 192.168.20.1
+ option 150 ip 192.168.20.1
+
+! R1-এর CME; ephone-dn 1/2-এ number 1001/1002 আলাদাভাবে লাগবে
+telephony-service
+ max-ephones 2
+ max-dn 2
+ ip source-address 192.168.20.1 port 2000
+ auto assign 1 to 2
+```
+
+SW1 ও R1-এর অংশ এক ডিভাইসে পেস্ট করবে না; সম্পূর্ণ **port/IP plan** Extra ০৭-এ। `show ip dhcp binding` + ফোনের **screen-এ extension** + `1001→1002` dial দিয়ে যাচাই।
+
+---
+
+## 🛡️ Part 18 · DHCP Snooping → DAI ([Extra ০৮](../Extras/dhcp-snooping-dai-lab.md))
+
+**SW1-তে; R1-এর DHCP server `Gi0/1`-এ, PC দুটো `Fa0/1–2`-এ:**
+
+```cisco
+ip dhcp snooping
+ip dhcp snooping vlan 1
+no ip dhcp snooping information option
+interface gigabitEthernet 0/1
+ ip dhcp snooping trust
+```
+
+**আগে** `show ip dhcp snooping` ও `show ip dhcp snooping binding`-এ বৈধ PC lease দেখো; তারপর যদি IOS/Packet Tracer সমর্থন করে:
+
+```cisco
+ip arp inspection vlan 1
+interface gigabitEthernet 0/1
+ ip arp inspection trust
+```
+
+**যাচাই:** `show ip arp inspection`, `show ip arp inspection interfaces`, `show ip arp inspection statistics`। Static host-এর DHCP binding নেই—বাস্তব IOS-এ যাচাইকৃত ARP ACL/policy লাগে; PC-facing port কখনো trusted করে ‘fix’ করবে না। **Packet Tracer DAI-তে CLI গ্রহণ করলেও traffic filter নাও হতে পারে**: config ≠ enforcement-এর প্রমাণ।
+
+---
+
+## 🚨 Part 19 · কমন Cisco IOS Error বার্তা ও সমাধান
 
 | IOS Error মেসেজ | কেন দেখায় | কী করবে |
 | :--- | :--- | :--- |
@@ -338,6 +526,8 @@ ip nat inside source list 1 interface g0/1 overload
 | `% Ambiguous command: "sh in"` | ছোট করে লেখা শব্দটি একাধিক কমান্ডের সাথে মিলে যাচ্ছে | আরও ১–২ অক্ষর বাড়িয়ে লেখো (যেমন `sh int`) |
 | `Translating "xyz"... domain server (255.255.255.255)` | ভুল শব্দ টাইপ করায় রাউটার সেটিকে Domain Name ভেবে খুঁজছে (CLI আটকে যায়!) | **`Ctrl + Shift + 6`** চাপো অথবা গ্লোবাল কনফিগে `no ip domain-lookup` দিয়ে রাখো |
 | `line protocol is down (err-disabled)` | Port Security লঙ্ঘন বা লুপের কারণে সুইচ পোর্ট লক হয়ে গেছে | অবৈধ ডিভাইস সরিয়ে পোর্টে `shutdown` → `no shutdown` চালাও |
+| `% Please define a hostname / domain-name first.` | `hostname` ও `ip domain-name` না দিয়েই `crypto key generate rsa` চালানো হয়েছে | আগে `hostname R1` এবং `ip domain-name office.local` দাও |
+| `Cannot remove a module when the power is on.` | ল্যাপটপ বা রাউটারে পাওয়ার চালু থাকা অবস্থায় মডিউল (`WPC300N` / স্লট) টান দেওয়া হয়েছে | Physical ট্যাবে ছোট পাওয়ার সুইচটি আগে **OFF** করে মডিউল বসাও, তারপর **ON** করো |
 
 ---
 

@@ -14,6 +14,14 @@
 
 Student, EXIM Bank Agricultural University Bangladesh.
 
+### 🖼️ চিত্রে বোঝো: ব্রাউজার থেকে সার্ভার হয়ে আবার স্ক্রিনে
+
+![ব্রাউজার থেকে সার্ভার হয়ে আবার স্ক্রিনে — Search → DNS → Packet/Frame → HTTP Server → Browser Render—ধাপগুলো ছবিতে দেখো।](../assets/diagrams/reference-osi-search-journey.svg)
+
+> **ছবির সারকথা:** Search → DNS → Packet/Frame → HTTP Server → Browser Render—ধাপগুলো ছবিতে দেখো।
+
+---
+
 ## বিষয়সূচি
 
 1. একটি সার্চের পেছনে কী ঘটে?
