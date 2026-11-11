@@ -122,7 +122,7 @@ class PhaseFourRegressionTests(unittest.TestCase):
         self.assertEqual(2, len(config["theme"]["palette"]))
         self.assertIn("content.code.copy", config["theme"]["features"])
         self.assertTrue(any(isinstance(p, dict) and "search" in p for p in config["plugins"]))
-        self.assertIn("github.io/Cisco-Packet-Tracer-Lab/", config["site_url"])
+        self.assertIn("github.io/test/", config["site_url"])
         nav_text = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
         for row in self.entries:
             self.assertIn("en/" + row["source"], nav_text)
@@ -188,7 +188,7 @@ class PhaseFourRegressionTests(unittest.TestCase):
             parser.feed(page.read_text(encoding="utf-8"))
             pages[page] = parser
         missing = []
-        base = "https://example.org/Cisco-Packet-Tracer-Lab/"
+        base = "https://example.org/test/"
         for page, parser in pages.items():
             page_dir = page.parent.relative_to(site).as_posix().strip(".")
             page_url = base + (page_dir + "/" if page_dir else "")
@@ -198,7 +198,7 @@ class PhaseFourRegressionTests(unittest.TestCase):
                 url = urlparse(urljoin(page_url, raw))
                 if url.netloc != "example.org":
                     continue  # external link, badge or canonical URL
-                prefix = "/Cisco-Packet-Tracer-Lab/"
+                prefix = "/test/"
                 if not url.path.startswith(prefix):
                     missing.append((page, raw))
                     continue
