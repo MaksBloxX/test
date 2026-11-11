@@ -1,0 +1,38 @@
+! v4.0 build-along for CME (not executed in Packet Tracer)
+! Cable exactly as in capstone/plan.json; adjust interface labels if your PT module differs.
+! For serial clock rate, the HQ cable end MUST be DCE (show controllers serial).
+enable
+configure terminal
+hostname CME
+no ip domain-lookup
+interface FastEthernet0/0
+ description HQ-SW FastEthernet0/4 access VLAN20 (NOT a trunk)
+ ip address 10.10.20.10 255.255.255.0
+ no shutdown
+exit
+ip route 0.0.0.0 0.0.0.0 10.10.20.1
+ip dhcp excluded-address 10.10.20.1 10.10.20.20
+ip dhcp pool HQ_VOICE
+ network 10.10.20.0 255.255.255.0
+ default-router 10.10.20.1
+ option 150 ip 10.10.20.10
+exit
+telephony-service
+ max-ephones 3
+ max-dn 3
+ ip source-address 10.10.20.10 port 2000
+ auto assign 1 to 3
+exit
+ephone-dn 1
+ number 1001
+exit
+ephone-dn 2
+ number 1002
+exit
+ephone-dn 3
+ number 2001
+exit
+! Auto-assigned extension order follows registration. Read phone screens before dialing.
+! create cnf-files may be optional/unsupported in some Packet Tracer versions.
+end
+copy running-config startup-config

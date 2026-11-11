@@ -1,0 +1,267 @@
+# Nine self-contained English CCNA chapter companions, corresponding one-for-one.
+- source: ccna-fundamentals/01-network-basics.md
+  title: "What is a network? LAN, WAN, switches and routers"
+  goal: "Explain why devices connect, how a small LAN forwards traffic and what makes a WAN different."
+  plan: "Start with three PCs and a 2960 switch on one subnet. Then imagine a router linking that LAN to a second network. The source chapter includes comparisons of bus, star and ring designs and a longer self-test."
+  ideas:
+    - "A host sends or receives data; a client requests a service while a server provides it. These are roles, not always distinct hardware."
+    - "A switch uses Layer-2 MAC information to forward Ethernet frames inside a LAN; a router uses Layer-3 IP networks to connect different LANs."
+    - "A LAN is a local network; a WAN connects distant sites, often over a provider's infrastructure."
+    - "Star is simple to extend but its central device is a common failure point; mesh improves redundancy with more links."
+  steps:
+    - "Give three connected PCs unique addresses in one /24, such as 192.168.1.10, .11 and .12. No router is required for local switching."
+    - "Ping from the first PC to the second. Observe that the switch learns source MACs and forwards toward the destination."
+    - "Add a second subnet on the far side of a router; explain why hosts now need a gateway."
+    - "Draw a star and a small full mesh; for N nodes, a full mesh requires N(N-1)/2 links."
+  sample: |
+    # On a PC command prompt: local reachability
+    ipconfig
+    ping 192.168.1.11
+  verify:
+    - "Distinguish host, NIC, link, switch, router, LAN and WAN without conflating their roles."
+    - "Explain how a same-subnet ping differs from a cross-subnet ping."
+    - "For four nodes, calculate a full mesh link count of six."
+  fix:
+    - "If local PCs cannot ping, check addresses/masks, cables and live switch ports before adding routing."
+    - "Do not call a router a replacement for a switch's local MAC-learning function."
+  question: "Can two correctly addressed PCs on the same VLAN and /24 ping through one switch without a router?"
+  answer: "Yes. They can exchange local frames directly; a router is needed only to leave the subnet."
+
+- source: ccna-fundamentals/02-osi-tcp-ip.md
+  title: "OSI layers, TCP/IP model and encapsulation"
+  goal: "Trace a user's request through protocol layers and name the data unit at each relevant stage."
+  plan: "Read the seven-layer OSI diagram from bottom (physical) to top (application). Compare it with the operational TCP/IP model, which groups several OSI layers."
+  ideas:
+    - "OSI layers 1-7 are Physical, Data Link, Network, Transport, Session, Presentation and Application."
+    - "On sending, application data gains transport, network and link headers; the receiver removes them in reverse."
+    - "Ethernet frames carry MAC addresses on the local link; IP packets carry source/destination IPs across networks; TCP/UDP use ports."
+    - "TCP provides ordered, reliable transport; UDP is connectionless and suits applications that handle loss differently."
+  steps:
+    - "Start with a browser requesting a page; identify the application protocol and the destination transport port."
+    - "At transport, identify a TCP segment; at network, an IP packet; at data link, an Ethernet frame; at physical, bits."
+    - "In a two-router path, explain which addressing fields remain end-to-end and which link-layer header changes per hop."
+    - "Use Packet Tracer Simulation Mode to watch a PDU; compare the protocol layers in the event details."
+  sample: |
+    Application:  HTTP request
+    Transport:    TCP segment with port numbers
+    Network:      IP packet with source/destination IP
+    Data Link:    Ethernet frame with local-hop MACs
+    Physical:     transmitted bits
+  verify:
+    - "Recite the seven OSI layers in order and match switch (mostly L2) and router (L3) to their forwarding roles."
+    - "Explain encapsulation as adding headers, not converting an IP packet into a permanent MAC address."
+    - "Identify a browser's HTTP/TCP flow separately from a DNS query, which might use UDP or TCP."
+  fix:
+    - "If layers feel arbitrary, trace one actual ping or HTTP event instead of memorizing isolated lists."
+    - "Do not treat the OSI model as a strict claim that every real application uses every layer as a separate program."
+  question: "At which layer is the end-to-end destination IP address used for routing?"
+  answer: "The Network layer (OSI Layer 3); link-layer MAC addressing is rewritten for each local link."
+
+- source: ccna-fundamentals/03-mac-ethernet-arp.md
+  title: "MAC addresses, Ethernet frames and ARP"
+  goal: "Follow an ARP broadcast and explain how a switch learns and delivers an Ethernet frame."
+  plan: "Use two PCs, a switch and, for a remote-subnet comparison, a router. An unknown same-LAN IPv4 neighbor triggers ARP to learn a MAC address. The attached image shows Request and Reply directions."
+  ideas:
+    - "A MAC address identifies a network interface on a local Ethernet link; an IPv4 address identifies the Layer-3 host or interface."
+    - "An ARP Request asks who owns an IPv4 address and is broadcast on the VLAN; a matching ARP Reply is normally unicast."
+    - "A switch's MAC table learns source MAC-to-port mappings; an ARP cache maps IPv4 addresses to MACs. They are not the same table."
+    - "When sending to a remote network, a host ARPs for its local gateway's MAC, not the remote destination MAC."
+  steps:
+    - "Give PC0 and PC1 addresses on the same VLAN and subnet; clear ARP if your simulator version provides the control."
+    - "Send a first ping in Simulation Mode and note the initial broadcast ARP Request."
+    - "Observe the Reply and subsequent unicast ICMP frames; inspect the switch MAC table."
+    - "Move PC1 to another subnet behind a router and identify how the next-hop gateway changes the ARP target."
+  sample: |
+    # Useful checks on hosts and switches, where supported
+    arp -a
+    show mac address-table
+  verify:
+    - "State why an ARP broadcast stays within its VLAN and does not cross a router as-is."
+    - "Identify the destination MAC on a local ping versus the first hop of a remote ping."
+    - "Show a learned MAC-to-port entry rather than treating ARP cache output as a switch MAC table."
+  fix:
+    - "If the first ping times out but subsequent pings pass, allow initial ARP and link startup before assuming a route fault."
+    - "If the switch learned a MAC on the wrong port, confirm cabling and VLAN membership."
+  question: "What MAC does PC0 need to send IPv4 traffic to a remote subnet?"
+  answer: "The MAC of its configured local gateway, learned using ARP on the local VLAN."
+
+- source: ccna-fundamentals/04-ipv4-addressing.md
+  title: "IPv4 addresses, private ranges and special cases"
+  goal: "Read an IPv4 address with its prefix and distinguish network, host and special-purpose addresses."
+  plan: "An IPv4 address has four 8-bit octets. In 192.168.10.25/24 the first 24 bits are the subnet portion; 192.168.10.0 is the subnet ID and 192.168.10.255 its directed broadcast address."
+  ideas:
+    - "An address is meaningful together with its subnet mask; hosts with different masks can disagree about local reachability."
+    - "Private IPv4 space includes 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16; public Internet reachability needs a valid network policy."
+    - "127.0.0.0/8 is loopback, 169.254.0.0/16 is IPv4 link-local/APIPA and 0.0.0.0/0 denotes the default route."
+    - "Documentation-only example ranges such as 203.0.113.0/24 must not be mistaken for a real ISP connection."
+  steps:
+    - "Write 192.168.10.25 as four binary octets and compare the /24 boundary with the host bits."
+    - "Find the network, broadcast and ordinary host range for 192.168.10.25/24."
+    - "Repeat for 192.168.10.65/26 and notice how the same address can land in a smaller network."
+    - "Classify a sample as private, loopback, APIPA, documentation or ordinary public allocation."
+  sample: |
+    192.168.10.25/24
+    Network:   192.168.10.0
+    Broadcast: 192.168.10.255
+    Hosts:     192.168.10.1 through 192.168.10.254
+  verify:
+    - "Given address plus mask, find the network and broadcast without relying on an old class label."
+    - "Explain why 169.254.x.x often signals DHCP lease failure in a simple Packet Tracer lab."
+    - "Distinguish a private host address from NAT's externally visible address."
+  fix:
+    - "If PCs with similar-looking IPs cannot ping, compare their prefix lengths and actual network IDs."
+    - "Do not assign a subnet's network or broadcast address to a normal host."
+  question: "Is 192.168.10.255 usable as a PC address in 192.168.10.0/24?"
+  answer: "No. It is that /24 subnet's directed broadcast address."
+
+- source: ccna-fundamentals/05-subnetting-basics.md
+  title: "Subnetting basics: prefix, block and usable hosts"
+  goal: "Split a /24 into smaller subnets and calculate each network and broadcast bound."
+  plan: "Use 192.168.1.0/24 as a parent. A /26 gives four blocks of 64 addresses: .0-.63, .64-.127, .128-.191 and .192-.255. Each ordinary /26 has 62 usable host addresses."
+  ideas:
+    - "A prefix /n leaves (32-n) host bits and 2^(32-n) total IPv4 addresses per block."
+    - "For conventional subnets with network and broadcast reserved, usable hosts are 2^h-2; /31 and /32 have special uses."
+    - "Block size in a relevant octet is 256 minus that mask octet; /26 uses 255.255.255.192 and block size 64."
+    - "The next subnet's network ID is not a host in the previous subnet."
+  steps:
+    - "Write /26 as mask 255.255.255.192 and mark boundaries .0, .64, .128 and .192."
+    - "For 192.168.1.65/26, locate its block .64-.127; its usable range is .65-.126."
+    - "Practice with /25, /27 and /30; calculate first, last and broadcast for each sample."
+    - "Place two PCs on the same /26 and two on different /26s; predict ping before using Packet Tracer."
+  sample: |
+    # Offline calculator cross-check AFTER solving by hand
+    python3 scripts/subnet_calculator.py 192.168.1.65/26
+  verify:
+    - "For 192.168.1.65/26, network is .64, broadcast .127 and first usable .65."
+    - "For a standard /30, identify two usable host addresses in a four-address block."
+    - "Explain why two /26 hosts on separate blocks need a router to communicate."
+  fix:
+    - "If a block boundary looks wrong, recalculate 256-mask-octet instead of guessing from the last host number."
+    - "Do not use an untested 2^h-2 shortcut for point-to-point /31 cases with different addressing rules."
+  question: "What is the broadcast address of 192.168.1.65/26?"
+  answer: "192.168.1.127, the last address in the 192.168.1.64/26 block."
+
+- source: ccna-fundamentals/06-subnetting-vlsm.md
+  title: "VLSM: allocate different subnet sizes"
+  goal: "Plan nonoverlapping networks for departments of different sizes within one parent block."
+  plan: "Example requirement: CSE needs 55 hosts, EEE 25, and a WAN point-to-point link two. Begin with 192.168.10.0/24 and allocate largest to smallest to avoid overlap."
+  ideas:
+    - "55 hosts require a /26 (62 usable); 25 require a /27 (30 usable); two conventional WAN endpoints fit a /30."
+    - "Allocate complete blocks on aligned boundaries; assigning .64/27 after .0/26 is valid, but .32/27 would overlap the /26."
+    - "VLSM conserves space compared with giving every requirement the same large mask."
+    - "Leave room for future growth and record gateway, first/last host and broadcast for each block."
+  steps:
+    - "Sort requirements by host count and select the smallest prefix that satisfies each."
+    - "Reserve 192.168.10.0/26 for CSE: hosts .1-.62, broadcast .63."
+    - "Reserve 192.168.10.64/27 for EEE: hosts .65-.94, broadcast .95."
+    - "Reserve 192.168.10.96/30 for WAN: endpoints .97 and .98, broadcast .99."
+    - "Check remaining free space and rerun your result in the optional calculator."
+  sample: |
+    python3 scripts/subnet_calculator.py --vlsm 192.168.10.0/24 \
+      --departments "CSE:55,EEE:25,WAN:2"
+  verify:
+    - "All three allocations are inside the parent /24, disjoint and aligned on their own block boundary."
+    - "The usable count of each block meets its requested host requirement."
+    - "Your router/PC IP choices exclude all three network and broadcast addresses."
+  fix:
+    - "If two blocks overlap, go back to the current block's broadcast and start the next at the following boundary."
+    - "If the number of hosts fits only the total address count, subtract network/broadcast before selecting a prefix."
+  question: "What is the smallest conventional IPv4 subnet for 55 ordinary host addresses?"
+  answer: "A /26, offering 64 total addresses and 62 ordinary usable host addresses."
+
+- source: ccna-fundamentals/07-acl-nat.md
+  title: "Access control lists, NAT and PAT"
+  goal: "Predict how IOS filters a packet and translates private addresses toward an outside network."
+  plan: "Use a small inside LAN behind a router and a separate documentation-only outside/test segment. The original chapter contrasts standard versus extended ACLs and static/dynamic NAT versus PAT."
+  ideas:
+    - "ACL entries are evaluated in order; the first match decides, followed by an implicit deny if nothing matches."
+    - "A standard ACL primarily matches source IPv4; an extended ACL can match protocol, source, destination and ports."
+    - "PAT (NAT overload) lets many inside hosts share one outside address by distinguishing transport ports."
+    - "An ACL policy and NAT translation solve different problems: permission and address rewriting."
+  steps:
+    - "Write a specific permit/deny policy in words, then translate it to ordered ACL entries before attaching it."
+    - "For an extended ACL, identify where the traffic enters an interface and check the direction with a test packet."
+    - "Mark inside and outside interfaces for a lab NAT/PAT example and send permitted inside traffic toward a simulated test network."
+    - "Inspect ACL match counters and translations; a command accepted by IOS is not proof that the intended packet matched."
+  sample: |
+    ! Example policy: do NOT paste before checking real addressing/direction
+    ip access-list extended DENY-CSE-TO-ADMIN
+     deny ip 192.168.10.0 0.0.0.255 192.168.30.0 0.0.0.255
+     permit ip any any
+    ! Verify after the lab's traffic is generated
+    show access-lists
+    show ip nat translations
+  verify:
+    - "Predict which of three example packets matches the deny and which matches the later permit."
+    - "Observe a translation only after a qualifying packet crosses the configured NAT boundary."
+    - "Confirm a blocked flow is blocked for the intended ACL reason rather than an unrelated routing fault."
+  fix:
+    - "If nothing is permitted, inspect the rule order, masks, application point and implicit deny."
+    - "If translations are absent, check inside/outside marks, NAT match rule, next hop and traffic generation."
+  question: "Why can many LAN clients share one outside IPv4 address under PAT?"
+  answer: "Their flows are distinguished by port numbers as well as translated addresses."
+
+- source: ccna-fundamentals/08-troubleshooting.md
+  title: "Bottom-up network troubleshooting"
+  goal: "Isolate common addressing, VLAN, route and service faults with a repeatable command sequence."
+  plan: "The original chapter walks through seven high-value checks and six broken exercises. Begin at the host and proceed through link, local gateway, remote route and application; avoid changing unrelated settings together."
+  ideas:
+    - "The shortest failing test is most useful: local gateway, next router, remote host by IP, then service by name."
+    - "A correct route-table entry does not prove the return route or end-host gateway."
+    - "An IP-level success with a domain-name failure points toward DNS; a name resolved with no page points toward HTTP or server state."
+    - "Keep before/after evidence so a repaired symptom is not merely a different one."
+  steps:
+    - "On the PC inspect its IP, mask, gateway and DNS settings; confirm the physical link is live."
+    - "On the switch check expected VLAN membership, trunking and MAC learning."
+    - "On each router check interface up/up, next-hop reachability and routes for both directions."
+    - "Test the application only after lower-layer checks pass and repeat the original failed test after one justified fix."
+  sample: |
+    # Choose the relevant command on the right device
+    ipconfig
+    ping 192.168.1.1
+    show ip interface brief
+    show vlan brief
+    show interfaces trunk
+    show ip route
+    show ip dhcp binding
+  verify:
+    - "For one broken case, state the observed symptom, failing layer, evidence and minimal fix."
+    - "Run both PC-to-gateway and remote end-to-end ping rather than citing a single device's config."
+    - "After repairing a DNS issue, test the exact failed name again."
+  fix:
+    - "Do not rewrite routing when the router interface is administratively down."
+    - "Do not declare a service broken until its server is reachable by IP and its service is on."
+  question: "If the web page opens by IP but not its configured name, what should you inspect first?"
+  answer: "Check the PC's DNS-server address, the server's DNS service and its A record spelling."
+
+- source: ccna-fundamentals/09-capstone-university-lab.md
+  title: "University network integration capstone"
+  goal: "Combine department VLANs, DHCP relay, DNS/web, PAT and a targeted interdepartment ACL."
+  plan: "Four /24 VLANs: CSE 192.168.10.0/24, EEE 192.168.20.0/24, Administration 192.168.30.0/24 and Servers 192.168.40.0/24; each .1 is its router subinterface gateway. Server0 .40.10 offers DHCP/DNS and Server1 .40.20 hosts HTTP. R1 routes locally and meets R2 on a documentation-only WAN."
+  ideas:
+    - "DHCP Discover is a local broadcast; ip helper-address on client VLAN gateways relays it to Server0 in VLAN 40."
+    - "DNS and HTTP are separate services; both depend on functioning inter-VLAN paths."
+    - "PAT should be tested toward a simulated ISP/test network, not described as live Internet."
+    - "An extended ACL on the CSE-facing gateway blocks CSE-to-Administration while still allowing approved server access."
+  steps:
+    - "Create VLANs 10, 20, 30 and 40 and the corresponding access/trunk port plan on SW1."
+    - "Configure R1 802.1Q subinterfaces .10/.20/.30/.40 with gateway .1 for each /24; verify all four local pings."
+    - "Give Server0 fixed .40.10, set DHCP pools for client VLANs and helper-address .40.10 on VLAN 10/20/30 subinterfaces."
+    - "Give Server1 fixed .40.20, add the DNS A record and enable HTTP; test by IP, then host name."
+    - "Add R1-R2 static paths and PAT toward the test WAN, then apply the documented ACL denying only CSE-to-Admin."
+  sample: |
+    ! On R1's VLAN 10 subinterface after its IP/gateway is set
+    interface gigabitEthernet 0/0.10
+     encapsulation dot1Q 10
+     ip address 192.168.10.1 255.255.255.0
+     ip helper-address 192.168.40.10
+    ! Other client VLANs need their own .1 and helper commands
+  verify:
+    - "Each department PC leases an address in the correct VLAN with correct .1 gateway and .40.10 DNS."
+    - "CSE reaches Server0/Server1 but cannot reach an Admin host under the targeted policy."
+    - "After a permitted test packet to R2, show ip nat translations has a corresponding entry."
+  fix:
+    - "If DHCP works only in VLAN 40, inspect helper-address on client subinterfaces and the server's DHCP pools."
+    - "If CSE cannot reach any server, an ACL permit may be missing or applied in the wrong direction."
+  question: "Why place ip helper-address on the client VLAN subinterfaces?"
+  answer: "Their DHCP Discover broadcasts cannot cross the router; relay sends requests to Server0 in VLAN 40."

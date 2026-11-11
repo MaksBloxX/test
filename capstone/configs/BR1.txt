@@ -1,0 +1,62 @@
+! v4.0 build-along for BR1 (not executed in Packet Tracer)
+! Cable exactly as in capstone/plan.json; adjust interface labels if your PT module differs.
+! For serial clock rate, the HQ cable end MUST be DCE (show controllers serial).
+enable
+configure terminal
+hostname BR1
+no ip domain-lookup
+interface GigabitEthernet0/0
+ description 802.1Q trunk to BR1-SW GigabitEthernet0/1
+ no ip address
+ no shutdown
+exit
+interface GigabitEthernet0/0.10
+ description BR1-DATA
+ encapsulation dot1Q 10
+ ip address 10.20.10.1 255.255.255.0
+ ip access-group BR1_DATA_IN in
+ no shutdown
+exit
+interface GigabitEthernet0/0.20
+ description BR1-VOICE
+ encapsulation dot1Q 20
+ ip address 10.20.20.1 255.255.255.0
+ no shutdown
+exit
+interface Serial0/0/0
+ description Private serial to HQ1 Serial0/0/0
+ ip address 10.255.11.2 255.255.255.252
+ no shutdown
+exit
+interface Serial0/0/1
+ description Private serial to HQ2 Serial0/0/0
+ ip address 10.255.12.2 255.255.255.252
+ no shutdown
+exit
+! Primary external route follows HQ1; the higher-distance HQ2 route is backup.
+ip route 0.0.0.0 0.0.0.0 10.255.11.1
+ip route 0.0.0.0 0.0.0.0 10.255.12.1 20
+router ospf 10
+ router-id 3.3.3.3
+ passive-interface default
+ no passive-interface Serial0/0/0
+ no passive-interface Serial0/0/1
+ network 10.20.10.0 0.0.0.255 area 0
+ network 10.20.20.0 0.0.0.255 area 0
+ network 10.255.11.0 0.0.0.3 area 0
+ network 10.255.12.0 0.0.0.3 area 0
+exit
+ip access-list extended BR1_DATA_IN
+ remark Block this branch DATA subnet from HQ ADMIN; other destinations remain allowed
+ deny ip 10.20.10.0 0.0.0.255 10.10.99.0 0.0.0.255
+ permit ip 10.20.10.0 0.0.0.255 any
+exit
+! Optional BR1 voice phone: registration to HQ 2811 must be observed in your PT version.
+ip dhcp excluded-address 10.20.20.1 10.20.20.20
+ip dhcp pool BR1_VOICE
+ network 10.20.20.0 255.255.255.0
+ default-router 10.20.20.1
+ option 150 ip 10.10.20.10
+exit
+end
+copy running-config startup-config

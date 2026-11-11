@@ -1,0 +1,552 @@
+# English adaptations of all 18 practical lessons; edit the prose here and regenerate.
+- source: lessons/01-router-cli-basics.md
+  title: "Router CLI basics and the first LAN"
+  goal: "Learn the Cisco CLI hierarchy and build a small LAN whose PCs can ping each other."
+  plan: "Connect PC0 and PC1 to a 2960 switch and R1 to the same LAN. R1 G0/0 is 192.168.1.1/24; PC0 is .2 and PC1 is .3, each with gateway .1. The included lesson-01 .pkt is a starting point, not a substitute for building the topology."
+  ideas:
+    - "The prompt changes as you enter user EXEC, privileged EXEC, global configuration and interface configuration modes."
+    - "Hosts in the same /24 exchange frames through the switch; a default gateway is for a different network."
+    - "Router interfaces may start administratively down, so no shutdown and an up/up link are both required."
+  steps:
+    - "Place one router, one switch and two PCs. Cable the PCs to separate access ports and connect R1 G0/0 to the switch."
+    - "On R1 enter privileged and global configuration modes, name the device and give G0/0 its LAN IP address."
+    - "Set each PC's unique /24 host address and the router's .1 address as gateway; never assign the same IP twice."
+    - "Ping PC1 from PC0, then ping R1 from each PC. Save the router configuration only after the tests make sense."
+  sample: |
+    enable
+    configure terminal
+    hostname R1
+    interface gigabitEthernet 0/0
+     ip address 192.168.1.1 255.255.255.0
+     no shutdown
+    end
+    show ip interface brief
+  verify:
+    - "On R1, show ip interface brief must report G0/0 up/up with 192.168.1.1."
+    - "On PC0, ipconfig shows 192.168.1.2/24; ping 192.168.1.3 reaches PC1."
+    - "If PC0 can ping PC1 but not R1, separate the L2 test from the gateway/interface test."
+  fix:
+    - "An administratively down router port needs no shutdown; a down/down port also needs a good cable and live peer."
+    - "A missing same-LAN reply often means wrong mask, duplicate address or an unplugged switch port."
+  question: "Must a same-subnet PC0-to-PC1 ping cross the router?"
+  answer: "No. The switch forwards local Ethernet frames; the router is used only for traffic leaving the subnet."
+
+- source: lessons/02-static-routing.md
+  title: "Two routers and bidirectional static routing"
+  goal: "Join two /24 LANs through a /30 transit link and explain why replies need their own route."
+  plan: "PC0 192.168.1.10/24 uses R1 LAN gateway 192.168.1.1; PC1 192.168.2.10/24 uses R2 gateway 192.168.2.1. R1 and R2 meet at 10.0.0.1/30 and 10.0.0.2/30."
+  ideas:
+    - "An ip route destination mask defines which remote network is matched, not just one host."
+    - "A successful request cannot return if R2 has no route back toward 192.168.1.0/24."
+    - "A /30 transit subnet supplies exactly two usable addresses for a point-to-point example."
+  steps:
+    - "Build two switched LANs and cable the router-to-router WAN link. Give every router interface the address shown in the plan."
+    - "Configure the PC gateway on its own LAN, then test each PC-to-local-gateway ping before adding remote routes."
+    - "On R1 add 192.168.2.0/24 via 10.0.0.2. On R2 add 192.168.1.0/24 via 10.0.0.1."
+    - "Inspect both routing tables and ping from PC0 to PC1 and back; a one-way configuration is not a complete lab."
+  sample: |
+    ! R1 ONLY, after its interfaces are up
+    ip route 192.168.2.0 255.255.255.0 10.0.0.2
+    ! R2 ONLY, on the other router
+    ip route 192.168.1.0 255.255.255.0 10.0.0.1
+  verify:
+    - "R1 and R2 show the remote network with an S code in show ip route."
+    - "R1 pings R2 at 10.0.0.2 before attempting end-to-end PC traffic."
+    - "PC0 ping 192.168.2.10 and PC1 ping 192.168.1.10 both succeed after both static routes are installed."
+  fix:
+    - "If WAN ping fails, fix interface state, cable and /30 mask before touching static routes."
+    - "If the forward path works but replies fail, inspect the opposite router's return route and the host gateway."
+  question: "Why does adding a route only to R1 not guarantee PC0-to-PC1 ping?"
+  answer: "R2 still needs a path to 192.168.1.0/24 to deliver the ICMP reply."
+
+- source: lessons/03-dhcp.md
+  title: "Router DHCP server and the DORA exchange"
+  goal: "Make a router lease addresses to clients while reserving infrastructure IPs."
+  plan: "R1 serves 192.168.1.0/24 on G0/0 (192.168.1.1). Several PCs attach through the switch and use DHCP rather than fixed addresses. Exclude 192.168.1.1 through 192.168.1.10 from the pool."
+  ideas:
+    - "The client sends Discover, receives Offer, sends Request and receives ACK; this is DORA."
+    - "The DHCP default-router option must be a reachable gateway in the same subnet as the offered address."
+    - "An excluded range prevents accidental leasing of a router or another statically addressed device."
+  steps:
+    - "Cable R1 to the switch and PCs to separate switch access ports; bring R1 G0/0 up as 192.168.1.1/24."
+    - "Exclude .1 through .10; create a DHCP pool for 192.168.1.0/24 with default-router 192.168.1.1."
+    - "Set PC0 and PC1 to DHCP/Automatic in Desktop IP Configuration; wait for an offer and record their distinct leases."
+    - "Inspect the binding table, then ping the gateway and another leased PC."
+  sample: |
+    ip dhcp excluded-address 192.168.1.1 192.168.1.10
+    ip dhcp pool OFFICE
+     network 192.168.1.0 255.255.255.0
+     default-router 192.168.1.1
+  verify:
+    - "PC ipconfig shows a 192.168.1.x/24 lease with gateway .1, never an excluded address."
+    - "show ip dhcp binding on R1 lists each client after ACK."
+    - "PC0 can ping 192.168.1.1; a lease alone does not prove connectivity."
+  fix:
+    - "If a client has 169.254.x.x or no address, check pool, interface state, cable and DHCP mode."
+    - "If DHCP assigns a lease but gateway ping fails, check the leased mask/gateway and R1 interface."
+  question: "Why reserve the router's .1 address outside the DHCP pool?"
+  answer: "The router must keep a stable gateway IP; handing that address to a client creates a duplicate address."
+
+- source: lessons/04-dns-http-server.md
+  title: "DNS lookup and an HTTP server"
+  goal: "Follow a user from typing a host name to loading a locally hosted web page."
+  plan: "R1 is gateway 192.168.1.1/24. Server0 has static 192.168.1.100/24, gateway .1 and DNS .100. PCs obtain leases in the same LAN; their DNS server is .100."
+  ideas:
+    - "DNS A records map a host name to an IPv4 address; DNS lookup is not the HTTP request itself."
+    - "A server IP should remain stable so the A record does not silently become wrong."
+    - "Testing by IP first isolates connectivity from name-resolution and HTTP-service problems."
+  steps:
+    - "Connect server and clients to the switched LAN. Configure R1 and exclude the gateway and static server range from DHCP."
+    - "Set Server0's static address and turn on DNS and HTTP under its Services tab."
+    - "Add the example host-name A record that points to 192.168.1.100; confirm the PCs know .100 as their DNS server."
+    - "Ping .100 by IP, ping the chosen name, then open the same name in the PC web browser."
+  sample: |
+    ! R1 DHCP options for clients; Server0 remains static
+    ip dhcp pool OFFICE
+     network 192.168.1.0 255.255.255.0
+     default-router 192.168.1.1
+     dns-server 192.168.1.100
+  verify:
+    - "Server0 answers ping at 192.168.1.100 before name resolution is tested."
+    - "The PC resolves the exact host name entered on Server0 to 192.168.1.100."
+    - "The browser displays the page from Server0 after the HTTP service is enabled."
+  fix:
+    - "Host Name Unresolved means check the DNS setting on the PC, A record spelling and DNS service state."
+    - "If name ping works but browser fails, inspect HTTP rather than changing routes at random."
+  question: "Does an HTTP page opening by IP prove DNS is configured correctly?"
+  answer: "No. It proves reachability and HTTP only; test the name separately to prove DNS."
+
+- source: lessons/05-vlan.md
+  title: "VLAN segmentation and access ports"
+  goal: "Separate four PCs into two switch broadcast domains and observe the routing boundary."
+  plan: "PC0/PC1 use 192.168.10.1/24 and .2/24 on VLAN 10; PC2/PC3 use 192.168.20.1/24 and .2/24 on VLAN 20. SW1 Fa0/1-2 serve VLAN 10 and Fa0/3-4 serve VLAN 20. This isolated lesson does not configure a router."
+  ideas:
+    - "A VLAN is a Layer-2 broadcast domain; hosts on different VLANs cannot communicate through a Layer-2 switch alone."
+    - "An access port carries one intended data VLAN to its attached host."
+    - "A trunk transports multiple VLANs between devices, but by itself does not route between them."
+  steps:
+    - "Cable four PCs to SW1 and set the four host IPs in two nonoverlapping /24 networks."
+    - "Create VLAN 10 and VLAN 20; put Fa0/1-2 in 10 and Fa0/3-4 in 20 using access-port mode."
+    - "Run a same-VLAN ping on each pair, then a cross-VLAN ping. A failure across VLANs is expected in this stage."
+    - "Only in the next lessons add a router-on-a-stick or multilayer switch if cross-VLAN traffic is required."
+  sample: |
+    vlan 10
+     name CSE
+    vlan 20
+     name EEE
+    interface range fastEthernet 0/1 - 2
+     switchport mode access
+     switchport access vlan 10
+    interface range fastEthernet 0/3 - 4
+     switchport mode access
+     switchport access vlan 20
+  verify:
+    - "show vlan brief lists the correct four ports under VLAN 10 or 20."
+    - "PC0-to-PC1 and PC2-to-PC3 pings pass if masks, ports and links are correct."
+    - "PC0-to-PC2 ping is expected to fail until inter-VLAN routing is configured."
+  fix:
+    - "Check the actual port receiving each cable; an IP in VLAN 10 plugged into a VLAN 20 access port will fail local tests."
+    - "Do not mark cross-VLAN failure as a defect if this isolation-only topology has no Layer-3 gateway."
+  question: "Does putting a link in trunk mode automatically allow PC0 to ping PC2?"
+  answer: "No. Tagged frame transport and Layer-3 inter-VLAN routing are different functions."
+
+- source: lessons/06-trunk-inter-vlan.md
+  title: "802.1Q trunks and router-on-a-stick"
+  goal: "Carry multiple VLANs across switches and route between them with one router link."
+  plan: "Part 2 carries VLAN 10 (PC0 192.168.10.1, PC2 .2) and VLAN 20 (PC1 192.168.20.1, PC3 .2) across an SW1-SW2 trunk; cross-VLAN ping still fails. Part 3 is a SEPARATE router-on-a-stick build: R1 gateways are 192.168.10.254 and 192.168.20.254, with PC0 .10.1 and PC1 .20.1. Do not connect SW2's trunk and R1 to the same single Gi0/1 port."
+  ideas:
+    - "An 802.1Q tag identifies VLAN 10 or VLAN 20 on the shared physical trunk link."
+    - "Router subinterface .10 must encapsulate dot1Q 10; subinterface .20 must encapsulate dot1Q 20."
+    - "Same-VLAN traffic may stay on switches, but different-VLAN traffic reaches the router gateway."
+  steps:
+    - "Create VLAN 10 and VLAN 20 on each participating switch, then assign PC-facing access ports."
+    - "In Part 2, connect SW1 Gi0/1 to SW2 Gi0/1 as a trunk and check same-VLAN ping across switches; different VLANs stay isolated."
+    - "For the separate Part 3, connect SW1 Gi0/1 to R1 G0/0 as a trunk; enable the router parent interface and add .10/.20 subinterfaces with .254 gateways."
+    - "Give clients an IP and gateway appropriate to their own VLAN, then ping locally and across VLANs."
+  sample: |
+    ! Router R1 only: parent G0/0 must be enabled
+    interface gigabitEthernet 0/0
+     no shutdown
+    interface gigabitEthernet 0/0.10
+     encapsulation dot1Q 10
+     ip address 192.168.10.254 255.255.255.0
+    interface gigabitEthernet 0/0.20
+     encapsulation dot1Q 20
+     ip address 192.168.20.254 255.255.255.0
+  verify:
+    - "show interfaces trunk on the switch lists the correct tagged uplink for that part's physical topology."
+    - "R1 subinterfaces and both PC gateways use VLAN-matched prefixes."
+    - "In Part 2, PC0-to-PC2 (same VLAN 10) succeeds across SW1-SW2; PC0-to-PC1 (different VLANs) does not."
+    - "In the separate Part 3, PC0-to-PC1 (VLAN 10 to VLAN 20) succeeds through R1 once both .254 gateways are configured."
+  fix:
+    - "If same-VLAN works but cross-VLAN fails, inspect trunk tagging, router parent interface and the host gateway."
+    - "If only one VLAN works, check the VLAN IDs and allowed VLAN list on every trunk along its path."
+  question: "Why are .10 and .20 two logical interfaces on one cable?"
+  answer: "The router separates VLAN-tagged frames into distinct Layer-3 interfaces and gateways."
+
+- source: lessons/07-switching.md
+  title: "STP, port security and EtherChannel"
+  goal: "Understand how a switch prevents loops, limits host MACs and bundles redundant links."
+  plan: "Use the original switching lab diagrams as the physical plan. Keep loop tests separate from port-security and EtherChannel tests; test one feature at a time before combining them."
+  ideas:
+    - "A Layer-2 loop can multiply broadcasts; STP chooses a root and blocks redundant forwarding paths."
+    - "Port security is a switchport access-control policy for learned or configured MAC addresses, not IP routing."
+    - "EtherChannel treats matching physical members as one logical link, but member mode, speed and VLAN policy must agree."
+  steps:
+    - "Connect switches with a redundant path and use show spanning-tree to note the root and blocked port."
+    - "Configure a known host-facing access port's MAC limit; observe the port-security status before changing host MACs."
+    - "On a separate link pair, configure a consistent EtherChannel protocol/channel-group on both ends."
+    - "Remove one member or change one attachment in a controlled test; compare link behavior with the original baseline."
+  sample: |
+    ! SW1 root-bridge demonstration; apply only in the STP segment
+    configure terminal
+    spanning-tree vlan 1 root primary
+    end
+    show spanning-tree
+  verify:
+    - "show spanning-tree identifies the root and any blocked port in the redundant design."
+    - "show port-security interface <access-port> reports the configured security state, if the command is supported."
+    - "show etherchannel summary shows the bundle and participating ports for the independent channel lab."
+  fix:
+    - "If the bundle will not form, check mismatched VLAN/trunk/access settings and channel mode on both switches."
+    - "If a host stops communicating after a MAC change, inspect port-security violation state before editing its IP."
+  question: "Why does STP intentionally prevent one redundant link from forwarding?"
+  answer: "It eliminates a Layer-2 loop while preserving a backup path for a later topology change."
+
+- source: lessons/08-final-project.md
+  title: "Office network integration project"
+  goal: "Integrate a small office's VLANs, router-on-a-stick, DHCP and server services."
+  plan: "SW1 Fa0/1 has PC0 on VLAN 10, Fa0/2 PC1 on VLAN 20, and Fa0/3 Server0 on VLAN 10. SW1 G0/1 trunks to R1 G0/0. VLAN 10 gateway is 192.168.10.1 and server is 192.168.10.100; VLAN 20 gateway is 192.168.20.1."
+  ideas:
+    - "Build the network layer by layer: link, VLAN, gateway, lease and application service."
+    - "The same router physical interface can provide two VLAN gateways through 802.1Q subinterfaces."
+    - "A service cannot work through a broken lower-layer path; verify IP routing before DNS or web browsing."
+  steps:
+    - "Place router, switch, two PCs and a server and cable exactly the planned access and trunk ports."
+    - "Create both VLANs and assign PC0/Server0 to 10, PC1 to 20; configure SW1-to-R1 trunk."
+    - "Configure R1 .10/.20 tagged gateways and DHCP pools without leasing the static server address."
+    - "Give Server0 its fixed IP and enable the required DNS/HTTP services; test name resolution after basic pings pass."
+  sample: |
+    ! On SW1 only; R1 requires matching .10 and .20 subinterfaces
+    interface gigabitEthernet 0/1
+     switchport mode trunk
+    interface fastEthernet 0/3
+     switchport mode access
+     switchport access vlan 10
+  verify:
+    - "show vlan brief puts Fa0/1 and Fa0/3 in VLAN 10 and Fa0/2 in VLAN 20."
+    - "show interfaces trunk includes G0/1; both PCs ping their own gateway before cross-VLAN tests."
+    - "PC0/PC1 can reach Server0 by IP; the named HTTP service is a separate last test."
+  fix:
+    - "A PC that has a lease but cannot ping its gateway may sit on the wrong VLAN or have the wrong DHCP default-router."
+    - "If server IP works but domain name fails, check DNS server setting and A record, not the trunk first."
+  question: "What should be proved before troubleshooting the office browser page?"
+  answer: "First prove L2 port/trunk state, PC gateway ping and Server0 IP ping; then isolate DNS and HTTP."
+
+- source: lessons/09-real-hardware.md
+  title: "Real network hardware and rack infrastructure"
+  goal: "Connect Packet Tracer logical icons to physical ports, media and rack components."
+  plan: "Study the included hardware reference images: endpoint, patch panel, switch, router, copper/fiber uplink and SFP module. This is a hardware literacy guide, not a new .pkt configuration."
+  visuals:
+    - path: lessons/images/rack-patch-panel-cabling.jpg
+      alt: "Reference view of a cabling rack with patch panels, switch ports and bundled cables."
+      caption: "Trace a cable from a passive patch-panel port to an active switch port; rack views are references, not a measured live facility."
+    - path: lessons/images/router-cisco-1941-back-panel.jpg
+      alt: "Hardware reference image showing a Cisco 1941 Series rear panel."
+      caption: "Compare the router's Ethernet, console and expansion areas with the model-specific labeling on your own device; do not assume every revision has identical ports."
+    - path: lessons/images/switch-cisco-2960-front.jpg
+      alt: "Hardware reference image showing a Cisco 2960 Series front panel."
+      caption: "Locate access ports and possible uplinks. The number and kind of ports depend on the specific hardware revision."
+    - path: lessons/images/sfp-fiber-lc-module.jpg
+      alt: "Reference view of an SFP optical transceiver with a fiber connector."
+      caption: "An SFP is the transceiver, not the fiber itself; both link ends must support the module and matching optical media."
+  ideas:
+    - "A patch panel terminates structured cabling; it is not a powered Ethernet switch."
+    - "An SFP transceiver and appropriate fiber can form an optical uplink when both ends and media are compatible."
+    - "A port label, cable type and link light convey physical facts missing from a simplified logical icon."
+  steps:
+    - "Follow a PC connection to a wall jack, then a patch-panel port, patch cable and live switch interface."
+    - "Locate the switch uplink toward a router or higher-level switch, and distinguish copper and fiber transceivers."
+    - "In the rack reference image and the detailed Bengali rack blueprint, identify cabling, switching and power/cooling roles without assuming each unit is a router."
+    - "Translate the same path into Packet Tracer nodes, noting details the simulator cannot reproduce."
+  verify:
+    - "Point to the actual patch panel, switch and router and explain each role in one sentence."
+    - "Describe why a switch port may be down even when an IP plan is correct: power, cable, optics or peer state."
+    - "Match at least one physical interface label to the analogous Packet Tracer port."
+  fix:
+    - "A dark link light is a physical-layer clue; do not change routing before checking the media and port state."
+    - "Never treat a simulator icon as proof that the matching real device has the same ports, speed or power behavior."
+  question: "Is a patch panel an active device that learns MAC addresses?"
+  answer: "No. A patch panel is a passive cabling termination; a switch learns and forwards Ethernet frames."
+
+- source: lessons/10-practice-lab.md
+  title: "Ten practice labs: attempt, check, then reveal"
+  goal: "Work through ten progressively harder tasks, six basic and four harder, before opening solutions."
+  plan: "Create your own .pkt project for each task rather than claiming a bundled practice-lab.pkt. The original guide contains the full ten task statements, IP tables, hints and hidden answers; this English version provides the common workflow and representative starter case."
+  ideas:
+    - "A task is solved only after its stated ping or show command confirms the goal."
+    - "Checking hints after an attempt builds troubleshooting skills; opening solutions first does not."
+    - "Keep separate saved builds for LAN, static routing, DHCP, DNS, VLAN and later integrated cases."
+  steps:
+    - "Read the requirements of one task and make a device/port/IP table before placing nodes."
+    - "For the starter LAN task, connect one router and switch to PC0 192.168.1.2 and PC1 192.168.1.3, with gateway 192.168.1.1/24."
+    - "Configure from the bottom up: cable, link, IP, gateway, routing, then application services if needed."
+    - "Run the exact verification step from the original task. Only after a failed honest attempt open the hint and then its answer."
+  sample: |
+    ! Starter task on R1, not a solution for all ten cases
+    interface gigabitEthernet 0/0
+     ip address 192.168.1.1 255.255.255.0
+     no shutdown
+  verify:
+    - "PC0 ping 192.168.1.3 and R1 show ip interface brief prove the starter case."
+    - "For routing tasks, confirm both routers know the remote LAN before running the PC-to-PC ping."
+    - "Keep a short log for each case: requirement, command output, correction, final result."
+  fix:
+    - "A successful ping to a local gateway but not the distant PC points toward routes or the remote gateway."
+    - "A service that does not open by name but does by IP points toward the client DNS address or A record."
+  question: "When should the hidden answer for one practice task be opened?"
+  answer: "After you have built the topology, run the stated test and tried to diagnose any failure."
+
+- source: lessons/11-practice-list.md
+  title: "Skill ladder and independent practice list"
+  goal: "Choose networking exercises by difficulty, measure progress and avoid random configuration."
+  plan: "The source index lists beginner, intermediate and advanced challenges. Start with router CLI and same-LAN ping; then add static routes, DHCP, VLANs, services and integrated fault isolation. Addresses in individual tasks are examples, not one shared topology."
+  ideas:
+    - "Learning has a sequence: a Layer-3 failure is easier to diagnose after Layer-1/2 checks are routine."
+    - "A lab goal should be falsifiable, such as a specific ping, lease or route-table entry."
+    - "Writing down what changed between attempts prevents configuration drift and unearned success claims."
+  steps:
+    - "Pick one challenge and its original lesson link from the Bangla practice table; do not merge unrelated addresses into one project."
+    - "Sketch the smallest topology and calculate masks/network IDs before configuring devices."
+    - "Build one network function at a time; confirm each milestone with the matching show, ipconfig, ping or GUI action."
+    - "Record a failure, make one justified fix, repeat the same test and save your own .pkt if it now works."
+  sample: |
+    # Optional offline cross-check; run in a shell, not on an IOS device
+    python3 scripts/subnet_calculator.py 192.168.1.65/26
+    python3 scripts/quiz_trainer.py --track practical --count 5
+  verify:
+    - "Describe each selected task's topology, addressing and expected result before opening a solution."
+    - "Explain which command proves Layer-2 membership, the local gateway and a learned remote route."
+    - "Repeat a previously finished task without reading your saved commands."
+  fix:
+    - "If a /30 or /26 design does not fit the hosts, recalculate network and broadcast bounds first."
+    - "If all tasks feel difficult, return to one smaller lab and verify it completely instead of adding devices."
+  question: "Is a task complete when the configuration was pasted without any test?"
+  answer: "No. An observable success criterion and its output are part of the exercise."
+
+- source: lessons/12-problem-solve.md
+  title: "Troubleshooting problem bank: nine cases"
+  goal: "Use symptoms and CLI evidence to solve nine realistic network problems."
+  plan: "The original problem bank includes static-route errors, VLAN/trunk issues, DHCP, DNS, OSPF neighbor formation, SSH/RSA and wireless adapter/power mistakes. Cases are independent; open each linked base lab and do not paste every fix into one device."
+  ideas:
+    - "A failed end-to-end ping has many possible causes; move systematically from endpoint to gateway to remote path."
+    - "An OSPF neighbor failure should be checked on the participating interfaces before changing unrelated host IPs."
+    - "A wireless client cannot associate if the adapter or power is missing even with a correct SSID."
+  steps:
+    - "Select one of the nine cases and write down the exact failure symptom and original working expectation."
+    - "Inspect local host IP/mask/gateway, cable and switch state; then inspect the router interface and route table."
+    - "For a service problem, separate transport reachability from name lookup or application availability."
+    - "For OSPF/SSH/Wi-Fi, run the feature-specific check from that case and change one fault at a time."
+    - "Repeat the original failed check after repair; document the smallest explanation that fits the evidence."
+  sample_language: text
+  sample: |
+    Router R1 (run each relevant command separately):
+    show ip interface brief
+    show ip route
+    show ip ospf neighbor
+    Switch SW1 (run each relevant command separately):
+    show vlan brief
+    show interfaces trunk
+  verify:
+    - "The exact ping or service check that failed before the fix succeeds afterward."
+    - "The relevant show output supports your claimed root cause rather than a guess."
+    - "You can say which layer was broken and why the applied fix repaired it."
+  fix:
+    - "An APIPA 169.254/16 host likely needs DHCP-path diagnosis, not an OSPF rewrite."
+    - "Two hosts in different VLANs may need a Layer-3 gateway; changing a switch trunk alone cannot route them."
+  question: "Why rerun the original failed test after a repair?"
+  answer: "It is the simplest evidence that the root symptom has been fixed, rather than a different symptom hidden."
+
+- source: lessons/13-dynamic-routing-ospf.md
+  title: "RIPv2, OSPFv2 and link failover"
+  goal: "Compare two dynamic-routing protocols on a three-router triangle and inspect convergence."
+  plan: "R1-R2 uses 10.0.12.0/30, R2-R3 10.0.23.0/30 and R1-R3 10.0.13.0/30. Each router also has its own LAN: 192.168.1.0/24, 192.168.2.0/24 or 192.168.3.0/24."
+  ideas:
+    - "OSPFv2 forms neighbors on compatible router interfaces and advertises the associated IP networks."
+    - "Wildcard masks invert subnet masks: /24 is 0.0.0.255; /30 is 0.0.0.3."
+    - "An alternate physical path is useful only when routing reconverges and the destination has a return path."
+  steps:
+    - "Build the triangle, set three unique transit /30s and LAN /24s, then confirm adjacent-router pings."
+    - "Test RIPv2 and OSPFv2 as separate exercises or remove the previous protocol before evaluating the next."
+    - "Advertise only the appropriate directly connected networks on each router; set explicit OSPF router IDs."
+    - "Check neighbors and route-table codes before disconnecting a primary link; wait for protocol reconvergence afterward."
+  sample: |
+    ! R1 sample process; adapt networks and interface names on R2/R3
+    router ospf 1
+     router-id 1.1.1.1
+     network 192.168.1.0 0.0.0.255 area 0
+     network 10.0.12.0 0.0.0.3 area 0
+     network 10.0.13.0 0.0.0.3 area 0
+  verify:
+    - "show ip ospf neighbor reaches FULL where adjacency is expected."
+    - "show ip route marks remote OSPF routes O when OSPF is the active source."
+    - "End-to-end ping recovers through the alternate transit link after the original path is disabled."
+  fix:
+    - "A missing neighbor may be caused by wrong area, /30 mask, interface down or a passive transit interface."
+    - "A learned route with no working ping still requires gateway, reverse routing and end-host IP checks."
+  question: "What wildcard mask corresponds to a /30 transit link?"
+  answer: "0.0.0.3, the bitwise inverse of 255.255.255.252."
+
+- source: lessons/14-wireless-lan.md
+  title: "Home Wi-Fi and enterprise WLC"
+  goal: "Contrast a WPA2 home wireless router with a controller-based campus WLAN."
+  plan: "Home: WRT300N LAN 192.168.0.1/24, wireless client adapter and SSID. Enterprise: admin PC 192.168.10.10/24, DHCP server 192.168.10.5/24, WLC management 192.168.10.250/24, switch and powered LAP."
+  ideas:
+    - "A correct SSID alone is insufficient; security key, wireless adapter, power and DHCP also matter."
+    - "A lightweight AP associates to a WLC for enterprise control; its join process is not the same as a home router."
+    - "Documentation address 203.0.113.1 used in a simulated ISP link is not real Internet access."
+  steps:
+    - "For the home stage, configure WRT300N LAN, SSID and WPA2-PSK, then give the laptop a compatible wireless module."
+    - "Connect the laptop and inspect its lease and gateway ping before claiming web connectivity."
+    - "In a separate enterprise stage, wire admin PC, DHCP server, WLC-2504 and LAP-PT to SW1."
+    - "Supply power to LAP where required, set WLC management/SSID/security and inspect AP join and client association."
+  sample: |
+    # Home client checks in Packet Tracer PC command prompt
+    ipconfig
+    ping 192.168.0.1
+    # Enterprise admin reaches WLC management separately
+    ping 192.168.10.250
+  verify:
+    - "Home client shows a valid DHCP lease and can ping 192.168.0.1."
+    - "The enterprise LAP appears joined to the controller and a client receives the expected LAN settings."
+    - "Both SSID and authentication method match on each client and its chosen wireless system."
+  fix:
+    - "If a laptop has no Wireless0 interface, check installed hardware module and device power first."
+    - "If the LAP cannot join, check PoE/power adapter, DHCP, management VLAN/IP and controller reachability."
+  question: "Does setting the right SSID prove the laptop can reach its gateway?"
+  answer: "No. Check adapter/power, security association, DHCP lease and an actual gateway ping."
+
+- source: lessons/15-ssh-syslog-ntp.md
+  title: "Secure remote access, NTP and Syslog"
+  goal: "Configure SSHv2 remote login, synchronize time and send audit events to a server."
+  plan: "R1 G0/0 is 192.168.1.1/24, SW1 management SVI .2, Admin PC0 .10 and Server0 .100 on the same LAN. Server0 provides the NTP and Syslog services in the simulator."
+  ideas:
+    - "SSHv2 encrypts management sessions; Telnet transmits them without equivalent encryption."
+    - "RSA keys require a hostname and domain name before crypto key generate rsa."
+    - "Consistent NTP time makes Syslog event ordering useful during troubleshooting."
+  steps:
+    - "Cable and address the management LAN, then ping both the router and server from Admin PC0."
+    - "On R1 set hostname/domain, local admin account, enable secret, RSA keys and VTY login local with SSH transport."
+    - "Turn on NTP and Syslog services on Server0; point R1 at 192.168.1.100 for time and logs."
+    - "SSH from PC0 to R1, verify the clock status and generate one harmless event to inspect on the Syslog server."
+  sample: |
+    ! R1 example after LAN interface is reachable
+    hostname R1
+    ip domain-name office.local
+    username admin secret LabOnlyStrongPassword
+    crypto key generate rsa modulus 2048
+    ip ssh version 2
+    line vty 0 4
+     login local
+     transport input ssh
+    ntp server 192.168.1.100
+    logging 192.168.1.100
+  verify:
+    - "SSH from the PC succeeds with the local credentials; Telnet should not be the approved management method."
+    - "show ip ssh reports the supported SSH version and show ntp status indicates synchronization if PT supports it."
+    - "A Syslog event appears at Server0 with a plausible timestamp; diagnose NTP separately if unsynchronized."
+  fix:
+    - "If RSA generation fails, set domain/hostname first and check the chosen device's IOS support."
+    - "If logs do not arrive, test PC/R1-to-server reachability and the logging host IP before changing credentials."
+  question: "What must be set before generating RSA keys for an SSH-enabled IOS router?"
+  answer: "Set a hostname and ip domain-name, then generate RSA keys and permit SSH on the VTY lines."
+
+- source: lessons/16-multilayer-switch-svi.md
+  title: "3560 multilayer-switch SVI inter-VLAN routing"
+  goal: "Route between two VLANs entirely inside a single 3560; no trunk or external router is needed."
+  plan: "PC0/PC1 attach to 3560 Fa0/1-2 in VLAN 10 (192.168.10.10/.11). PC2/PC3 attach to Fa0/3-4 in VLAN 20 (192.168.20.10/.11). Vlan10 gateway is 192.168.10.1/24 and Vlan20 gateway 192.168.20.1/24."
+  ideas:
+    - "An SVI is the Layer-3 gateway for its VLAN and must be up/up to route packets."
+    - "The global ip routing command enables inter-VLAN forwarding on the multilayer switch."
+    - "With all PCs on the same 3560, adding a trunk or separate router changes the intended lesson."
+  steps:
+    - "Cable four PCs to the named 3560 access ports; create VLANs 10 and 20 and assign Fa0/1-4 correctly."
+    - "Set interface vlan 10 and vlan 20 to the corresponding .1 gateway and issue no shutdown."
+    - "Enable global ip routing; give each PC the gateway in its own /24 subnet."
+    - "Ping PC0-to-PC1 and PC2-to-PC3 first, then PC0-to-PC2 to prove routing."
+  sample: |
+    ! 3560 SW1 only; access-port assignments are separate
+    ip routing
+    interface vlan 10
+     ip address 192.168.10.1 255.255.255.0
+     no shutdown
+    interface vlan 20
+     ip address 192.168.20.1 255.255.255.0
+     no shutdown
+  verify:
+    - "show vlan brief shows Fa0/1-2 in VLAN10 and Fa0/3-4 in VLAN20."
+    - "show ip interface brief shows both SVIs up/up after at least one host port in each VLAN is active."
+    - "PC0 192.168.10.10 pings PC2 192.168.20.10 via the two SVIs."
+  fix:
+    - "An SVI stuck down/down may have no active member port in its VLAN."
+    - "Same-VLAN ping with failed cross-VLAN ping suggests missing ip routing or incorrect PC gateway."
+  question: "What command allows the 3560 to forward packets between its two SVIs?"
+  answer: "The global configuration command ip routing."
+
+- source: lessons/17-hsrp-gateway-redundancy.md
+  title: "HSRP virtual gateway and resilient return path"
+  goal: "Keep a PC's gateway at 192.168.50.1 while two routers exchange the Active role."
+  plan: "PC0 is 192.168.50.10/24 with HSRP VIP .1; R1 LAN .2 priority 120; R2 LAN .3 priority 100. Separate /30 links lead to R3 test loopback 198.51.100.10/32. R3 must know both return paths to 192.168.50.0/24."
+  ideas:
+    - "The virtual address stays fixed even as the Active router changes."
+    - "R1 and R2 each need a valid upstream next hop, and R3 needs routes back to the shared LAN."
+    - "Powering R1 fully off is the principal failover test: shutting only its LAN interface can blackhole replies via its surviving WAN."
+  steps:
+    - "Build the shared LAN and two independent R3 links exactly as in the topology/IP table."
+    - "Configure HSRP group 1 on both LAN-facing routers with VIP .1; set R1 priority 120 and R2 priority 100, both with preempt."
+    - "Configure each router's default route toward its own R3 link; add R3's two return routes and loopback."
+    - "Record show standby and baseline PC0-to-198.51.100.10 ping, then power R1 entirely off and repeat after the hold timer."
+  sample: |
+    # In a shell, print one role at a time and paste ONLY on that role
+    python3 scripts/ios_config_generator.py hsrp --role R1
+    python3 scripts/ios_config_generator.py hsrp --role R2
+    python3 scripts/ios_config_generator.py hsrp --role R3
+  verify:
+    - "Initially show standby reports R1 Active and R2 Standby; PC0's gateway remains 192.168.50.1."
+    - "After R1 is powered off, R2 becomes Active and the loopback ping resumes after convergence."
+    - "After R1 returns, observe priority/preemption and verify the path again."
+  fix:
+    - "If R2 becomes Active but remote ping fails, inspect R2's R3 link and the R3 return path."
+    - "Do not use only R1 LAN shutdown as proof of this topology's upstream failover; R3 may still choose R1's live WAN."
+  question: "Why can remote ping fail when R2 is Active after only shutting R1's LAN interface?"
+  answer: "R3 may still send replies toward R1's live WAN; R1 can no longer forward them to the shared LAN."
+
+- source: lessons/18-ipv6-slaac-routing.md
+  title: "IPv6 SLAAC, static routing and OSPFv3"
+  goal: "Let one PC learn its IPv6 address by RA, then test static routing and OSPFv3 in separate stages."
+  plan: "LAN A is 2001:db8:10::/64 with R1 ::1 and PC0 SLAAC; R1-R2 transit is 2001:db8:12::/64; LAN B is 2001:db8:20::/64 with R2 ::1 and static PC1 2001:db8:20::10/64, gateway fe80::2."
+  ideas:
+    - "ipv6 unicast-routing enables router advertisements so PC0 learns its LAN prefix and link-local gateway."
+    - "SLAAC assigns a local address; it does not by itself teach R1 a route to LAN B."
+    - "A lower-distance static route can hide a working OSPFv3 route; remove the statics before checking for O entries."
+  steps:
+    - "Connect PC0-SW1-R1, transit R1-R2, and R2-SW2-PC1 with separate /64s."
+    - "Configure both routers for IPv6 forwarding and unique interface addresses; set PC0 Auto Config and PC1 static ::10."
+    - "Add an IPv6 static route to the remote /64 on BOTH routers; test PC0-to-PC1 ping."
+    - "Remove those two static routes and configure OSPFv3 on the transit and LAN interfaces with distinct router IDs."
+    - "Inspect OSPFv3 adjacency and confirm remote O routes before running the final ping."
+  sample: |
+    # In a shell, print per-router commands for each distinct phase
+    python3 scripts/ios_config_generator.py ipv6-static --role R1
+    python3 scripts/ios_config_generator.py ipv6-static --role R2
+    python3 scripts/ios_config_generator.py ospfv3 --role R1
+    python3 scripts/ios_config_generator.py ospfv3 --role R2
+  verify:
+    - "PC0 shows a 2001:db8:10::/64 address and link-local default gateway fe80::1."
+    - "The static phase works only after both forward and return routes are configured."
+    - "After removing statics, show ipv6 route shows O for the remote LAN and show ipv6 ospf neighbor is FULL."
+  fix:
+    - "If PC0 lacks a global address, check RA, IPv6 unicast routing, interface state and Auto Config."
+    - "If OSPFv3 is FULL but the remote route still displays S, remove the leftover static route."
+  question: "Does a successful SLAAC lease prove R1 knows the route to 2001:db8:20::/64?"
+  answer: "No. R1 needs a separate static or dynamically learned IPv6 route to the remote /64."

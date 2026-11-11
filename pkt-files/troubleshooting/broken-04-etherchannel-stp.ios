@@ -1,0 +1,7 @@
+enable
+configure terminal
+interface range gigabitEthernet 0/1 - 2
+ no channel-group 1
+ channel-group 1 mode passive
+ exit
+end

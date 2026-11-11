@@ -1,0 +1,111 @@
+{
+  "version": "4.0",
+  "status": "Build-along design, not a Packet Tracer capture or a verified native .pkt",
+  "models": {
+    "HQ1": "2911 + HWIC-2T",
+    "HQ2": "2911 + HWIC-2T",
+    "BR1": "2911 + HWIC-2T",
+    "BR2": "2911 + HWIC-2T",
+    "ISP": "2911",
+    "CME": "2811",
+    "HQ-SW": "2960",
+    "BR1-SW": "2960",
+    "BR2-SW": "2960"
+  },
+  "hq_vlans": [
+    {"id": 10, "name": "HQ-DATA", "network": "10.10.10.0/24", "vip": "10.10.10.1", "HQ1": "10.10.10.2", "HQ2": "10.10.10.3"},
+    {"id": 20, "name": "HQ-VOICE", "network": "10.10.20.0/24", "vip": "10.10.20.1", "HQ1": "10.10.20.2", "HQ2": "10.10.20.3"},
+    {"id": 40, "name": "HQ-DMZ", "network": "10.10.40.0/24", "vip": "10.10.40.1", "HQ1": "10.10.40.2", "HQ2": "10.10.40.3"},
+    {"id": 99, "name": "HQ-ADMIN", "network": "10.10.99.0/24", "vip": "10.10.99.1", "HQ1": "10.10.99.2", "HQ2": "10.10.99.3"}
+  ],
+  "branch_vlans": {
+    "BR1": [
+      {"id": 10, "name": "BR1-DATA", "network": "10.20.10.0/24", "gateway": "10.20.10.1"},
+      {"id": 20, "name": "BR1-VOICE", "network": "10.20.20.0/24", "gateway": "10.20.20.1"}
+    ],
+    "BR2": [
+      {"id": 10, "name": "BR2-DATA", "network": "10.30.10.0/24", "gateway": "10.30.10.1"},
+      {"id": 30, "name": "BR2-WIFI", "network": "10.30.30.0/24", "gateway": "10.30.30.1"}
+    ]
+  },
+  "wan_links": [
+    {"name": "HQ1-BR1", "network": "10.255.11.0/30", "endpoints": [
+      {"device": "HQ1", "interface": "Serial0/0/0", "ip": "10.255.11.1", "dce": true},
+      {"device": "BR1", "interface": "Serial0/0/0", "ip": "10.255.11.2"}
+    ]},
+    {"name": "HQ2-BR1", "network": "10.255.12.0/30", "endpoints": [
+      {"device": "HQ2", "interface": "Serial0/0/0", "ip": "10.255.12.1", "dce": true},
+      {"device": "BR1", "interface": "Serial0/0/1", "ip": "10.255.12.2"}
+    ]},
+    {"name": "HQ1-BR2", "network": "10.255.21.0/30", "endpoints": [
+      {"device": "HQ1", "interface": "Serial0/0/1", "ip": "10.255.21.1", "dce": true},
+      {"device": "BR2", "interface": "Serial0/0/0", "ip": "10.255.21.2"}
+    ]},
+    {"name": "HQ2-BR2", "network": "10.255.22.0/30", "endpoints": [
+      {"device": "HQ2", "interface": "Serial0/0/1", "ip": "10.255.22.1", "dce": true},
+      {"device": "BR2", "interface": "Serial0/0/1", "ip": "10.255.22.2"}
+    ]}
+  ],
+  "isp_links": [
+    {"name": "HQ1-ISP", "network": "198.51.100.0/30", "endpoints": [
+      {"device": "HQ1", "interface": "GigabitEthernet0/1", "ip": "198.51.100.1"},
+      {"device": "ISP", "interface": "GigabitEthernet0/0", "ip": "198.51.100.2"}
+    ]},
+    {"name": "HQ2-ISP", "network": "198.51.100.4/30", "endpoints": [
+      {"device": "HQ2", "interface": "GigabitEthernet0/1", "ip": "198.51.100.5"},
+      {"device": "ISP", "interface": "GigabitEthernet0/1", "ip": "198.51.100.6"}
+    ]}
+  ],
+  "outside_test": {"network": "203.0.113.0/24", "isp_interface": "GigabitEthernet0/2", "isp_ip": "203.0.113.1", "pc_ip": "203.0.113.10", "pc_gateway": "203.0.113.1", "loopback": "192.0.2.100/32"},
+  "switches": {
+    "HQ-SW": {
+      "trunks": [
+        {"interface": "GigabitEthernet0/1", "peer": "HQ1 GigabitEthernet0/0", "vlans": [10, 20, 40, 99]},
+        {"interface": "GigabitEthernet0/2", "peer": "HQ2 GigabitEthernet0/0", "vlans": [10, 20, 40, 99]}
+      ],
+      "access": [
+        {"interface": "FastEthernet0/1", "peer": "HQ-PC", "vlan": 10},
+        {"interface": "FastEthernet0/2", "peer": "HQ-PHONE1 Switch", "vlan": 10, "voice_vlan": 20},
+        {"interface": "FastEthernet0/3", "peer": "HQ-PHONE2 Switch", "vlan": 10, "voice_vlan": 20},
+        {"interface": "FastEthernet0/4", "peer": "CME FastEthernet0/0", "vlan": 20},
+        {"interface": "FastEthernet0/5", "peer": "DNS", "vlan": 40},
+        {"interface": "FastEthernet0/6", "peer": "WEB", "vlan": 40},
+        {"interface": "FastEthernet0/7", "peer": "MAIL", "vlan": 40},
+        {"interface": "FastEthernet0/8", "peer": "FTP", "vlan": 40},
+        {"interface": "FastEthernet0/9", "peer": "HQ-ADMIN-PC", "vlan": 99}
+      ]
+    },
+    "BR1-SW": {
+      "trunks": [{"interface": "GigabitEthernet0/1", "peer": "BR1 GigabitEthernet0/0", "vlans": [10, 20]}],
+      "access": [
+        {"interface": "FastEthernet0/1", "peer": "BR1-PC", "vlan": 10},
+        {"interface": "FastEthernet0/2", "peer": "BR1-PHONE (optional) Switch", "vlan": 10, "voice_vlan": 20}
+      ]
+    },
+    "BR2-SW": {
+      "trunks": [{"interface": "GigabitEthernet0/1", "peer": "BR2 GigabitEthernet0/0", "vlans": [10, 30]}],
+      "access": [
+        {"interface": "FastEthernet0/1", "peer": "BR2-PC", "vlan": 10},
+        {"interface": "FastEthernet0/2", "peer": "WRT300N Ethernet 1 LAN port (not Internet)", "vlan": 30}
+      ]
+    }
+  },
+  "services": {
+    "DNS": {"ip": "10.10.40.10", "gateway": "10.10.40.1", "dns": "10.10.40.10", "vlan": 40, "port": "HQ-SW FastEthernet0/5", "service": "DNS A records"},
+    "WEB": {"ip": "10.10.40.20", "gateway": "10.10.40.1", "dns": "10.10.40.10", "vlan": 40, "port": "HQ-SW FastEthernet0/6", "service": "HTTP"},
+    "MAIL": {"ip": "10.10.40.30", "gateway": "10.10.40.1", "dns": "10.10.40.10", "vlan": 40, "port": "HQ-SW FastEthernet0/7", "service": "SMTP and POP3"},
+    "FTP": {"ip": "10.10.40.40", "gateway": "10.10.40.1", "dns": "10.10.40.10", "vlan": 40, "port": "HQ-SW FastEthernet0/8", "service": "FTP"}
+  },
+  "clients": {
+    "HQ-PC": {"ip": "10.10.10.11", "gateway": "10.10.10.1", "dns": "10.10.40.10", "vlan": 10},
+    "HQ-ADMIN-PC": {"ip": "10.10.99.10", "gateway": "10.10.99.1", "dns": "10.10.40.10", "vlan": 99},
+    "BR1-PC": {"ip": "10.20.10.10", "gateway": "10.20.10.1", "dns": "10.10.40.10", "vlan": 10},
+    "BR2-PC": {"ip": "10.30.10.10", "gateway": "10.30.10.1", "dns": "10.10.40.10", "vlan": 10},
+    "BR2-LAPTOP": {"ip": "10.30.30.50", "gateway": "10.30.30.1", "dns": "10.10.40.10", "vlan": 30},
+    "EXT-PC": {"ip": "203.0.113.10", "gateway": "203.0.113.1", "dns": "none", "vlan": null}
+  },
+  "wifi": {"ap": "WRT300N", "lan_ip": "10.30.30.2", "gateway": "10.30.30.1", "ssid": "BR2-Study", "dhcp": "disabled", "uplink": "LAN Ethernet 1, never the Internet port", "security": "WPA2-PSK with a user-chosen lab-only passphrase"},
+  "voice": {"router": "CME", "model": "2811", "interface": "FastEthernet0/0", "ip": "10.10.20.10", "gateway": "10.10.20.1", "option150": "10.10.20.10", "hq_extensions": [1001, 1002], "branch_optional_extension": 2001, "hq_dhcp_exclude": ["10.10.20.1", "10.10.20.20"], "branch_dhcp_exclude": ["10.20.20.1", "10.20.20.20"]},
+  "dns_records": {"www.campus.lab": "10.10.40.20", "mail.campus.lab": "10.10.40.30", "ftp.campus.lab": "10.10.40.40"},
+  "public_web": {"inside_ip": "10.10.40.20", "tcp_port": 80, "HQ1": "198.51.100.1", "HQ2": "198.51.100.5"}
+}

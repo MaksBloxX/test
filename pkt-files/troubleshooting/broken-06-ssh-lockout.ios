@@ -1,0 +1,7 @@
+enable
+configure terminal
+line vty 0 4
+ no login local
+ transport input none
+ exit
+end

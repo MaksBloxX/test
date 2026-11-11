@@ -1,0 +1,35 @@
+! v4.0 build-along for BR2-SW (not executed in Packet Tracer)
+! Cable exactly as in capstone/plan.json; adjust interface labels if your PT module differs.
+! For serial clock rate, the HQ cable end MUST be DCE (show controllers serial).
+enable
+configure terminal
+hostname BR2-SW
+no ip domain-lookup
+vlan 10
+ name BR2-DATA
+exit
+vlan 30
+ name BR2-WIFI
+exit
+interface GigabitEthernet0/1
+ description to BR2 GigabitEthernet0/0
+ switchport mode trunk
+ switchport trunk allowed vlan 10,30
+ no shutdown
+exit
+interface FastEthernet0/1
+ description BR2-PC
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/2
+ description WRT300N Ethernet 1 LAN port (not Internet)
+ switchport mode access
+ switchport access vlan 30
+ spanning-tree portfast
+ no shutdown
+exit
+end
+copy running-config startup-config

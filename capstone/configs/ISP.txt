@@ -1,0 +1,29 @@
+! v4.0 build-along for ISP (not executed in Packet Tracer)
+! Cable exactly as in capstone/plan.json; adjust interface labels if your PT module differs.
+! For serial clock rate, the HQ cable end MUST be DCE (show controllers serial).
+enable
+configure terminal
+hostname ISP
+no ip domain-lookup
+interface GigabitEthernet0/0
+ description Simulated outside link to HQ1
+ ip address 198.51.100.2 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet0/1
+ description Simulated outside link to HQ2
+ ip address 198.51.100.6 255.255.255.252
+ no shutdown
+exit
+interface GigabitEthernet0/2
+ description EXT-PC outside test segment
+ ip address 203.0.113.1 255.255.255.0
+ no shutdown
+exit
+interface Loopback0
+ description Documentation-only Internet-like test endpoint
+ ip address 192.0.2.100 255.255.255.255
+exit
+! No OSPF, NAT or private 10/8 route on ISP: HQ edge PAT must be observable.
+end
+copy running-config startup-config

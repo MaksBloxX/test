@@ -1,0 +1,66 @@
+! v4.0 build-along for BR2 (not executed in Packet Tracer)
+! Cable exactly as in capstone/plan.json; adjust interface labels if your PT module differs.
+! For serial clock rate, the HQ cable end MUST be DCE (show controllers serial).
+enable
+configure terminal
+hostname BR2
+no ip domain-lookup
+interface GigabitEthernet0/0
+ description 802.1Q trunk to BR2-SW GigabitEthernet0/1
+ no ip address
+ no shutdown
+exit
+interface GigabitEthernet0/0.10
+ description BR2-DATA
+ encapsulation dot1Q 10
+ ip address 10.30.10.1 255.255.255.0
+ ip access-group BR2_DATA_IN in
+ no shutdown
+exit
+interface GigabitEthernet0/0.30
+ description BR2-WIFI
+ encapsulation dot1Q 30
+ ip address 10.30.30.1 255.255.255.0
+ ip access-group BR2_WIFI_IN in
+ no shutdown
+exit
+interface Serial0/0/0
+ description Private serial to HQ1 Serial0/0/1
+ ip address 10.255.21.2 255.255.255.252
+ no shutdown
+exit
+interface Serial0/0/1
+ description Private serial to HQ2 Serial0/0/1
+ ip address 10.255.22.2 255.255.255.252
+ no shutdown
+exit
+! Primary external route follows HQ1; the higher-distance HQ2 route is backup.
+ip route 0.0.0.0 0.0.0.0 10.255.21.1
+ip route 0.0.0.0 0.0.0.0 10.255.22.1 20
+router ospf 10
+ router-id 4.4.4.4
+ passive-interface default
+ no passive-interface Serial0/0/0
+ no passive-interface Serial0/0/1
+ network 10.30.10.0 0.0.0.255 area 0
+ network 10.30.30.0 0.0.0.255 area 0
+ network 10.255.21.0 0.0.0.3 area 0
+ network 10.255.22.0 0.0.0.3 area 0
+exit
+ip access-list extended BR2_DATA_IN
+ remark Block this branch DATA subnet from HQ ADMIN; other destinations remain allowed
+ deny ip 10.30.10.0 0.0.0.255 10.10.99.0 0.0.0.255
+ permit ip 10.30.10.0 0.0.0.255 any
+exit
+ip access-list extended BR2_WIFI_IN
+ remark Wi-Fi cannot reach HQ ADMIN
+ deny ip 10.30.30.0 0.0.0.255 10.10.99.0 0.0.0.255
+ remark Permit only DNS and HTTP to the service VLAN from Wi-Fi
+ permit udp 10.30.30.0 0.0.0.255 host 10.10.40.10 eq 53
+ permit tcp 10.30.30.0 0.0.0.255 host 10.10.40.10 eq 53
+ permit tcp 10.30.30.0 0.0.0.255 host 10.10.40.20 eq 80
+ deny ip 10.30.30.0 0.0.0.255 10.10.40.0 0.0.0.255
+ permit ip 10.30.30.0 0.0.0.255 any
+exit
+end
+copy running-config startup-config

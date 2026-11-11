@@ -1,0 +1,36 @@
+! v4.0 build-along for BR1-SW (not executed in Packet Tracer)
+! Cable exactly as in capstone/plan.json; adjust interface labels if your PT module differs.
+! For serial clock rate, the HQ cable end MUST be DCE (show controllers serial).
+enable
+configure terminal
+hostname BR1-SW
+no ip domain-lookup
+vlan 10
+ name BR1-DATA
+exit
+vlan 20
+ name BR1-VOICE
+exit
+interface GigabitEthernet0/1
+ description to BR1 GigabitEthernet0/0
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+ no shutdown
+exit
+interface FastEthernet0/1
+ description BR1-PC
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ no shutdown
+exit
+interface FastEthernet0/2
+ description BR1-PHONE (optional) Switch
+ switchport mode access
+ switchport access vlan 10
+ switchport voice vlan 20
+ spanning-tree portfast
+ no shutdown
+exit
+end
+copy running-config startup-config

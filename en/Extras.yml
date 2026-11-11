@@ -1,0 +1,221 @@
+# All eight Extra Labs in English, preserving topology, tests and simulator cautions.
+- source: Extras/ftp-server-lab.md
+  title: "FTP server: upload, download and permissions"
+  goal: "Configure a server on a separate subnet and confirm authenticated file transfers."
+  plan: "R1 G0/0 192.168.1.1/24 connects to four LAN PCs .2-.5; R1 G0/1 10.10.10.1/24 connects to FTP Server 10.10.10.2/24 with gateway 10.10.10.1. The provided FTP-Server.pkt may be opened as a starting lab."
+  ideas:
+    - "FTP is a client-server file protocol; a successful ping is necessary but not sufficient for login."
+    - "A server in another subnet needs a correct default gateway for its replies to reach the PC LAN."
+    - "Permissions control operations such as reading, writing, deleting and renaming; a login alone does not grant every action."
+  steps:
+    - "Cable R1, SW1, four PCs and Server0 as shown; set both R1 interfaces and the server's static IP/gateway."
+    - "On Server0 enable the FTP service and create a named account with the permissions required for the test."
+    - "Ping 10.10.10.2 from a PC before starting FTP; fix routing/IP issues if it cannot be reached."
+    - "Open the PC command prompt, connect with ftp 10.10.10.2 and log in. Test put, get, directory listing and permission-limited actions."
+  sample: |
+    # Run from a Packet Tracer PC command prompt, not on an IOS router
+    ping 10.10.10.2
+    ftp 10.10.10.2
+    # Inside the FTP session: dir, put <file>, get <file>
+  verify:
+    - "show ip interface brief on R1 lists G0/0 and G0/1 up/up with the planned subnet addresses."
+    - "A PC reaches 10.10.10.2 by ping and successfully logs in with the created FTP account."
+    - "Uploaded and downloaded files appear on the expected device and disallowed actions are treated as permission outcomes."
+  fix:
+    - "If ping fails, compare the FTP server's gateway 10.10.10.1, router G0/1 and PC gateway 192.168.1.1."
+    - "If login fails but ping works, check whether FTP is on, the username/password and account permissions."
+  question: "Why is 10.10.10.1 the FTP server's default gateway instead of 192.168.1.1?"
+  answer: "The server is on 10.10.10.0/24 and must send off-subnet replies to its directly connected R1 interface 10.10.10.1."
+
+- source: Extras/email-server-lab.md
+  title: "Email across subnets with SMTP and POP3"
+  goal: "Send from one LAN and retrieve in another using separate mail clients and a local server."
+  plan: "Router2 has G0/0 192.168.10.1/24 and G0/1 192.168.20.1/24. PC0 192.168.10.3 is sender; PC1 192.168.20.2 and Email Server 192.168.20.3 are in the receiver LAN. Both PCs use 192.168.20.3 for mail/DNS where configured."
+  ideas:
+    - "SMTP submits or relays mail; POP3 retrieves mail from a mailbox. Sending and receiving are separate tests."
+    - "Clients must know the correct server/domain and have distinct account credentials."
+    - "Router2 already has both LANs as directly connected networks; no extra static route is required in this simple design."
+  steps:
+    - "Open the included Email-Server.pkt or connect Router2, two switches, two PCs and an Email Server as pictured."
+    - "Assign the two router interfaces and each endpoint's static address, mask, gateway and DNS setting."
+    - "Under Server Services enable SMTP/POP3, set the chosen domain and create the sender and receiver user accounts."
+    - "Configure both PC mail clients with their own mailbox details and the mail server address. Send from PC0 and explicitly receive on PC1."
+  sample: |
+    # In the PC command prompt, confirm connectivity before mail testing
+    ping 192.168.20.3
+    # In the mail GUI: Send from PC0; Receive on PC1; inspect Inbox
+  verify:
+    - "PC0 can ping the server in the other subnet; Router2 G0/0 and G0/1 are up/up."
+    - "The server has both SMTP and POP3 enabled with the two intended accounts."
+    - "PC1's Inbox contains the message sent from PC0; an outgoing status alone is insufficient."
+  fix:
+    - "If cross-LAN ping fails, check PC0 gateway .10.1, PC1/server gateway .20.1 and router interface state."
+    - "If send succeeds but receive fails, inspect PC1's credentials, incoming server, POP3 state and recipient spelling."
+  question: "Which mail protocol is responsible for PC1 retrieving a stored message in this lab?"
+  answer: "POP3. SMTP is used for submission/delivery, not the retrieval action on PC1."
+
+- source: Extras/office-shared-printer-lab.md
+  title: "Office network printer with DHCP clients"
+  goal: "Give a shared printer a stable IP and prevent the DHCP server from leasing it to a PC."
+  plan: "R1 G0/0 192.168.1.1/24 serves the office LAN. Printer0 on SW1 Fa0/10 has static 192.168.1.10/24 with gateway .1; three clients on Fa0/1-3 lease starting near .11. The included office-shared-printer-network.pkt is an example project."
+  ideas:
+    - "A fixed printer address makes client configuration predictable across restarts."
+    - "Exclude the gateway and printer from the router DHCP pool; overlap causes intermittent duplicate-address faults."
+    - "Pinging a printer checks IP reachability but is separate from an application print-job test."
+  steps:
+    - "Connect router, 2960, Printer-PT and three PCs to the planned ports."
+    - "Give R1 G0/0 .1 and configure an OFFICE_LAN DHCP pool with excluded .1 through .10."
+    - "Set Printer0 to static .10/24 and gateway .1; choose DHCP on all three PCs."
+    - "Ping Printer0 from every PC. If supported by your PT version, send a simple PDU/print job and observe the result separately."
+  sample: |
+    ip dhcp excluded-address 192.168.1.1 192.168.1.10
+    ip dhcp pool OFFICE_LAN
+     network 192.168.1.0 255.255.255.0
+     default-router 192.168.1.1
+  verify:
+    - "PCs have distinct leases outside the excluded .1-.10 range."
+    - "All PCs can ping the fixed printer IP 192.168.1.10."
+    - "The printer keeps its .10 address after a restart rather than taking a new DHCP lease."
+  fix:
+    - "If a PC has .10, correct the DHCP exclusion and renew that client lease."
+    - "If printer ping fails, inspect the printer mask/gateway, cable and the switch port for Fa0/10."
+  question: "Why is the printer's .10 address excluded from DHCP?"
+  answer: "It is statically assigned to Printer0; leasing it to a PC would cause an address collision."
+
+- source: Extras/ip-subnet-tester-lab.md
+  title: "Subnet tester: /24 versus /26 on a switch"
+  goal: "Use predictable ping results to prove that a subnet mask defines local reachability."
+  plan: "Place four PCs on one 2960 switch. Compare hosts in 192.168.1.0/26 (such as .10 and .50) with hosts in 192.168.1.64/26 (such as .65 and .120). Do not infer subnet membership just from the first three octets."
+  ideas:
+    - "A /26 mask 255.255.255.192 makes blocks of 64 addresses."
+    - "192.168.1.0/26 has usable .1-.62 and broadcast .63; 192.168.1.64/26 has usable .65-.126 and broadcast .127."
+    - "A switch alone forwards within a VLAN, but does not provide routing between two distinct /26 IPv4 networks."
+  steps:
+    - "Open ip-subnet-tester.pkt or cable one switch and four PCs, set .10/.50/.65/.120 all with /26."
+    - "Test .10 to .50 and .65 to .120; then test .10 to .65 and explain the expected cross-subnet failure."
+    - "Revisit the experiment with /24 masks only as a separate test and note the different network interpretation."
+    - "Try assigning a network or broadcast address and document simulator rejection/behavior without calling it a valid host."
+    - "For a legitimate /26-to-/26 ping, add a router with one correctly addressed gateway per subnet."
+  sample: |
+    python3 scripts/subnet_calculator.py 192.168.1.10/26
+    python3 scripts/subnet_calculator.py 192.168.1.65/26
+  verify:
+    - "Same-/26 host pairs ping within their VLAN when ports and masks match."
+    - "Cross-/26 hosts need a router; a mask change alone alters the experiment instead of adding routing."
+    - "Calculate .63 and .127 as broadcast addresses and do not use them as ordinary hosts."
+  fix:
+    - "If a predicted local ping fails, check both masks and the switch port/cable before changing a gateway."
+    - "If a cross-/26 ping unexpectedly works, inspect a router/default gateway or an incorrect /24 mask."
+  question: "Are 192.168.1.10/26 and 192.168.1.65/26 in one subnet?"
+  answer: "No. They are in 192.168.1.0/26 and 192.168.1.64/26 respectively."
+
+- source: Extras/network-topologies-lab.md
+  title: "Six network topologies in Packet Tracer"
+  goal: "Compare bus, star, ring, mesh, tree and hybrid designs using bundled example files."
+  plan: "Six existing .pkt examples live in pkt-files/topologies/. Open one at a time; their simulator approximations are learning models, not claims that Ethernet implements every classic physical topology literally."
+  ideas:
+    - "Star attaches endpoints to a central device; a central failure can affect all branches."
+    - "Ring and mesh emphasize alternate paths; forwarding depends on the actual L2/L3 protocol, not the drawing alone."
+    - "A full mesh with N nodes uses N(N-1)/2 direct links; 5 nodes require 10 links."
+  steps:
+    - "Open bus-topology.pkt and sketch how the simulated shared segment differs from modern switched Ethernet."
+    - "Open star-topology.pkt and observe the effect of disconnecting the central device."
+    - "Inspect ring-topology.pkt and mesh-topology.pkt with Simulation Mode; record real observed PDU paths."
+    - "Compare tree-topology.pkt with hybrid-topology.pkt and identify the hierarchy or combined patterns."
+    - "Summarize each design's link count, cost, single points of failure and expected recovery path."
+  sample: |
+    Full mesh direct links = N * (N - 1) / 2
+    N = 5: 5 * 4 / 2 = 10 links
+  verify:
+    - "All six example names are in pkt-files/topologies/ and can be opened separately."
+    - "A Simulation Mode event, not just the picture, supports each observed forwarding claim."
+    - "Explain why two parallel links on a switch may be blocked by STP without an EtherChannel."
+  fix:
+    - "If a redundant path does not forward, inspect STP or routing before assuming a broken cable."
+    - "Do not claim a Packet Tracer star diagram proves real-world availability or a true shared-medium bus."
+  question: "How many direct links connect five nodes in a full mesh?"
+  answer: "Ten: 5(5-1)/2 = 10."
+
+- source: Extras/broken-labs-challenge.md
+  title: "Broken Network Detective: six fault scripts"
+  goal: "Apply a deliberate .ios fault to a known base lab and diagnose it without reading the answer first."
+  plan: "Six existing .ios cases cover static routing, DHCP, ROAS tag swap, EtherChannel LACP, OSPF adjacency and SSH remote-access issues. They modify linked existing .pkt projects; no new pre-broken native .pkt is supplied for these six cases."
+  ideas:
+    - "A fault script is text to paste on the named device, not a standalone Packet Tracer project."
+    - "Keep the known-good baseline and the failure symptom so the repair can be verified."
+    - "Read the source guide's hidden solution only after collecting show and ping evidence."
+  steps:
+    - "Choose a case in the original challenge and open the exact base .pkt it references. Save a separate working copy."
+    - "Apply the corresponding .ios script to the named router/switch; do not paste it across every device."
+    - "Observe the stated failure and inspect the appropriate interface, VLAN, route, DHCP, LACP or OSPF state."
+    - "Correct one cause and rerun the same failed command or service test, then compare with the hidden answer."
+  sample: |
+    # Optional: read the six case summaries in the generator
+    python3 scripts/ios_config_generator.py broken-lab --case 5
+    # On the actual device use the relevant show command, e.g.
+    show ip ospf neighbor
+  verify:
+    - "You can name the root cause and show the CLI output that led to it."
+    - "The original failed ping, adjacency or service test now passes after the smallest fix."
+    - "The unmodified baseline project remains available for a second attempt."
+  fix:
+    - "A DHCP 169.254.x.x symptom needs a DHCP-path test; do not start by editing DNS."
+    - "An EtherChannel member inconsistency requires comparing both ends, not just changing a single port's IP."
+  question: "Is a .ios fault script a ready-to-open pre-broken .pkt project?"
+  answer: "No. It is configuration text for a named device in an existing baseline project."
+
+- source: Extras/voip-ip-telephony-lab.md
+  title: "2811 CME and two 7960 IP phones"
+  goal: "Separate data and voice VLANs, register two extensions and test a simulated on-net call."
+  plan: "R1 2811 Fa0/0 trunks to SW1 Gi0/1. Data VLAN 10 gateway is 192.168.10.1/24; voice VLAN 20 gateway and DHCP option 150/CME address is 192.168.20.1/24. Two 7960 phones connect via their Switch ports; optional PC0 uses the phone PC port on data VLAN."
+  ideas:
+    - "Switch access ports Fa0/1-2 carry untagged data VLAN 10 and voice VLAN 20, while Gi0/1 is the trunk."
+    - "Option 150 supplies the CME/TFTP address; phones also need IP power, configuration and registration."
+    - "Auto-assigned extensions 1001/1002 depend on registration order; check the phone display instead of assuming Phone0 is always 1001."
+  steps:
+    - "Place 2811, 2960 and two 7960s; ensure phones have power adapters where PT does not supply PoE."
+    - "Configure SW1 data and voice VLANs, its Gi0/1 trunk, and both phone access/voice ports."
+    - "Configure R1 dot1Q .10/.20 subinterfaces, voice DHCP with option 150 and CME telephony-service with two ephone-dns."
+    - "Wait for phones to receive a voice lease and show distinct registered extensions; dial 1002 from the phone showing 1001."
+  sample: |
+    # Use a shell for role-separated snippets; paste only on the named device
+    python3 scripts/ios_config_generator.py voip-cme --role SW1
+    python3 scripts/ios_config_generator.py voip-cme --role R1
+  verify:
+    - "R1 show ip dhcp binding includes two voice leases at or after 192.168.20.21."
+    - "Both phone displays show registered 1001/1002 and a simulated ring/connected state is observed."
+    - "Optional PC0 on VLAN10 can ping 192.168.10.1 separately from the voice-call test."
+  fix:
+    - "A dark phone screen needs power and the correct Switch port before any DHCP diagnosis."
+    - "An IP with no extension calls for option 150, CME source-address and phone registration checks."
+  question: "Does a phone showing a voice IP prove it has registered with CME?"
+  answer: "No. Confirm distinct phone extension displays and a call-state test; IP assignment is a separate milestone."
+
+- source: Extras/dhcp-snooping-dai-lab.md
+  title: "DHCP Snooping and optional DAI policy"
+  goal: "Distinguish verified DHCP bindings from uncertain Packet Tracer DAI enforcement."
+  plan: "R1 legitimate DHCP at 192.168.1.1/24 faces SW1 Gi0/1 (the only trusted uplink). PC0/PC1 occupy untrusted Fa0/1-2; rogue server at 192.168.1.254/24 uses untrusted Fa0/3. Keep rogue DHCP OFF until ordinary leases are working."
+  ideas:
+    - "DHCP Snooping permits a server reply from a trusted uplink and builds client IP/MAC/VLAN/port binding records."
+    - "Do not mark the rogue/client ports trusted; doing so defeats the exercise."
+    - "DAI can use trusted ports and the Snooping binding database, but Packet Tracer may accept a DAI command while not filtering ARP traffic."
+  steps:
+    - "Build the VLAN 1 baseline, configure R1 DHCP and trust only SW1 Gi0/1 for Snooping."
+    - "Renew PC0 and PC1, inspect their gateway .1 and confirm entries in show ip dhcp snooping binding."
+    - "Only then enable rogue DHCP on Fa0/3 and record actual lease/Offer behavior in your PT version."
+    - "Optionally inspect DAI command support and enable it on VLAN 1 only after bindings are proven; roll it back if clients lose reachability."
+  sample: |
+    # Print separate device roles before pasting; do not combine on one switch/router
+    python3 scripts/ios_config_generator.py dhcp-snooping --role R1
+    python3 scripts/ios_config_generator.py dhcp-snooping --role SW1
+    # Optional SW1 stage after real bindings exist:
+    python3 scripts/ios_config_generator.py dai --role SW1
+  verify:
+    - "PCs have valid R1 leases and the binding table names their client ports."
+    - "Only SW1 Gi0/1 is trusted; the rogue server's Fa0/3 stays untrusted."
+    - "Any DAI ARP-drop claim must have actual packet evidence from a capable platform; command acceptance alone is not such evidence."
+  fix:
+    - "If bindings are absent, inspect DHCP first; do not enable DAI merely because its command is accepted."
+    - "If an optional DAI configuration blocks good clients, roll back with no ip arp inspection vlan 1 on SW1."
+  question: "Does ip arp inspection vlan 1 being accepted prove Packet Tracer blocks spoofed ARP?"
+  answer: "No. DAI traffic enforcement in Packet Tracer is version-dependent and unverified in this repository."
