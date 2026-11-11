@@ -1,8 +1,8 @@
 site_name: Cisco Packet Tracer Lab · বাংলা + English
 site_description: Bilingual Cisco labs and v4.0 two-branch ISP-test capstone; 35 English companions, 26 illustrated GIFs. No new verified .pkt.
-site_url: https://maksbloxx.github.io/Cisco-Packet-Tracer-Lab/
-repo_url: https://github.com/MaksBloxX/Cisco-Packet-Tracer-Lab
-repo_name: MaksBloxX/Cisco-Packet-Tracer-Lab
+site_url: https://maksbloxx.github.io/test/
+repo_url: https://github.com/MaksBloxX/test
+repo_name: MaksBloxX/test
 edit_uri: edit/main/
 docs_dir: build/docs
 site_dir: build/site
